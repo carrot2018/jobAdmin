@@ -1,6 +1,7 @@
 <template>
 <div id="releasePositions">
     <div class="content-box">
+        <!-- <lay-out></lay-out> -->
         <h3>
             <span>发布职位</span><i>相同职位名、相同工作地点的职位只允许发布一个</i>
         </h3>
@@ -186,9 +187,9 @@
                 <span class='no-line-height'>企业简介 </span> 
                 <div class="right">
                     <div class="textarea-box">
-                        <textarea id="editor" placeholder="请简要描述工作职责或工作内容，最多1000字。" maxlength="1000"
+                        <textarea id="editor" placeholder="请简要描述工作职责或工作内容，最多1000字。" maxlength="1000"                       
                         ></textarea>
-                        <span>{{textareaText.length}}/1000</span>
+                        <span>{{textareaText}}/1000</span>
                     </div>
                 </div>
             </div>
@@ -263,7 +264,9 @@
 <script>
 import Vue from 'vue';
 import CKEDITOR from 'CKEDITOR';
+// import layOut from '../layOut.vue'//退出
 export default {
+//   components: { layOut },
   data () {
     return {
         editorId:'',//编辑id
@@ -276,7 +279,7 @@ export default {
         month:1,//默认月1日2
         day:'',//日结
         experience:'',//经验
-        textareaText:'',//企业简介
+        textareaText:0,//企业简介
         experienceArr:[
             // 0、1、3、5、7、10、15、20
             { value: '1', label: '1'},
@@ -306,25 +309,13 @@ export default {
         skillArr:[],//技能标签
         addSkillArr:[],//被选中的技能标签
         skillTip:false,
-        arr:[
-            {name:'北京烤鸭北京烤鸭1',flag:false},
-            {name:'北京烤鸭北京烤鸭2',flag:false},
-            {name:'北京烤鸭北京烤鸭3',flag:false},
-            {name:'北京烤鸭北京烤鸭4',flag:false},
-            {name:'北京烤鸭北京烤鸭5',flag:false},
-            {name:'北京烤鸭北京烤鸭6',flag:false},
-            {name:'北京烤鸭北京烤鸭7',flag:false},
-            {name:'北京烤鸭北京烤鸭8',flag:false},
-            {name:'北京烤鸭北京烤鸭9',flag:false},
-        ],
         customWelfare:true,//自定义福利按钮显示
         addWelfare:'',//自定义福利添加的内容
         welfareTip:false,
         welfareArr:[],//福利待遇
         addWelfareArr:[],//被选中的福利待遇
         sensitive:false,
-       
-        
+        xxxx:''    
     }
   },
   methods:{
@@ -366,82 +357,82 @@ export default {
         // description 职位描述
         // remark 技能标签
         // welfare  福利待遇
-       
-        if(!this.name ){
-            $('#releasePositions').scrollTop(0);
-            return;
-        }
-        if(!this.province){
-            this.addressShow=true;
-            this.addressText='请选择省份'
-            $('#releasePositions').scrollTop(0);
-            return;
-        }else{
-            this.addressShow=false;
-        }
-        if(!this.city){
-            this.addressShow=true;
-            this.addressText='请选择城市'
-            $('#releasePositions').scrollTop(0);
-            return;
-        }else{
-            this.addressShow=false;
-        }
-        if(!this.area){
-            this.addressShow=true;
-            this.addressText='请选择所在区'
-            $('#releasePositions').scrollTop(0);
-            return;
-        }else{
-            this.addressShow=false;
-        }
-        if(!this.detailArea){
-            this.addressShow=true;
-            this.addressText='请填写企业所在详细地址'
-            $('#releasePositions').scrollTop(0);
-            return;
-        }else{
-            this.addressShow=false;
-        }
-        if(!detailReg.test(this.detailArea)){
-            this.addressShow=true;
-            this.addressText='详细地址有误'
-            $('#releasePositions').scrollTop(0);
-            return;
-        }else{
-            this.addressShow=false;
-        }
-        if(this.month==1){
-            if(!this.salaryOne){
-                this.moneyTipShow=true;
-                this.moneyTip='请填写薪资';
-                $('#releasePositions').scrollTop(0);
-                return;
-            }else{
-                this.moneyTipShow=false;
-            }
-            if(!this.salaryTwo){
-                this.moneyTipShow=true;
-                this.moneyTip='请填写薪资范围';
-                $('#releasePositions').scrollTop(0);
-                return;
-            }else{
-                this.moneyTipShow=false;
-            }
-        }
-        if(this.month==2){
-            this.salaryOne='';
-            if(!this.salaryTwo){
-                this.moneyTipShow=true;
-                this.moneyTip='请填写薪资';
-                $('#releasePositions').scrollTop(0);
-                return;
-            }else{
-                this.moneyTipShow=false;             
-            }
-        }
+        // if(!this.name ){
+        //     $('#releasePositions').scrollTop(0);
+        //     return;
+        // }
+        // if(!this.province){
+        //     this.addressShow=true;
+        //     this.addressText='请选择省份'
+        //     $('#releasePositions').scrollTop(0);
+        //     return;
+        // }else{
+        //     this.addressShow=false;
+        // }
+        // if(!this.city){
+        //     this.addressShow=true;
+        //     this.addressText='请选择城市'
+        //     $('#releasePositions').scrollTop(0);
+        //     return;
+        // }else{
+        //     this.addressShow=false;
+        // }
+        // if(!this.area){
+        //     this.addressShow=true;
+        //     this.addressText='请选择所在区'
+        //     $('#releasePositions').scrollTop(0);
+        //     return;
+        // }else{
+        //     this.addressShow=false;
+        // }
+        // if(!this.detailArea){
+        //     this.addressShow=true;
+        //     this.addressText='请填写企业所在详细地址'
+        //     $('#releasePositions').scrollTop(0);
+        //     return;
+        // }else{
+        //     this.addressShow=false;
+        // }
+        // if(!detailReg.test(this.detailArea)){
+        //     this.addressShow=true;
+        //     this.addressText='详细地址有误'
+        //     $('#releasePositions').scrollTop(0);
+        //     return;
+        // }else{
+        //     this.addressShow=false;
+        // }
+        // if(this.month==1){
+        //     if(!this.salaryOne){
+        //         this.moneyTipShow=true;
+        //         this.moneyTip='请填写薪资';
+        //         $('#releasePositions').scrollTop(0);
+        //         return;
+        //     }else{
+        //         this.moneyTipShow=false;
+        //     }
+        //     if(!this.salaryTwo){
+        //         this.moneyTipShow=true;
+        //         this.moneyTip='请填写薪资范围';
+        //         $('#releasePositions').scrollTop(0);
+        //         return;
+        //     }else{
+        //         this.moneyTipShow=false;
+        //     }
+        // }
+        // if(this.month==2){
+        //     this.salaryOne='';
+        //     if(!this.salaryTwo){
+        //         this.moneyTipShow=true;
+        //         this.moneyTip='请填写薪资';
+        //         $('#releasePositions').scrollTop(0);
+        //         return;
+        //     }else{
+        //         this.moneyTipShow=false;             
+        //     }
+        // }
         let age=this.age_1+'~'+this.age_2;
         let description=this.editor.getData();
+        console.log( description.length )
         let remarkArr=[],welfareArr=[];
         console.log( this.addSkillArr, this.addWelfareArr)
         this.addSkillArr.forEach(function(v){
@@ -782,45 +773,59 @@ export default {
             }                
         })
     },
-    getText(value){
-        var reg = new RegExp("<.+?>","g");
-        var msg = value.replace(reg,'');
-        return msg;
-    },
-
-       
-   
-
+    // getText(value){
+    //     var reg = new RegExp("<.+?>","g");
+    //     var msg = value.replace(reg,'');
+    //     return msg;
+    // },
   },
   beforeRouteLeave(to, from, next) {
-    // this.$confirm('内容没有保存，确定要离开吗？', {
-    //     confirmButtonText: '确定',
-    //     cancelButtonText: '取消',
-    //     center: true
-    // }).then(() => {
-       next();
-    // })
+      let ckeditor=this.editor.getData();
+      if(this.name!=''||this.province!=''||this.detailArea!=''
+      ||this.salaryOne!=''||this.salaryTwo!=''||this.age_1!=''||ckeditor!=''||this.experience!=''||
+       this.addSkillArr.length!=0|| this.addWelfareArr.length!=0){
+        this.$confirm('内容没有保存，确定要离开吗？', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            center: true
+        }).then(() => {
+            next();
+        })
+          
+      }else{
+        next();
+      }
+  },
+  watch:{ 
+    
   },
   created(){
     this.getProvince();
     this.getSkillArr();
     this.getWelfareArr();
+    let that=this;
     this.editorId=this.$route.query.id;
-    console.log(this.editorId)
   },
   beforeUpdate(){
-   
+
   },
   mounted(){
     let that=this;
     CKEDITOR.replace('editor', {height: '200px', width: '600px', toolbar: 'toolbar_Full'});
     that.editor = CKEDITOR.instances.editor;  
-    that.editor.on( 'change', function() { 
-        let content=that.editor.getData();
-        console.log(content)
-        that.textareaText=CKEDITOR.instances.editor.document.getBody().getText();
+    // CKEDITOR.instances.WORK_INTRODUCTION.setData(“要显示的文字内容”);
+    that.editor.on('change',function(){
+        if(that.editor.getData()==''){
+            that.editor.getData('')
+            that.textareaText=0;
+            return;
+        }else{
+            setTimeout(function(){
+                let content=that.editor.document.getBody().getText();
+                that.textareaText=content.length;   
+            },1600)
+        }     
     }); 
-
   }
 }
 </script>
@@ -1174,6 +1179,24 @@ export default {
     color: #333;
     background-color: #ccc;
     border-color: #ccc;
+}
+#releasePositions .el-message-box__message p {
+    font-size: 18px;
+}
+.el-message-box__message p{
+    font-size: 18px;
+    margin-bottom: 20px;
+}
+.el-button--small {
+    padding: 10px 24px!important;
+    font-size: 16px;
+}
+.el-message-box__btns button:nth-child(2) {
+    margin-left: 36px!important;
+    font-size: 16px;
+}
+.el-message-box__headerbtn .el-message-box__close{
+    font-size: 24px;
 }
 </style>
 

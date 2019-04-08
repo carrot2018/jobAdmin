@@ -5,10 +5,14 @@
         <span>简历管理</span>
       </h3>
       <div class="title">
-        <span @click="checkTitle(1)">主动投递(10)</span>
+        <span @click="checkTitle(1)">主动投递({{totalNum}})</span>
       </div>
       <div class="list-box">
-        <div class="every" v-for="(item, index) in arr" :key="index" @click="preview(item.xxx)">
+        <div class="every" 
+        v-for="(item, index) in arr" 
+        :key="index" 
+        @click="preview(item.xxx,item.jobsId)"
+        >
           <!-- <p class="title">
                     <span>2019-1-22 17:15</span>
                     <span>应聘:厨师长</span>
@@ -64,18 +68,27 @@ export default {
   data() {
     return {
       // arr: [{ xxx: 1 }, { xxx: 2 }, { xxx: 1 }, { xxx: 2 }],
-      arr:[]
-      // remarkArr = []
+      arr:[],
+      totalNum:0
     };
   },
   methods: {
-    preview(item) {
+    preview(item,jobsId) {
       //预览简历
-      if (item == 1) {
-        this.$router.push("/cookerTel");
-      } else {
-        this.$router.push("/notCookerTel");
-      }
+      // if (item == 1) {
+      //   this.$router.push("/cookerTel");
+      // } else {
+      //   this.$router.push("/notCookerTel");
+      // }
+      // console.log(123123,window.localStorage.getItem('requestId'))
+      
+      this.$router.push({
+        path: '/cookerTel',
+        query: {
+          jobsId:jobsId,
+          requestId:window.localStorage.getItem('requestId')
+        }
+      })
     },
 
     // 获取简历管理信息
@@ -86,6 +99,7 @@ export default {
         let res = response.data;
         let data = res.data.list;
         
+        this.totalNum = res.data.record;
         // 时间戳转换成日期
         function timestampToTime(timestamp) {
           let date = new Date(timestamp);//时间戳为10位需*1000，时间戳为13位的话不需乘1000
@@ -97,7 +111,6 @@ export default {
           let s = date.getSeconds();
           return Y+M+D+h+m;
         }
-        let remarkArr = [];
         if(res.code === '000') {
           data.some((item,i) => {
             item.sendTime = timestampToTime(item.sendTime)
