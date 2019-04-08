@@ -1,6 +1,7 @@
 <template>
 <div id="companyInfo">
     <div class="content-box">
+        <!-- <lay-out></lay-out> -->
         <h3>
             <span>企业信息</span><i>为了使求职者在投递前了解企业的基本情况，请完善以下企业相关信息，同时提升求职者的信任感</i>
         </h3>
@@ -160,14 +161,16 @@
         </el-dialog>
          
     </div> 
+   
 </div>
 </template>
-
 <script>
+// import layOut from '../layOut.vue'//退出
 export default {
+//   components: { layOut },
   data () {
     return {
-        template:2,//企业简介
+        template:1,//企业简介
         number:'',//员工人数
         centerDialogVisible: false,
         active:1,     
@@ -357,6 +360,7 @@ export default {
         // }else{
         //     this.addressShow=false;
         // }
+        $('.error-label').hide(); 
         this.template=2;
         this.active=2;
     },
@@ -483,6 +487,7 @@ export default {
 }
 .content-box{
 padding: 50px 80px 0 40px;
+position: relative;
 h3{
     height: 50px;
     line-height: 50px;

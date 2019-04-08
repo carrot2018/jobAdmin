@@ -1,6 +1,7 @@
 <template>
 <div id="resume">
   <div class='content-box'>
+        <!-- <lay-out></lay-out> -->
         <h3>
             <span>简历管理</span>
         </h3>
@@ -8,10 +9,7 @@
             <span @click='checkTitle(1)'>主动投递(10) </span>
         </div>
         <div class="list-box">
-            <div class="every" 
-            v-for='(item, index) in arr' 
-            :key="index" 
-            @click='preview(item.xxx)'>
+            <div class="every" v-for='i in arr' @click='preview(i.xxx)'>
                 <p class="title">
                     <span>2019-1-22 17:15</span>
                     <span>应聘:厨师长</span>
@@ -43,7 +41,9 @@
 <script>
 import Vue from 'vue';
 import CKEDITOR from 'CKEDITOR';
+// import layOut from '../layOut.vue'//退出
 export default {
+//   components: { layOut },
   data () {
     return {
       arr:[

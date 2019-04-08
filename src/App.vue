@@ -11,6 +11,8 @@
 *{
   margin: 0;padding: 0;
   box-sizing: border-box;
+  -webkit-overflow-scrolling: touch;
+  font-family:'MicrosoftYaHei';
 }
 a{
   text-decoration: none;
@@ -26,11 +28,9 @@ input,textarea{
 html,body{
   width: 100%;
   height: 100%;
-  /* font-family: PingFang SC; */
-  font-family:'微软雅黑';
+  /* font-family:'MicrosoftYaHei'; */
   font-size: 14px;
-  -webkit-overflow-scrolling: touch;
-  min-width:1366px;
+  /* min-width:1366px; */
 }
 #app{
   width: 100%;

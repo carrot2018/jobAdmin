@@ -15,15 +15,16 @@ export default new Router({
     { path: '/login', name: '登录', component: login },
     { path: '/menu', component: menu,
       children:[
-        { path:'/companyInfo', name: '企业信息', component:companyInfo  },
-        { path:'/releasePositions', name: '发布职位', component:releasePositions  },
-        { path:'/allPosition', name: '职位管理', component:allPosition  },
-        { path:'/resume', name: '简历管理', component:resume  },
+        { path:'/companyInfo', name: '企业信息', component:companyInfo , meta: {requireAuth: true} },
+        { path:'/releasePositions', name: '发布职位', component:releasePositions , meta: {requireAuth: true} },
+        { path:'/allPosition', name: '职位管理', component:allPosition , meta: {requireAuth: true} },
+        { path:'/resume', name: '简历管理', component:resume , meta: {requireAuth: true} },
       ]
     },
-    { path: '/cookerTel', name: '有联系方式厨师', component: cookerTel },
-    { path: '/notCookerTel', name: '有联系方式厨师', component: notCookerTel },
+    { path: '/cookerTel', name: '有联系方式厨师', component: cookerTel , meta: {requireAuth: true}},
+    { path: '/notCookerTel', name: '有联系方式厨师', component: notCookerTel , meta: {requireAuth: true}},
     // { path: '/certification', name: '新企业认证', component: certification },
     {  path: '*', redirect: { path: '/login' } },
   ]
 })
+

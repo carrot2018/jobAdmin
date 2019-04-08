@@ -1,6 +1,7 @@
 <template>
 <div id="allPosition">
   <div class='content-box'>
+        <!-- <lay-out></lay-out> -->
         <h3>
             <span>职位管理</span>
         </h3>
@@ -120,8 +121,7 @@
                 </div>  
             </div> -->
 
-        </div>
-       
+        </div>  
   </div>
 </div>
 </template>
@@ -129,7 +129,9 @@
 import Vue from 'vue';
 import CKEDITOR from 'CKEDITOR';
 import {formatDate} from '../../common/js/formatDate.js';
+// import layOut from '../layOut.vue'//退出
 export default {
+//   components: { layOut },
   data () {
     return {
         template:1,
@@ -141,6 +143,7 @@ export default {
         list:[],
         allTotal:0,
         page:false,//分页显示
+        requestId:localStorage.getItem('requestId'),
     }
   },
   methods:{
@@ -164,36 +167,50 @@ export default {
             pageNum:this.pageNum,
             pageSize:this.pageSize
         }
-        that.$http.post('/api/job-route-invoker/job/selectJobOfPageList?pushStatus='+that.template,params
+        that.$http.post('/api/job-route-invoker/job/selectJobOfPageList?pushStatus='+that.template+'&requestId='+that.requestId,params
         ).then((res)=>{
-            this.list=res.data.data.jobs;
-            console.log(this.list)
-            this.allTotal=res.data.data.totalRecord;  
-            if(this.allTotal>this.pageSize){
-                this.page=true;
-            }else{
-                this.page=false;
-            }
+            console.log(res)
+            // if(res.data.code=='666'){
+            //     that.$message({
+            //         message: '请先登录',
+            //         center: true,
+            //         onClose:function(){
+            //             that.$router.push('/login');
+            //         }
+            //     });
+            // }else{
+                this.list=res.data.data.jobs;
+                console.log(this.list)
+                this.allTotal=res.data.data.totalRecord;  
+                if(this.allTotal>this.pageSize){
+                    this.page=true;
+                }else{
+                    this.page=false;
+                }
+            // }
+           
         }).catch((error)=>{
+            console.log(error)
         })
 
     },
     getAll(){
-        this.$http.get('/api/job-route-invoker/job/countJobs',{
+        console.log(this.requestId)
+        this.$http.get('/api/job-route-invoker/job/countJobs?requestId='+this.requestId,{
         }).then((res)=>{
             this.allNum=res.data.data;  
         }).catch((error)=>{
         })
     },
     getRelease(){
-        this.$http.get('/api/job-route-invoker/job/countJobReleases',{
+        this.$http.get('/api/job-route-invoker/job/countJobReleases?requestId='+this.requestId,{
         }).then((res)=>{
             this.releaseNum=res.data.data;
         }).catch((error)=>{
         })
     },
     getShutDown(){
-        this.$http.get('/api/job-route-invoker/job/countJobCloses',{
+        this.$http.get('/api/job-route-invoker/job/countJobCloses?requestId='+this.requestId,{
         }).then((res)=>{
             this.shutDown=res.data.data;
         }).catch((error)=>{
@@ -201,7 +218,7 @@ export default {
     },
     hasShutDown(item,index){//1 发布中 2 关闭
         let that=this;
-        that.$http.post('/api/job-route-invoker/job/updateJobsById',{
+        that.$http.post('/api/job-route-invoker/job/updateJobsById?requestId='+that.requestId,{
             publishStatus:index,
             id:item.id
         }
@@ -240,7 +257,7 @@ export default {
     },
     deleteList(item){//删除
         let that=this;
-        that.$http.get('/api/job-route-invoker/job/deleteJobsById/'+item.id,{
+        that.$http.get('/api/job-route-invoker/job/deleteJobsById/'+item.id+'&requestId='+that.requestId,{
         }
         ).then((res)=>{
             console.log(res)
@@ -261,7 +278,7 @@ export default {
     },
     toRefresh(item){
         let that=this;
-        that.$http.get('/api/job-route-invoker/job/setLockFlushZpJobsByOneDay/'+item.id,{
+        that.$http.get('/api/job-route-invoker/job/setLockFlushZpJobsByOneDay/'+item.id+'?requestId='+that.requestId,{
         }
         ).then((res)=>{
             if(res.data.code=='000'){
@@ -297,6 +314,7 @@ export default {
     },
   },
   created(){
+    // this.requestId=localStorage.getItem('requestId');
     this.getAll();
     this.getRelease();
     this.getShutDown();
