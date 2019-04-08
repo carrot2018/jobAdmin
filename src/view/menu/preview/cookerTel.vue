@@ -1,6 +1,7 @@
 <template>
 <div id="cookerTel">
-  <div class='content-box'>
+  <div 
+  class='content-box'>
     <h3>
         <span @click='checkTitle(1)' :class='{item:template==1}'>在线简历 /  </span>
         <span @click='checkTitle(2)' :class='{item:template==2}'>证书及荣誉 /</span>
@@ -9,7 +10,7 @@
     <div class="name">
         <span>
           <img src="../../../../static/img/logo.png" >
-          <span>哈哈哈</span>
+          <span>{{remuces.realName}}</span>
           <span class="iconfont iconfemale"></span>
           <span v-show='template==2'>
             <i>普</i>
@@ -19,52 +20,57 @@
           </span>
         </span>
         <span v-show='template!=3'>
-          <span><span class="iconfont iconcakes"></span><i></i>岁 &nbsp;/  </span>
-          <span><span class="iconfont iconfangwuzongshu"></span><i></i>黑龙江籍 &nbsp;/  </span>
-          <span><span class="iconfont iconjiguan"></span><i></i>当前在深圳-光明新区</span>
+          <span><span class="iconfont iconcakes"></span><i>{{remuces.birthday}}</i>岁 &nbsp;/  </span>
+          <span><span class="iconfont iconfangwuzongshu"></span><i></i>{{remuces.bornProvinceName}} &nbsp;/  </span>
+          <span><span class="iconfont iconjiguan"></span><i></i>当前在{{remuces.currentCityName}}</span>
         </span>
     </div>
     <div class="resume_1" v-show="template==1">
       <p>
         <span>自我评价</span>
         <span>
-          <i>踏实肯干</i><i>踏实肯干</i><i>踏实肯干</i><i>踏实肯干</i><i>踏实肯干</i>
+          <i 
+          v-for="(item1,index) in detialList.remark"
+          :key="index">{{item1}}</i>
         </span>
       </p>
       <p>            
         <span>期望工作</span>
         <span>
-          <span>行政总厨 /  </span>
-          <span>深圳 光明新区 /</span>
-          <span>8k-10k</span>
+          <span>{{detialList.expectJob}} /  </span>
+          <span>{{detialList.currentCity}} /</span>
+          <span>{{detialList.expectMinPayment}}k-{{detialList.expectMaxPayment}}k</span>
         </span>  
       </p>
       <p>            
         <span>师承</span>
-        <span>行政总厨</span>
+        <span>{{detialList.master}}</span>
       </p>
       <p>            
         <span>擅长菜系 </span>
-        <span>淮扬菜、东北菜</span>
+        <span>{{detialList.cookingStyle}}</span>
       </p>
       <p>            
         <span>擅长菜品 </span>
-        <span>北京烤鸭、避风塘炒蟹、炸豆腐、炸牛奶</span>
+        <span>{{detialList.discribe}}</span>
       </p>
       <p class='p_pic'>
-        <img src="../../../../static/img/logo.png" v-for='i in 10'>
+        <!-- <img v-for='(item, index) in detialList.cookingImages'
+        :key="index"
+        :src="item"> -->
       </p>
       <div>            
         <span>工作经历 </span>
         <div>
-          <div v-for='i in 3' class='item'>
+          <div 
+          v-for='(item1, index) in works' 
+          class='item'
+          :key="index">
             <p>
-              <span>胜记餐饮有限公司  /  主厨  /  全职  /  深圳</span>
-              <span>2001.1 至 2002.12</span>
+              <span>{{item1.company}}  /  {{item1.position}}  /  {{item1.isParttime}}  /  {{item1.cityName}}</span>
+              <span>{{item1.startTime}} 至 {{item1.endTime}}</span>
             </p>
-            <p>我在这里担任主厨，为餐厅做了5道创新菜，赢得许多回头客。我在这里担任主厨，为餐厅做了5道创新菜，
-              赢得许多回头客。我在这里担任主厨，为餐厅做了5道创新菜，赢得许多回头客。我在这里担任主厨，为餐
-              厅做了5道创新菜，赢得许多回头客。我在这里担任主厨，为餐厅做了5道创新菜，赢得许多回头客。               
+            <p>{{item1.description}}               
             </p>
           </div>
         </div>
@@ -73,10 +79,13 @@
       <div>            
         <span>教育经历 </span>
         <div>
-          <div v-for='i in 3'>
+          <div 
+          v-for='(item2, index) in educations'
+          :key="index"
+          >
             <p>
-              <span>西点学校  /  蛋糕</span>
-              <span>2001.1 至 2002.12</span>
+              <span>{{item2.school}}  /  {{item2.major}}</span>
+              <span>{{item2.joinDate}} 至 {{item2.leaveDate}}</span>
             </p>
           </div>
         </div>
@@ -84,10 +93,11 @@
       <div>            
         <span>获得荣誉 </span>
         <div>
-          <div v-for='i in 3'>
+          <div v-for='(item3, index) in prizes'
+          :key="index">
             <p>
-              <span>十大最好吃的顺德菜</span>
-              <span>2001.1 至 2002.12</span>
+              <span>{{item3.prizeNotes}}</span>
+              <span>{{item3.receiveTime}}</span>
             </p>
           </div>
         </div>
@@ -137,25 +147,76 @@
 </div>
 </template>
 <script>
+import axios from 'axios';
 export default {
   data () {
     return {
       template:1,
-      
+      detialList:[],
+      remuces:[],
+      works:[],
+      educations:[],
+      prizes:[]
       
     }
   },
   methods:{
     checkTitle(status){
-        this.template=status;
-    }
+      this.template=status;
+    },
    
+    getDetail() {
+      let jobsId = this.$route.query.jobsId;
+      let requestId = this.$route.query.requestId;
+      // let data = { 'jobsId':jobsId, 'requestId':requestId}
+      // console.log(data)
+      axios.post('/api/job-route-invoker/getDetialList?jobsId='+jobsId+'&requestId='+requestId,
+      ).then((response) => {
+        let res = response.data;
+
+        function timestampToTime(timestamp) {
+          let date = new Date(timestamp);//时间戳为10位需*1000，时间戳为13位的话不需乘1000
+          let Y = date.getFullYear() + '-';
+          let M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1) + '';
+          let D = date.getDate() + ' ';
+          let h = date.getHours() + ':';
+          let m = date.getMinutes() + '';
+          let s = date.getSeconds();
+          return Y+M;
+        }
+
+        res.data.detialList.some((item,i) => {
+          let mark = item.remark
+          item.remark = mark.split(",")
+        
+          item.expectMinPayment = parseInt(item.expectMinPayment/1000)
+
+           item.expectMaxPayment = parseInt(item.expectMaxPayment/1000)
+     
+        })
+      
+        res.data.works.some((item,i) => {
+          item.isParttime === 0?item.isParttime = '全职':item.isParttime = '兼职'
+        })
+
+        res.data.prizes.some((item, i) => {
+          item.receiveTime = timestampToTime(item.receiveTime)
+        })
+
+        this.detialList = res.data.detialList[0]
+        this.remuces = res.data.remuces[0]
+        this.works = res.data.works
+        this.educations = res.data.educations
+        this.prizes = res.data.prizes
+        console.log(res,res.data.prizes)
+      })
+    }
   },
   created(){
 
   },
   mounted(){
-   
+    this.getDetail();
   }
 }
 </script>
