@@ -79,12 +79,11 @@ export default {
 </script>
 <style scoped lang='scss'>
 #resume{
-    height: 100%;
-    overflow-y: auto;
+    height: auto;
+    min-height: 100%;
 }
 .content-box{
     height: 100%;
-    overflow-y: auto;
     padding: 50px 80px 40px 40px;
     h3{
         height: 50px;

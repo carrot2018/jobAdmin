@@ -1,15 +1,20 @@
 <template>
 <div id="companyInfo">
-    <div class="content-box">
-        <!-- <lay-out></lay-out> -->
-        <h3>
-            <span>企业信息</span><i>为了使求职者在投递前了解企业的基本情况，请完善以下企业相关信息，同时提升求职者的信任感</i>
-        </h3>
+    <h3>
+        <div>企业信息</div>
+        <p>为了使求职者在投递前了解企业的基本情况，请完善以下企业相关信息，同时提升求职者的信任感</p>
+    </h3>
+    <div class="companyInfo-box">
+       
         <div class="step">
-            <el-steps :active="active" align-center>
+            <!-- <el-steps :active="active" align-center>
                 <el-step title="企业简介"></el-step>
                 <el-step title="主营餐饮"></el-step>
-            </el-steps>
+            </el-steps> -->
+            <span :class='{bg:active==1}'>1 • 企业简介</span>
+            <!-- <span></span> -->
+            <span :class='{bg:active==2}'>2 •主营餐饮</span>
+
         </div>
         <div class="content-1" v-show='template==1'>        
             <div>
@@ -20,7 +25,7 @@
                 </div>             
             </div>
             <div>
-                <span>员工人数 <span class="iconfont iconjiufuqianbaoicon14"></span></span> 
+                <span><span class="iconfont iconjiufuqianbaoicon14"></span>员工人数</span> 
                 <div class="right">
                     <input type="text" class='people-num' placeholder="填写" 
                     v-model='number' v-on:input="numberInput()" maxlength="6">
@@ -29,7 +34,7 @@
                 </div>   
             </div>
             <div>
-                <span>企业地址 <span class="iconfont iconjiufuqianbaoicon14"></span></span> 
+                <span><span class="iconfont iconjiufuqianbaoicon14"></span>工作地点</span> 
                 <div class="right">
                     <p>
                         <el-select v-model="province" filterable placeholder="省份" @change='getCity'>
@@ -98,16 +103,16 @@
                    <div class="custom" @click='clickCustom()' v-show='custom'>
                        <span class="iconfont iconjia"></span><span>自定义</span>
                    </div>
-                   <div class="next" @click='next()'>
+                   <p class="next" @click='next()'>
                        下一步
-                   </div>                  
+                   </p>                  
                 </div>
             </div>
 
         </div> 
         <div class="content-2" v-show='template==2'>        
             <div>
-                <span>主营菜系 <span class="iconfont iconjiufuqianbaoicon14"></span></span> 
+                <span><span class="iconfont iconjiufuqianbaoicon14"></span>主营菜系 </span> 
                 <div class="right">
                    <div class="label-box">
                       <span :class='{bg:item.flag==true}' v-for='item in mainCuisine' @click='checkCuisine(item)'>{{item.name}}</span>  
@@ -119,7 +124,7 @@
                 </div>
             </div>
             <div>
-                <span>餐饮类型 <span class="iconfont iconjiufuqianbaoicon14"></span></span> 
+                <span><span class="iconfont iconjiufuqianbaoicon14"></span>餐饮类型</span> 
                 <div class="right">
                    <div class="label-box">
                       <span :class='{bg:item.flag==true}' v-for='item in diningType' @click='checkCookType(item)'>{{item.name}}</span>
@@ -165,9 +170,7 @@
 </div>
 </template>
 <script>
-// import layOut from '../layOut.vue'//退出
 export default {
-//   components: { layOut },
   data () {
     return {
         template:1,//企业简介
@@ -482,261 +485,308 @@ export default {
 </script>
 <style scoped lang='scss'>
 #companyInfo{
-    height: 100%;
-    overflow-y: auto;
-}
-.content-box{
-padding: 50px 80px 0 40px;
-position: relative;
-h3{
-    height: 50px;
-    line-height: 50px;
-    border-bottom: 1px solid #ccc;
-    margin-right: 20px;
-    span{
-        font-size: 16px;
-        font-weight: 700;
-    }
-    i{
-        font-style: normal;
-        font-size: 13px;
-        color: #999;
-        position: relative;
-        top: 1px;
-        left: 8px;
-    }
-}
-.step{
-    padding: 30px 0;
-}
-.content-1{
-    padding: 0 50px;
-    >div{
-        padding: 10px 0;
-        >span:nth-of-type(1){
-            color: #333;
-            width: 100px;
-            display: inline-block;
-            font-size: 15px;
-            float: left;
-            span{
-                font-size: 16px;
-                color: red;
-            }
+    height: auto;
+    min-height: 100%;
+    h3{
+        margin-top: 20px;
+        div{
+            font-size: 18px;
+            font-weight: 700;
+            color: #142D46;
+            letter-spacing: 1px;
         }
-        >.right{
-            margin-left: 100px;
-            width: calc(100% - 100px);
-            .company-name{
+        p{
+        margin-top: 10px;
+        color: #999;
+        font-size: 13px;
+        }
+    }
+
+}
+.companyInfo-box{
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background: #fff;
+    margin-top: 14px;
+    padding: 40px;
+    border-radius: 4px;
+    margin-bottom: 50px;
+    .step{
+        width: 100%;
+        height: 60px;
+        background: #f9fcfe;
+        >span:nth-of-type(1){
+            display: inline-block;
+            width: 50%;
+            height: 100%;
+            line-height: 60px;
+            text-align: center;
+            font-size: 20px;
+            letter-spacing: 1px;
+            font-weight: 700;
+            float: left;
+            cursor: pointer;
+        }
+        >span:nth-of-type(2){
+            display: inline-block;
+            width: 50%;
+            height: 100%;
+            line-height: 60px;
+            text-align: center;
+            font-size: 20px;
+            letter-spacing: 1px;
+            color:#666;
+            float: left;
+            cursor: pointer;
+        }
+        .bg{
+            color:#142D46;
+            font-weight: 700;
+            background: #e2e9f6;
+        }
+        
+    }
+    .content-1{
+        margin-top: 15px;
+        >div{
+            padding: 10px 0;
+            >span:nth-of-type(1){
+                color: #777;
+                width: 100px;
+                display: inline-block;
                 font-size: 15px;
-            }
-            .people-num{
-                width: 80px;
-                height: 34px;
-                border: 1px solid #ccc;
-                border-radius: 3px;
-                margin-right: 8px;
-                padding-left: 10px;
-            }
-            .detail-area{
-                width: 560px;
-                height: 40px;
-                border: 1px solid #ccc;
-                border-radius: 3px;
-                margin-top: 15px;
-                padding-left: 10px;
-            }
-            .textarea-box{
-                width: 560px;
-                height: 120px;
-                border: 1px solid #ccc;
+                float: left;
                 position: relative;
-                border-radius: 3px;
-                >textarea{
+                span{
+                    font-size: 12px;
+                    color: red;
                     position: absolute;
-                    width: 540px;
-                    height: 100px;
-                    left: 10px;
-                    top: 10px;
-                    resize:none 
-                    
-                }
-                >span{
-                    position: absolute;
-                    bottom: 10px;
-                    right: 10px; 
-                    color: #999;
+                    left: -12px;
+                    top: 0;
                 }
             }
-            .label-text{
-                color: #999;
-                font-size: 13px;
-                margin-bottom: 6px;
-            }
-            .label-box{
-                width: 800px;
-                >span{
-                    display: inline-block;
-                    padding: 8px;
-                    border-radius: 2px;
-                    margin-right: 15px;
-                    background: #e5e5e5;
-                    margin-top: 15px;
-                    cursor: pointer;
+            >.right{
+                margin-left: 100px;
+                width: calc(100% - 80px);
+                .company-name{
+                    font-size: 15px;
+                    color: #222;
                 }
-                >span.bg{
-                    background: cyan;
-                    color: #fff;
-                }
-            }
-            .custom_input{
-                input{
-                    width: 160px;
-                    height: 36px;
-                    line-height: 34px;
-                    border: 1px solid #ccc;
-                    margin-top: 15px;
+                .people-num{
+                    width: 80px;
+                    height: 34px;
+                    border: 1px solid #DCDFE6;
                     border-radius: 3px;
+                    margin-right: 8px;
                     padding-left: 10px;
                 }
-                span{
-                    display: inline-block;
-                    width: 50px;
+                .detail-area{
+                    width: 400px;
+                    height: 40px;
+                    border: 1px solid #DCDFE6;
+                    border-radius: 3px;
+                    margin-top: 15px;
+                    padding-left: 10px;
+                }
+                .textarea-box{
+                    width: 580px;
+                    height: 250px;
+                    border: 1px solid #DCDFE6;
+                    position: relative;
+                    border-radius: 3px;
+                    >textarea{
+                        position: absolute;
+                        width: 540px;
+                        height: 100px;
+                        left: 10px;
+                        top: 10px;
+                        resize:none 
+                        
+                    }
+                    >span{
+                        position: absolute;
+                        bottom: 10px;
+                        right: 10px; 
+                        color: #999;
+                    }
+                }
+                .label-text{
+                    color: #999;
+                    font-size: 13px;
+                    margin-bottom: 6px;
+                }
+                .label-box{
+                    width: 800px;
+                    >span{
+                        display: inline-block;
+                        border-radius: 2px;
+                        margin-right: 15px;
+                        margin-top: 15px;
+                        cursor: pointer;
+                        height: 28px;
+                        padding: 0 10px;
+                        border-radius: 28px;
+                        line-height: 26px;
+                        border: 1px solid #DCDFE6;
+                    }
+                    >span.bg{
+                        background: cyan;
+                        color: #fff;
+                    }
+                }
+                .custom_input{
+                    input{
+                        width: 160px;
+                        height: 36px;
+                        line-height: 34px;
+                        border: 1px solid #DCDFE6;
+                        margin-top: 15px;
+                        border-radius: 3px;
+                        padding-left: 10px;
+                    }
+                    span{
+                        display: inline-block;
+                        width: 50px;
+                        height: 30px;
+                        line-height: 28px;
+                        border: 1px solid #DCDFE6;
+                        margin-top: 15px;
+                        border-radius: 3px;
+                        margin-left: 10px;
+                        text-align: center;
+                        cursor: pointer;
+                    }
+                    span:nth-of-type(1){
+                    background: #aaa;
+                    color: #fff;
+                    }                
+                
+                }
+                .custom{
                     height: 30px;
                     line-height: 28px;
-                    border: 1px solid #ccc;
+                    border-radius: 30px;
+                    width: 90px;
+                    border: 1px solid #DCDFE6;
                     margin-top: 15px;
-                    border-radius: 3px;
-                    margin-left: 10px;
                     text-align: center;
                     cursor: pointer;
+                    span:nth-of-type(1){
+                        font-size: 12px;
+                    }
                 }
-                span:nth-of-type(1){
-                   background: #aaa;
-                   color: #fff;
-                }                
-              
-            }
-            .custom{
-                width: 120px;
-                height: 36px;
-                line-height: 34px;
-                border: 1px solid #ccc;
-                background: #e5e5e5;
-                margin-top: 15px;
-                text-align: center;
-                border-radius: 3px;
-                cursor: pointer;
-                span:nth-of-type(1){
-                    font-size: 12px;
-                }
-            }
-            .next{
-                width: 140px;
-                height: 44px;
-                line-height: 42px;
-                background: #ccc;
-                margin-top: 40px;
-                text-align: center;
-                border-radius: 3px;
-                font-size: 15px;
-                margin-bottom: 30px;
-                cursor: pointer;
-            }
-            .employees{
-                color: red;
-                margin-top: 5px;
-                display: none;
-            }
-            .tip-text{
-                margin-top: 5px;
-                color: red;
-            }
-            .error-label{
-                color: red;
-                display: none;
-                margin-top: 6px;
-            }
-        }
-     
-    }
-}
-.content-2{
-    padding: 0 50px;
-    >div{
-        padding: 10px 0;
-        >span:nth-of-type(1){
-            color: #333;
-            width: 100px;
-            display: inline-block;
-            font-size: 15px;
-            float: left;
-            span{
-                font-size: 16px;
-                color: red;
-            }
-        }
-        >.right{
-            margin-left: 100px;
-            .label-text{
-                color: #999;
-                font-size: 13px;
-            }
-            .label-box{
-                width: 800px;
-                span{
-                    display: inline-block;
-                    padding: 8px;
-                    border-radius: 2px;
-                    margin-right: 15px;
-                    background: #e5e5e5;
-                    margin-bottom: 15px;
-                    cursor: pointer;
-                }
-                >span.bg{
-                    background: cyan;
-                    color: #fff;
-                }
-            }
-            .upload{
-                margin-top: 20px;
-            }
-            .has-success{
-                span{
-                    display: inline-block;
+                .next{
                     width: 120px;
-                    height: 44px;
-                    line-height: 42px;
-                    background: #ccc;
+                    height: 36px;
+                    line-height: 34px;
+                    background: #DCDFE6;
                     margin-top: 40px;
                     text-align: center;
                     border-radius: 3px;
                     font-size: 15px;
                     margin-bottom: 30px;
                     cursor: pointer;
+                    background: #ff5670;
+                    margin: 20px auto 0;
+                    color: #fff;
                 }
-                span:nth-of-type(2){
-                    margin-left: 20px;
+                .employees{
+                    color: red;
+                    margin-top: 5px;
+                    display: none;
                 }
-               
-            }
-            .tip-text{
-                span{
+                .tip-text{
+                    margin-top: 5px;
                     color: red;
                 }
-                span:nth-of-type(1){
-                    position: relative;
-                    top: 1px;
-                }
-                span:nth-of-type(2){
-                    margin-left: 2px;
+                .error-label{
+                    color: red;
+                    display: none;
+                    margin-top: 6px;
                 }
             }
-
+        
         }
-     
     }
-}
+    .content-2{
+        margin-top: 15px;
+        >div{
+            padding: 10px 0;
+            >span:nth-of-type(1){
+                color: #333;
+                width: 100px;
+                display: inline-block;
+                font-size: 15px;
+                float: left;
+                span{
+                    font-size: 16px;
+                    color: red;
+                }
+            }
+            >.right{
+                margin-left: 100px;
+                .label-text{
+                    color: #999;
+                    font-size: 13px;
+                }
+                .label-box{
+                    span{
+                        display: inline-block;
+                        border-radius: 2px;
+                        margin-right: 15px;
+                        margin-top: 15px;
+                        cursor: pointer;
+                        height: 28px;
+                        padding: 0 10px;
+                        border-radius: 28px;
+                        line-height: 26px;
+                        border: 1px solid #DCDFE6;
+                    }
+                    >span.bg{
+                        background: cyan;
+                        color: #fff;
+                    }
+                }
+                .upload{
+                    margin-top: 20px;
+                }
+                .has-success{
+                    span{
+                        display: inline-block;
+                        width: 120px;
+                        height: 44px;
+                        line-height: 42px;
+                        background: #ccc;
+                        margin-top: 40px;
+                        text-align: center;
+                        border-radius: 3px;
+                        font-size: 15px;
+                        margin-bottom: 30px;
+                        cursor: pointer;
+                    }
+                    span:nth-of-type(2){
+                        margin-left: 20px;
+                    }
+                
+                }
+                .tip-text{
+                    span{
+                        color: red;
+                    }
+                    span:nth-of-type(1){
+                        position: relative;
+                        top: 1px;
+                    }
+                    span:nth-of-type(2){
+                        margin-left: 2px;
+                    }
+                }
+
+            }
+        
+        }
+    }
 
 }
 </style>
@@ -745,9 +795,16 @@ h3{
     left: 60%;
     right: -40%;
 }
+#companyInfo .el-select {
+    width: 130px;
+    margin-right: 20px;
+}
+.el-scrollbar {
+    width: 130px;
+}
 #companyInfo .el-input {
-    width: 180px;
-    margin-right: 10px;
+    width: 130px;
+   
 } 
 input::-webkit-input-placeholder, textarea::-webkit-input-placeholder {
     color: #999;

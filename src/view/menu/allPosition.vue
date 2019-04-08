@@ -328,11 +328,12 @@ export default {
 <style scoped lang='scss'>
 #allPosition{
     height: 100%;
-    overflow-y: auto;
+    min-height: 100%;
+
 }
 .content-box{
     height: 100%;
-    overflow-y: auto;
+
     padding: 50px 80px 40px 40px;
     h3{
         height: 50px;

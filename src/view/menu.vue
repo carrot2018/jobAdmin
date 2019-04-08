@@ -1,7 +1,6 @@
 <template>
 <div id="menu">
 <!-- 新用户认证 -->
-<div class="menu-box">
     <div class="logo">
         <div class="title">
             <img src="../../static/img/logo.png" >
@@ -85,7 +84,6 @@
         </div>
     </div>
 </div>
-</div>
 </template>
 
 <script>
@@ -110,75 +108,80 @@ export default {
 
   },
   mounted(){
-   
+      let height=$('.content-box .right').height();
+      console.log(height)
+      $('.content-box .left').height(height);
+
   }
 }
 </script>
 <style scoped lang='scss'>
 #menu{
-    width: 100%;
     height: 100%;
-    .menu-box{
-        width: 100%;
-        height: 100%;
-        position: relative;
-        >.logo{
+    overflow: hidden;
+    >.logo{
+        height: 70px;
+        padding: 0 35px;
+        >.title{
+            float: left;
+            line-height: 70px;
             height: 70px;
-            padding: 0 35px;
-            >.title{
-                float: left;
-                line-height: 70px;
-                height: 70px;
-                img{
-                    display: inline-block;
-                    height: 32px;
-                    position: relative;
-                    top: 9px;
-                }
-                >span{
-                    font-size: 22px;
-                    color: #142D46;
-                    font-family:'PingFang SC';
-                    margin-left: 4px;
-                }
-               
+            img{
+                display: inline-block;
+                height: 32px;
+                position: relative;
+                top: 9px;
             }
-            >.layout{
-                float: right;
-                height: 70px;
-                line-height: 70px;
-                >span{
-                    margin-right: 30px;   
-                    cursor: pointer;
+            >span{
+                font-size: 22px;
+                color: #142D46;
+                font-family:'PingFang SC';
+                margin-left: 4px;
+            }
+            
+        }
+        >.layout{
+            float: right;
+            height: 70px;
+            line-height: 70px;
+            >span{
+                margin-right: 30px;   
+                cursor: pointer;
+                img{
+                    width:18px;
+                    position: relative;
+                    top: 2px;
                 }
-                span:last-of-type{
-                    margin-right: 0;
-                    >img{
-                        position: relative;
-                        width: 24px;
-                        height: 24px;
-                        border-radius: 50%;
-                        top: 6px;
-                        right: 4px;
-                    }  
-                    >span:last-of-type{
-                        font-size: 20px;
-                        position: relative;
-                        top: 2px;
-                    } 
-                }
+            }
+            span:last-of-type{
+                margin-right: 0;
+                >img{
+                    position: relative;
+                    width: 24px;
+                    height: 24px;
+                    border-radius: 50%;
+                    top: 6px;
+                    right: 4px;
+                }  
+                >span:last-of-type{
+                    font-size: 20px;
+                    position: relative;
+                    top: 2px;
+                } 
             }
         }
-       
-    }
+    }      
 }
 .content-box{
-    height: calc(100% - 50px);
     position: relative;
+    width: 100%;
+    height: calc(100% - 70px);
     .left{
         width: 180px;
-        height: 100%;
         background: #142D46;
+        min-height: 100%;
+        height: 100%;
+        float: left;
         padding-top: 20px;
         .logo-title{
             img{
@@ -195,25 +198,26 @@ export default {
     } 
     .right{
         width: calc(100% - 180px);
+        min-height: 100%;
         height: 100%;
         overflow-y: auto;
-        position: absolute;
-        left: 180px;
-        top: 0;
+        background: #f9fcfe;
+        margin-left: 180px;
+        padding: 0 200px;
+        -webkit-box-shadow: #eee 0px 0px 10px 1px inset;//边框内阴影
+        box-shadow: #eee 0px 0px 10px 1px inset;//边框内阴影
     }
 }
 </style>
 <style>
-.el-col-12 {
-    width: 100%;
-    margin-top: 20px;
-}
 .el-menu {
     border-right: none;
     background: #142D46;
+    width: 180px;
 }
 .el-menu:hover li{
     background: #142D46;
+    width: 180px;
 }
 .el-menu-item{
     text-align: center;

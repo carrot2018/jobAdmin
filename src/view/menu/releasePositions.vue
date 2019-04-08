@@ -831,8 +831,8 @@ export default {
 </script>
 <style scoped lang='scss'>
 #releasePositions{
-    height: 100%;
-    overflow-y: auto;
+    height: auto;
+    min-height: 100%;
 }
 .content-box{
     padding: 50px 80px 0 40px;

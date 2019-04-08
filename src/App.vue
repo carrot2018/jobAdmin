@@ -28,12 +28,12 @@ input,textarea{
 html,body{
   width: 100%;
   height: 100%;
-  /* font-family:'MicrosoftYaHei'; */
   font-size: 14px;
-  /* min-width:1366px; */
+  min-width:1366px;
 }
 #app{
   width: 100%;
   height: 100%;
+  /* overflow: hidden; */
 }
 </style>
