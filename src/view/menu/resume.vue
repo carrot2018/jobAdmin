@@ -43,7 +43,7 @@
                 <span class="content__realname">{{item.realName}}</span>
                 <i v-show="item.reads"></i>
               </span>
-              <span>厨艺作品</span>
+              <span v-show="hasCookieImage">厨艺作品</span>
             </p>
             <p>
               <span class="list-box__content__menu">{{item.birthday}}岁&emsp;/&emsp;{{item.sex}}&emsp;/&emsp;{{item.bornProvinceName}}&emsp;/&emsp;当前在{{item.bornCityName}}</span>
@@ -70,7 +70,8 @@ export default {
       // arr: [{ xxx: 1 }, { xxx: 2 }, { xxx: 1 }, { xxx: 2 }],
       arr:[], // 简历渲染的数据
       totalNum:0, // 简历总份数
-      readStatus:true // 阅读状态
+      readStatus:true, // 阅读状态
+      hasCookieImage:false
     };
   },
   methods: {
@@ -133,6 +134,9 @@ export default {
             item.reads = true
             item.isRead === 1 ? item.reads = false : item.reads = true
             // console.log( mark.split(","))
+            if(item.cookingImages.length !== 0) {
+              this.hasCookieImage = true
+            }
           })
           this.arr = data
           console.log(this.arr)
