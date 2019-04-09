@@ -1,11 +1,17 @@
 <template>
 <div id="login">
     <div class="login-box">
-        <input type="number" placeholder="输入11位手机号码" id='phone' v-model='phone' v-on:input='phoneInput'>
-        <span class='no-user' v-show='phoneShow'><span class="iconfont icongantanhao"></span><span v-text='phoneText'></span></span>
-        <!-- <input type="password" placeholder="输入登录号码" id='password' v-model='password' v-on:input='phoneInput'> -->
-        <el-input placeholder="输入登录密码" v-model="password" show-password @keyup.enter='login'></el-input>
-        <span class='error-pwd' v-show='passwordShow'><span class="iconfont icongantanhao"></span><span v-text='passwordText'></span></span>
+        <p class="title">企业招聘服务平台</p>
+        <div class="phone-box">
+            <span class="iconfont iconshouji1"></span>
+            <input type="number" placeholder="输入11位手机号码" id='phone' v-model='phone' v-on:input='phoneInput'>
+            <span class='no-user' v-show='phoneShow'><span class="iconfont icongantanhao"></span><span v-text='phoneText'></span></span>
+        </div>
+        <div class="pwd-box">  
+            <span class="iconfont iconmima"></span>    
+            <el-input placeholder="输入登录密码" v-model="password" show-password @keyup.enter='login'></el-input>
+            <span class='error-pwd' v-show='passwordShow'><span class="iconfont icongantanhao"></span><span v-text='passwordText'></span></span>
+        </div>
         <p class='click-login' @click='login()'>登录</p>
     </div>
 </div>
@@ -128,14 +134,24 @@ export default {
         transform: translateY(-50%);
         -webkit-transform: translateY(-50%);
         border-radius: 6px;
-        padding: 40px 30px;
-        #phone{
-            width: 100%;
-            height: 40px;
-            padding-left: 15px;
-            border: 1px solid #e5e5e5;
-            border-radius: 4px;
+        padding: 32px 30px 45px 30px;
+        >.title{
+            font-size: 18px;
+            color: #142D46;
+            text-align: center;
+            font-weight: 700;
         }
+        >.phone-box{
+            #phone{
+                width: 100%;
+                height: 40px;
+                padding-left: 15px;
+                border: 1px solid #e5e5e5;
+                border-radius: 4px;
+            }
+
+        }
+       
         #password{
             width: 100%;
             height: 40px;

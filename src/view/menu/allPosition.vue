@@ -31,7 +31,7 @@
                         </span>
                     </p>
                     <p>
-                        <span>{{item.paytype==1?item.paymentMin+"k~"+item.paymentMax+"k":item.paymentMax+"元"}} / <span v-text='item.paytype==1?"月":"日"'></span></span>
+                        <span>{{item.paytype==1?item.paymentMinStr+"k~"+item.paymentMaxStr:item.paymentMax+"元"}} / <span v-text='item.paytype==1?"月":"日"'></span></span>
                         <span>{{item.cityName+'-'+item.areaName}}</span>
                     </p>
                     <p v-show='item.remark'>

@@ -449,6 +449,9 @@ export default {
         that.$http.post('/upload/insertEnterpriseMsg',params
         ).then((res)=>{
             console.log(res)
+            if(res.data.code=='002'){//成功
+                that.centerDialogVisible=true;
+            }
         }).catch((error)=>{
         })
 
@@ -492,7 +495,7 @@ export default {
     //   this.filesAdded(files)
     },
     toRelease(){//去发布职位
-        this.$router.push({path:'/allPosition'})
+        this.$router.push({path:'/releasePositions'})
     },
     prevStep(){//点击上一步
         this.active=1;

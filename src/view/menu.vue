@@ -83,7 +83,7 @@
 
             </div>
         </div>
-        <div class="right">
+        <div class="right" id='scrollBox'>
             <router-view></router-view>
         </div>
     </div>
@@ -116,7 +116,6 @@ export default {
       let height=$('.content-box .right').height();
       console.log(height)
       $('.content-box .left').height(height);
-
       this.thisRoute = this.$route.fullPath
   },
 
@@ -223,7 +222,6 @@ export default {
         float: left;
         padding-top: 25px;
         .logo-title{
-            
             // span{
             //     color: #fff;
             //     font-size: 16px;
