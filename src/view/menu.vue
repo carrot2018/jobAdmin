@@ -239,7 +239,7 @@ export default {
         overflow-y: auto;
         background: #f9fcfe;
         margin-left: 180px;
-        padding: 0 200px;
+        padding: 0 250px;
         -webkit-box-shadow: #eee 0px 0px 10px 1px inset;//边框内阴影
         box-shadow: #eee 0px 0px 10px 1px inset;//边框内阴影
     }

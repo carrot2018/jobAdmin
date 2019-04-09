@@ -107,7 +107,8 @@ export default {
           let date = new Date(timestamp);//时间戳为10位需*1000，时间戳为13位的话不需乘1000
           let Y = date.getFullYear() + '-';
           let M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1) + '-';
-          let D = date.getDate() + ' ';
+          let D = (date.getDate() < 10 ? '0'+(date.getDate()) : date.getDate()) + ' ';
+          // let D = date.getDate() + ' ';
           let h = date.getHours() + ':';
           let m = date.getMinutes() + '';
           let s = date.getSeconds();
@@ -127,6 +128,8 @@ export default {
             // if(item.isRead === 1) {
             //   item.isRead = false
             // }
+            
+            // 添加
             item.reads = true
             item.isRead === 1 ? item.reads = false : item.reads = true
             // console.log( mark.split(","))
@@ -148,7 +151,7 @@ export default {
 
 #resume {
   height: 100%;
-  overflow-y: auto;
+  // overflow-y: auto;
 }
 .list-box__content__menu {
   font-size: 16px;
@@ -156,12 +159,12 @@ export default {
 }
 .content-box {
   height: 100%;
-  overflow-y: auto;
-  padding: 50px 80px 40px 40px;
+  // overflow-y: auto;
+  padding: 27px 0 40px 0;
   h3 {
     height: 50px;
     line-height: 50px;
-    border-bottom: 1px solid #ccc;
+    // border-bottom: 1px solid #ccc;
     span {
       font-size: 24px;
       font-weight: 700;
@@ -169,9 +172,9 @@ export default {
     }
   }
   > .title {
-    padding-top: 25px;
+    padding-top: 17px;
     border-bottom: 1px solid #e6eef1;
-    padding-bottom: 10px;
+    padding-bottom: 18px;
     .title--pink {
       color: #ff5571;
     }
@@ -197,7 +200,8 @@ export default {
     .every {
       margin-top: 25px;
       background: #fff;
-      box-shadow: 4px 4px 12px rgba($color: #ececef, $alpha: 0.8);
+      border-radius: 8px;
+      box-shadow: 0px 4px 12px rgba($color: #ececef, $alpha: 0.8);
       .list-box__title {
         color: #999;
         font-size: 14px;

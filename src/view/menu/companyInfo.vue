@@ -489,15 +489,15 @@ export default {
     height: auto;
     min-height: 100%;
     h3{
-        margin-top: 20px;
+        margin-top: 40px;
         div{
-            font-size: 18px;
+            font-size: 24px;
             font-weight: 700;
             color: #142D46;
             letter-spacing: 1px;
         }
         p{
-        margin-top: 10px;
+        margin-top: 20px;
         color: #999;
         font-size: 13px;
         }
@@ -509,10 +509,11 @@ export default {
     width: 100%;
     height: 100%;
     background: #fff;
-    margin-top: 14px;
+    margin-top: 20px;
     padding: 40px;
-    border-radius: 4px;
+    border-radius: 16px;
     margin-bottom: 50px;
+    box-shadow: 0px 4px 12px rgba(236, 236, 239, 0.8);
     .step{
         width: 100%;
         height: 60px;

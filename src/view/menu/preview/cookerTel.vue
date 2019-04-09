@@ -108,13 +108,13 @@
       <div class="text">获奖证书</div>
       <div class="box">
         <div class="win" 
-        v-for="(item,index) in remuces.cookingImages"
+        v-for="(item,index) in qualifications"
         :key="index">
-          <img :src="item" >
+          <img :src="item.image" >
           <div>
             <div>
-              <p>十大最好吃的顺德菜</p>
-              <p>2002.12</p>
+              <p>{{item.name}}</p>
+              <p>{{item.receiveTime}}</p>
             </div>
           </div>
         </div>
@@ -161,6 +161,7 @@ export default {
       works:[],
       educations:[],
       prizes:[],
+      qualifications:[],
 
       sesId:0 // 发送简历的用户id
       
@@ -175,34 +176,32 @@ export default {
       let jobsId = this.$route.query.jobsId;
       let requestId = this.$route.query.requestId;
       let sesId = this.$route.query.sesId;
-      // let data = { 'jobsId':jobsId, 'requestId':requestId}
-      // console.log(data)
+
       axios.post('/api/job-route-invoker/getDetialList?jobsId='+jobsId+'&sesId='+sesId+'&requestId='+requestId,
       ).then((response) => {
         
         let res = response.data;
         this.sesId = res.data.remuces.sesId;
-        console.log('88888', res.data.remuces[0].sesId)
-
-        // 修改阅读状态
+        // console.log('88888', res.data.remuces[0].sesId)
         
         // 时间戳转换成日期格式
         function timestampToTime(timestamp) {
           let date = new Date(timestamp);//时间戳为10位需*1000，时间戳为13位的话不需乘1000
           let Y = date.getFullYear() + '-';
           let M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1) + '';
-          let D = date.getDate() + ' ';
+          let D = (date.getDate() < 10 ? '0'+(date.getDate()) : date.getDate()) + ' ';
           let h = date.getHours() + ':';
           let m = date.getMinutes() + '';
           let s = date.getSeconds();
           return Y+M;
         }
         
+        // 个人详细
         if(res.data.detialList.length !== 0) {
-          console.log('xxxxxxx',res.data.detialList)
+
           res.data.detialList.some((item,i) => {
             let mark = item.remark
-            // console.log('xxxxxxx',item.remark)
+            // 标签分割
             item.remark = mark.split(",")
             // 期望工资下限
             item.expectMinPayment = parseInt(item.expectMinPayment/1000)
@@ -226,6 +225,7 @@ export default {
           //   })
           // }
         
+        // 展示菜品图片
         if(res.data.remuces.length !== 0) {
           res.data.remuces.some((item,i) => {
             // 展示图片
@@ -236,6 +236,7 @@ export default {
           this.remuces = res.data.remuces[0]
         } 
 
+        // 工作经历
         if(res.data.works.length !== 0) {
           res.data.works.some((item,i) => {
             item.isParttime === 0?item.isParttime = '全职':item.isParttime = '兼职'
@@ -248,6 +249,7 @@ export default {
           this.works = res.data.works
         }
         
+        // 获得荣誉
         if(res.data.prizes.length !== 0) {
           res.data.prizes.some((item, i) => {
             item.receiveTime = timestampToTime(item.receiveTime);
@@ -257,6 +259,7 @@ export default {
           this.prizes = res.data.prizes
         }
 
+        // 教育经历
         if(res.data.educations.length !== 0) {
           res.data.educations.some((item, i) => {
             let thisDate = item.joinDate
@@ -265,13 +268,18 @@ export default {
 
           this.educations = res.data.educations
         }
+
+        // 获奖证书
+        if(res.data.qualifications.length !== 0) {
+           this.qualifications = res.data.qualifications
+        }
         // 渲染的数组
         // this.detialList = res.data.detialList[0]
         // this.remuces = res.data.remuces[0]
         // this.works = res.data.works
         // this.educations = res.data.educations
         // this.prizes = res.data.prizes
-        console.log(res,res.data.remuces)
+        console.log('xx',res)
       })
     },
 
