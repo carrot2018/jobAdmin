@@ -33,7 +33,6 @@
             <!-- 工作地点 -->
             <div>
                 <span><span style="color:#ff5571;">*</span>工作地点 
-                <!-- <span class="iconfont iconjiufuqianbaoicon14"></span> -->
                 </span> 
                 <div class="right">
                     <el-select v-model="province" filterable placeholder="省份" @change='getCity'>
@@ -127,7 +126,6 @@
             <!-- 工作类型 -->
             <div>
                 <span><span style="color:#ff5571;">*</span>工作类型 
-                <!-- <span class="iconfont iconjiufuqianbaoicon14"></span> -->
                 </span> 
                 <div class="right">
                     <span class='job-type-check'>
@@ -1027,7 +1025,6 @@ export default {
             // isParttime:this.jobType,//是否兼职 0全职1兼职
             // workYear:this.experience,//工作经验
             // age:age,//年龄要求
-            
             // description:description,//职位描述
             // remark:remark,//技能标签
             // welfare:welfare,//福利待遇 

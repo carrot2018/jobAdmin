@@ -138,7 +138,7 @@ export default {
 </script>
 <style scoped lang='scss'>
 #login{
-    background: url('../../static/img/bg.png') no-repeat;
+    background: url('../../static/img/bg.jpg') no-repeat;
     background-size: 100% 100%;
     height: 100%;
     .login-box{
