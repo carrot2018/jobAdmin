@@ -22,7 +22,6 @@ export default {
         passwordShow:false,
         passwordText:'',
         requestId:localStorage.getItem('requestId'),
-
     }
   },
   methods:{
@@ -34,7 +33,7 @@ export default {
     },
     isLogin(){
         let that=this;
-        that.$http.get('/api/job-route-invoker/checkLogin?loginRequestId='+that.requestId)
+        that.$http.get('/api/job-route-invoker/checkLogin?loginRequestId='+that.requestId )
         .then((res)=>{
             if(res.data.code=='000'){//免密登录成功
                 let userInfo=res.data.data;
@@ -71,25 +70,45 @@ export default {
         that.$http.get('/api/job-route-invoker/login?mobile='+that.phone+'&password='+that.password)
         .then((res)=>{
             console.log(res)
-            if(res.data.code=='667'){
-                alert("登陆失败,用户名或密码错误")                   
-            }
             if(res.data.code=='000'){
-                let requestId=res.data.data.requestId;
-                let userInfo=res.data.data.user;
-                window.localStorage.setItem('requestId',requestId);
-                window.localStorage.setItem('userInfo',JSON.stringify(userInfo));
-                setTimeout(function(){
-                    window.localStorage.removeItem('requestId');
-                },1000*60*60*24*7)
-                that.$router.push({path:'/companyInfo'})                       
+                that.toast = this.$createToast({
+                    txt: '登陆成功',
+                    type: 'txt',
+                    time: 1500,
+                    onTimeout: () => {
+                        let requestId=res.data.data.requestId;
+                        let userInfo=res.data.data.user;
+                        window.localStorage.setItem('requestId',requestId);
+                        window.localStorage.setItem('userInfo',JSON.stringify(userInfo));
+                        setTimeout(function(){
+                            window.localStorage.removeItem('requestId');
+                        },1000*60*60*24*7)
+                        that.$router.push({path:'/companyInfo'})  
+                    }
+                })
+                that.toast.show()    
+                                    
+            }else if(res.data.code=='669'){
+                that.toast = this.$createToast({
+                    txt: '密码错误',
+                    time: 1500,
+                    type: 'txt',                  
+                })
+                that.toast.show()                      
+            }else if(res.data.code=='500'){
+                that.toast = this.$createToast({
+                    txt: '登陆失败',
+                    type: 'txt',
+                    time: 1500,
+                })
+                that.toast.show()                  
             }
            
         })
     }
   },
   created(){
-    // this.isLogin();
+    this.isLogin();
 
   },
   mounted(){
