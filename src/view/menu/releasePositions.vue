@@ -1142,7 +1142,7 @@ export default {
 }
 
 .content-box{
-    padding: 27px 0 0 0;
+    padding: 27px 0 40px 0;
     h3{
         margin-top: 13px;
         span{
@@ -1368,7 +1368,7 @@ export default {
                 
                 }
                 .sensitive{
-                    padding-bottom: 50px;
+                    padding-bottom: 20px;
                     >span{
                         color: red;
                         span{

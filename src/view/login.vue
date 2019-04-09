@@ -1,22 +1,27 @@
 <template>
 <div id="login">
     <div class="login-box">
-        <div class="logo">
-            <img src="../../static/img/logo.png" >
-        </div>
+        <p class="logo">
+            <img src="../../static/img/logoLogin.png" >
+        </p>
         <p class="title">企业招聘服务平台</p>
         <div class="phone-box">
-            <span class="iconfont iconshouji1" ></span>
+            <img src="../../static/img/phone.png" >
             <input type="number" placeholder="输入11位手机号码" id='phone' v-model='phone' v-on:input='phoneInput'>
-            <span class='no-user' v-show='phoneShow'><span class="iconfont icongantanhao"></span><span v-text='phoneText'></span></span>
+           
         </div>
+        <p v-show='phoneShow' class='no-user'>
+            <span class="iconfont icongantanhao"></span><span v-text='phoneText'></span>
+        </p>
         <div class="pwd-box">  
-            <span class="iconfont iconmima"></span> 
+            <img src="../../static/img/Password.png" > 
             <div class="pwd-input">
                 <el-input placeholder="输入登录密码" v-model="password" show-password @keyup.enter='login'></el-input>
             </div> 
-            <span class='error-pwd' v-show='passwordShow'><span class="iconfont icongantanhao"></span><span v-text='passwordText'></span></span>
         </div>
+        <p class='error-pwd' v-show='passwordShow'>
+            <span class="iconfont icongantanhao"></span><span v-text='passwordText'></span>
+        </p>
         <p class='click-login' @click='login()'>登录</p>
 
     </div>
@@ -27,10 +32,12 @@
 export default {
   data () {
     return {
-        phone:'15019230830',
+        // 15019230830
+        // 123456789
+        phone:'',
         phoneShow:false,
         phoneText:'',
-        password:'123456789',
+        password:'',
         passwordShow:false,
         passwordText:'',
         requestId:localStorage.getItem('requestId'),
@@ -108,6 +115,7 @@ export default {
                 })
                 that.toast.show()                      
             }else if(res.data.code=='500'){
+                alert(1)
                 that.toast = this.$createToast({
                     txt: '登陆失败',
                     type: 'txt',
@@ -130,8 +138,11 @@ export default {
 </script>
 <style scoped lang='scss'>
 #login{
+    background: url('../../static/img/bg.png') no-repeat;
+    background-size: 100% 100%;
+    height: 100%;
     .login-box{
-        width: 360px;
+        width: 400px;
         background: #fff;
         position: absolute;
         left: 50%;
@@ -141,8 +152,7 @@ export default {
         -webkit-transform: translateY(-50%);
         border-radius: 6px;
         padding: 32px 40px 45px 40px;
-        border: 1px solid #e5e5e5;
-        position: relative;
+        z-index: 999;
         >.title{
             font-size: 22px;
             color: #142D46;
@@ -161,18 +171,19 @@ export default {
             background: #eee;
             margin-top: 32px;
             position: relative;
-            .iconfont{
-                font-size: 28px;
-                margin-left: 6px;
+            img{
+                margin-left: 14px;
+                height: 28px;
+                margin-top: 10px;
             }
             #phone{
-                height: 32px!important;
-                line-height: 30px;
+                width: calc(100% - 45px);
+                height: 47px!important;
+                line-height: 47px;
                 background: #eee;
                 position: absolute;
-                left: 40px;
-                top: 6px;  
-                cursor: pointer; 
+                left: 45px;
+                top: 0;  
             }
 
         }
@@ -185,32 +196,32 @@ export default {
             background: #eee;
             margin-top: 32px;
             position: relative;
-            .iconfont{
-                font-size: 22px;
-                margin-left: 9px;
+            img{
+                margin-left: 12px;
+                height: 26px;
+                margin-top: 10px;
             }
             .pwd-input{
-                width: 200px;
-                height: 40px !important;
-                line-height: 40px;
+                width: calc(100% - 45px);
+                height: 46px !important;
+                line-height: 46px;
                 background: #eee;
                 position: absolute;
-                left: 40px;
-                top: 4px;
-                cursor: pointer; 
+                left: 45px;
+                top: 0;
+                // cursor: pointer; 
             }
 
        }
         .no-user,.error-pwd{
             margin: 6px 0;
-            color: #e42424;
-            display: inline-block;
+            color: #FF607a;
         }
         .click-login{
             width: 100%;
-            height: 40px;
-            line-height: 40px;
-            margin-top: 72px;
+            height: 48px;
+            line-height: 48px;
+            margin-top: 60px;
             background: #FF607a;
             color: #fff;
             font-size: 17px;
@@ -222,18 +233,21 @@ export default {
         }
         .logo{
             position: absolute;
-            left: 0;
-            top: 0; 
-        }
-        input[type=number] {
-            -moz-appearance: textfield;
-        }
-        input[type=number]::-webkit-inner-spin-button,
-        input[type=number]::-webkit-outer-spin-button {
-            -webkit-appearance: none;
-            margin: 0;
+            top: -70px;
+            left: 50%; 
+            transform: translateX(-50%);
+            img{
+                width: 84%;
+                margin-left: 7%;
+            }
         }
     }
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button{
+    -webkit-appearance: none !important;
+    margin: 0;
+    }
+    input[type="number"]{-moz-appearance:textfield;}
 }
 </style>
 <style>
@@ -243,13 +257,14 @@ export default {
     top: 0;  
 }
 #login .el-input__inner{
-    border: none;
-    color: #333;
+    border: none!important;
+    color: #333!important;
     background: #eee!important;
+    padding: 0!important;
 }
-#login .el-input__inner::-webkit-input-placeholder {
+#login .el-input__inner::-webkit-input-placeholder,#login input::-webkit-input-placeholder {
     color: #666;
-    font-size: 13px;
+    font-size: 16px;
 }
 #login .el-input .el-input__clear {
     font-size: 20px;

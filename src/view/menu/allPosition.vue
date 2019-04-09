@@ -329,13 +329,10 @@ export default {
     // min-height: 100%;
 }
 .content-box{
-    // height: 100%;
-
-    padding: 27px 0 0 0;
+    padding: 27px 0 40px 0;
     h3{
         height: 50px;
         line-height: 50px;
-        // border-bottom: 1px solid #ccc;
         span{
             color: #142D46;
             font-size: 24px;
