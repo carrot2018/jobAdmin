@@ -5,13 +5,13 @@
         <span>简历管理</span>
       </h3>
       <div class="title">
-        <span @click="checkTitle(1)">主动投递({{totalNum}})</span>
+        <span @click="checkTitle(1)">主动投递<span class="title--pink"> ({{totalNum}})</span></span>
       </div>
       <div class="list-box">
         <div class="every" 
         v-for="(item, index) in arr" 
         :key="index" 
-        @click="preview(item.xxx,item.jobsId)"
+        @click="preview(item.xxx,item.jobsId,item.sesId)"
         >
           <!-- <p class="title">
                     <span>2019-1-22 17:15</span>
@@ -41,12 +41,12 @@
             <p class="list-box__content__header">
               <span>
                 <span class="content__realname">{{item.realName}}</span>
-                <i></i>
+                <i v-show="item.reads"></i>
               </span>
               <span>厨艺作品</span>
             </p>
             <p>
-              <span>{{item.birthday}}岁 / {{item.sex}} / {{item.bornProvinceName}} / 当前在{{item.bornCityName}}</span>
+              <span class="list-box__content__menu">{{item.birthday}}岁&emsp;/&emsp;{{item.sex}}&emsp;/&emsp;{{item.bornProvinceName}}&emsp;/&emsp;当前在{{item.bornCityName}}</span>
             </p>
             <p>
               <span
@@ -68,25 +68,27 @@ export default {
   data() {
     return {
       // arr: [{ xxx: 1 }, { xxx: 2 }, { xxx: 1 }, { xxx: 2 }],
-      arr:[],
-      totalNum:0
+      arr:[], // 简历渲染的数据
+      totalNum:0, // 简历总份数
+      readStatus:true // 阅读状态
     };
   },
   methods: {
-    preview(item,jobsId) {
+    preview(item,jobsId,sesId) {
       //预览简历
       // if (item == 1) {
       //   this.$router.push("/cookerTel");
       // } else {
       //   this.$router.push("/notCookerTel");
       // }
-      // console.log(123123,window.localStorage.getItem('requestId'))
+      console.log(123123,sesId)
       
       this.$router.push({
         path: '/cookerTel',
         query: {
           jobsId:jobsId,
-          requestId:window.localStorage.getItem('requestId')
+          sesId:sesId,
+          requestId:window.localStorage.getItem('requestId'),
         }
       })
     },
@@ -113,10 +115,20 @@ export default {
         }
         if(res.code === '000') {
           data.some((item,i) => {
+            // 时间戳转换
             item.sendTime = timestampToTime(item.sendTime)
+            // 1男，2女
             item.sex === 1?item.sex = '男':item.sex = '女'
+            // 标签分隔
             let mark = item.remark
             item.remark = mark.split(",")
+            
+            // 0未读，1已读
+            // if(item.isRead === 1) {
+            //   item.isRead = false
+            // }
+            item.reads = true
+            item.isRead === 1 ? item.reads = false : item.reads = true
             // console.log( mark.split(","))
           })
           this.arr = data
@@ -138,6 +150,10 @@ export default {
   height: 100%;
   overflow-y: auto;
 }
+.list-box__content__menu {
+  font-size: 16px;
+  color: #6a6a6a;
+}
 .content-box {
   height: 100%;
   overflow-y: auto;
@@ -147,12 +163,18 @@ export default {
     line-height: 50px;
     border-bottom: 1px solid #ccc;
     span {
-      font-size: 16px;
+      font-size: 24px;
       font-weight: 700;
+      color: #142D46;
     }
   }
   > .title {
     padding-top: 25px;
+    border-bottom: 1px solid #e6eef1;
+    padding-bottom: 10px;
+    .title--pink {
+      color: #ff5571;
+    }
     span {
       cursor: pointer;
     }
@@ -174,27 +196,32 @@ export default {
   .list-box {
     .every {
       margin-top: 25px;
+      background: #fff;
+      box-shadow: 4px 4px 12px rgba($color: #ececef, $alpha: 0.8);
       .list-box__title {
         color: #999;
-        font-size: 12px;
+        font-size: 14px;
+        padding: 30px 0 0 30px;
         &__time {
           margin-right: 10px;
         }
       }
       .list-box__content {
         cursor: pointer;
-        padding: 18px;
-        border: 1px solid #e5e5e5;
+        padding: 24px 0 30px 30px;
+        // border: 1px solid #e5e5e5;
         border-radius: 3px;
-        box-shadow: 2px 2px 1px 1px #eee;
-        margin-top: 8px;
+
+        // margin-top: 8px;
         > p:nth-of-type(1) {
+          position: relative;
           > span:nth-of-type(1) {
             position: relative;
 
             .content__realname {
-              font-size: 16px;
-              font-weight: 600;
+              font-size: 24px;
+              // font-weight: 600;
+              color: #142D46;
             }
 
             i {
@@ -211,12 +238,15 @@ export default {
             display: inline-block;
             margin-left: 20px;
             height: 24px;
-            line-height: 23px;
-            width: 60px;
+            line-height: 24px;
+            width: 80px;
             text-align: center;
-            border: 1px solid #666;
-            border-radius: 2px;
-            font-size: 12px;
+            /* border: 1px solid #666; */
+            border-radius: 4px;
+            font-size: 16px;
+            color: white;
+            background: #ff5571;
+            position: absolute;
           }
         }
         > p:nth-of-type(2) {
@@ -228,10 +258,11 @@ export default {
           span {
             padding: 4px 6px;
             display: inline-block;
-            background: #eee;
+            background: #f5f6fa;
             border-radius: 2px;
             margin-right: 10px;
             font-size: 12px;
+            color: #6a6a6a;
           }
         }
         > p:nth-of-type(4) {
