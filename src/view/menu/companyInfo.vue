@@ -142,7 +142,7 @@
                     <div class="upload">
                         <cube-upload
                         :max="5"
-                        action="//jsonplaceholder.typicode.com/photos/"
+                        :action="imgUrl"
                         :simultaneous-uploads="1"
                         @files-added="filesAdded" />
                     </div>
@@ -199,6 +199,7 @@ export default {
         enterprise:[],//企业标签
         mainCuisine:[],//主营菜系
         diningType:[],//餐饮类型
+        imgUrl:'http://192.168.1.56:8889/job-route-invoker/file/upload?requestId=692bc970-8cb4-434e-85e4-d9432893d1ca'
     }
   },
   methods:{

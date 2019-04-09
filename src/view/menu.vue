@@ -24,10 +24,13 @@
             <div class="logo-title">
                 <el-col :span="12">
                     <el-menu
-                        default-active=""
+                    active-text-color="#ffd04b"
+                        router
+                        :default-active="thisRoute"
                         class="el-menu-vertical-demo"
                         @open="handleOpen"
-                        @close="handleClose">
+                        @close="handleClose"
+                        >
                         <!-- <el-submenu index="1">
                             <template slot="title">
                                 <span>发布职位</span>
@@ -45,23 +48,23 @@
                                 <el-menu-item index="1-4-1">选项1</el-menu-item>
                             </el-submenu>
                         </el-submenu> -->
-                        <el-menu-item index="1">
-                            <router-link to="/releasePositions" slot="title">
+                        <el-menu-item index="/releasePositions">
+                            <template to="/releasePositions" slot="title">
                                 <img src="../../static/img/sidebar-no-1.png">
                                 <span>发布职位</span>
-                            </router-link>
+                            </template>
                         </el-menu-item>
-                        <el-menu-item index="2">
-                            <router-link to="/allPosition" slot="title">
+                        <el-menu-item index="/allPosition">
+                            <template to="/allPosition" slot="title">
                                 <img src="../../static/img/sidebar-no-2.png">
                                 <span>职位管理</span>
-                            </router-link>
+                            </template>
                         </el-menu-item>
-                        <el-menu-item index="3">
-                            <router-link to="/resume" slot="title">
+                        <el-menu-item index="/resume">
+                            <template to="/resume" slot="title">
                                 <img src="../../static/img/sidebar-no-3.png">
                                 <span>简历管理</span>
-                            </router-link>
+                            </template>
                         </el-menu-item>
                         <!-- <el-menu-item index="4">
                             <span slot="title">搜索简历</span>
@@ -69,11 +72,11 @@
                         <!-- <el-menu-item index="5">
                             <span slot="title">资质认证</span>
                         </el-menu-item> -->
-                        <el-menu-item index="6">
-                            <router-link to="/companyInfo" slot="title">
+                        <el-menu-item index="/companyInfo">
+                            <template to="/companyInfo" slot="title">
                                 <img src="../../static/img/sidebar-no-4.png">
                                 <span>企业信息</span>
-                            </router-link>
+                            </template>
                         </el-menu-item>
                     </el-menu>
                 </el-col>
@@ -90,6 +93,7 @@
 export default {
   data () {
     return {
+      thisRoute:''
     }
   },
   methods:{
@@ -112,6 +116,14 @@ export default {
       console.log(height)
       $('.content-box .left').height(height);
 
+      this.thisRoute = this.$route.fullPath
+  },
+
+  watch: {
+    $route(to,from){
+      // 监听路由变化，高亮菜单选项
+      this.thisRoute = to.path
+    }
   }
 }
 </script>
