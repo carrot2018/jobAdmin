@@ -22,14 +22,15 @@
     <div class="content-box">
         <div class="left">
             <div class="logo-title">
-                <el-col :span="12">
+        
                     <el-menu
-                    active-text-color="#ffd04b"
                         router
                         :default-active="thisRoute"
                         class="el-menu-vertical-demo"
                         @open="handleOpen"
                         @close="handleClose"
+                        background-color="#142D46"
+                        text-color="#ffffff"
                         >
                         <!-- <el-submenu index="1">
                             <template slot="title">
@@ -49,20 +50,20 @@
                             </el-submenu>
                         </el-submenu> -->
                         <el-menu-item index="/releasePositions">
-                            <template to="/releasePositions" slot="title">
-                                <img src="../../static/img/sidebar-no-1.png">
+                            <template slot="title">
+                                <i class="img1 img"></i>
                                 <span>发布职位</span>
                             </template>
                         </el-menu-item>
                         <el-menu-item index="/allPosition">
-                            <template to="/allPosition" slot="title">
-                                <img src="../../static/img/sidebar-no-2.png">
+                            <template  slot="title">
+                                <i class="img2 img"></i>
                                 <span>职位管理</span>
                             </template>
                         </el-menu-item>
                         <el-menu-item index="/resume">
-                            <template to="/resume" slot="title">
-                                <img src="../../static/img/sidebar-no-3.png">
+                            <template slot="title">
+                                <i class="img3 img"></i>
                                 <span>简历管理</span>
                             </template>
                         </el-menu-item>
@@ -73,13 +74,13 @@
                             <span slot="title">资质认证</span>
                         </el-menu-item> -->
                         <el-menu-item index="/companyInfo">
-                            <template to="/companyInfo" slot="title">
-                                <img src="../../static/img/sidebar-no-4.png">
+                            <template slot="title">
+                                <i class="img4 img"></i>
                                 <span>企业信息</span>
                             </template>
                         </el-menu-item>
                     </el-menu>
-                </el-col>
+
             </div>
         </div>
         <div class="right">
@@ -121,6 +122,7 @@ export default {
 
   watch: {
     $route(to,from){
+      console.log(to)
       // 监听路由变化，高亮菜单选项
       this.thisRoute = to.path
     }
@@ -128,6 +130,31 @@ export default {
 }
 </script>
 <style scoped lang='scss'>
+.img{
+  display: inline-block;
+    width: 18px; 
+    height: 18px; 
+}
+.img1 {
+  background-image:url('../../static/img/sidebar-no-1.png');
+  background-size: 100%;
+  background-repeat: no-repeat;
+}
+.img2 {
+  background-image:url('../../static/img/sidebar-no-2.png');
+  background-size: 100%;
+  background-repeat: no-repeat;
+}
+.img3 {
+  background-image:url('../../static/img/sidebar-no-3.png');
+  background-size: 100%;
+  background-repeat: no-repeat;
+}
+.img4 {
+  background-image:url('../../static/img/sidebar-no-4.png');
+  background-size: 100%;
+  background-repeat: no-repeat;
+}
 #menu{
     height: 100%;
     overflow: hidden;
@@ -194,17 +221,14 @@ export default {
         min-height: 100%;
         height: 100%;
         float: left;
-        padding-top: 20px;
+        padding-top: 25px;
         .logo-title{
-            img{
-                width: 18px; 
-                height: 18px; 
-            }
-            span{
-                color: #fff;
-                font-size: 16px;
-                opacity: .5;
-            }
+            
+            // span{
+            //     color: #fff;
+            //     font-size: 16px;
+            //     opacity: .5;
+            // }
         }
         
     } 
@@ -220,9 +244,63 @@ export default {
         box-shadow: #eee 0px 0px 10px 1px inset;//边框内阴影
     }
 }
+/deep/ .el-menu {
+  border-right: none;
+  background: #142D46;
+}
+/deep/ .el-menu-item{
+      padding: 0 35px;
+    text-align: center;
+    color: #fff;
+    span {
+    font-size: 16px;
+    color: #fff;
+    opacity: .5;
+  }
+}
+/deep/ .el-menu-item.is-active {
+  color: #fffefe;
+  background-image: url('../../static/img/active.png');
+  background-repeat: no-repeat;
+  background-position: 0 -2px;
+    .img1 {
+      background-image:url('../../static/img/sidebar-yes-1.png');
+      background-size: 100%;
+      background-repeat: no-repeat;
+    }
+    .img2 {
+      background-image:url('../../static/img/sidebar-yes-2.png');
+      background-size: 100%;
+      background-repeat: no-repeat;
+    }
+    .img3 {
+      background-image:url('../../static/img/sidebar-yes-3.png');
+      background-size: 100%;
+      background-repeat: no-repeat;
+    }
+    .img4 {
+      background-image:url('../../static/img/sidebar-yes-4.png');
+      background-size: 100%;
+      background-repeat: no-repeat;
+    }
+    span {
+    font-size: 16px;
+    color: #fffefe;
+    opacity: 1;
+  }
+
+}
+
+/deep/ .el-menu-item:focus,
+/deep/ .el-menu-item:hover {
+    // background-image: url('../../static/img/active.png');
+    // background-repeat: no-repeat;
+    // background-position: 0 -2px;
+    color: #fffefe;
+}
 </style>
 <style>
-.el-menu {
+/* .el-menu {
     border-right: none;
     background: #142D46;
     width: 180px;
@@ -237,7 +315,8 @@ export default {
 .el-menu-item, .el-submenu__title {
     height: 46px!important;
     line-height: 46px!important;
-}
+} */
+
 </style>
 
 
