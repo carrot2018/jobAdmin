@@ -32,11 +32,18 @@ module.exports = {
           '^/service': ''
         }
       },
+      '/upload': {//自定义名字，代表的是以下target中的内容
+        target: 'http://192.168.1.56:8762/',//微信
+        changeOrigin: true,//是否允许跨域
+        pathRewrite: {
+          '^/upload': ''
+        }
+      },
 
     },
 
     // Various Dev Server settings
-    host: 'localhost', // can be overwritten by process.env.HOST
+    host: '192.168.1.30', // can be overwritten by process.env.HOST
     // host: '192.168.1.30', // can be overwritten by process.env.HOST
     // host: '192.168.3.170', // can be overwritten by process.env.HOST
     // host: '192.168.31.32', // can be overwritten by process.env.HOST

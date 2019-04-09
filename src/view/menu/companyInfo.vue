@@ -5,7 +5,6 @@
         <p>为了使求职者在投递前了解企业的基本情况，请完善以下企业相关信息，同时提升求职者的信任感</p>
     </h3>
     <div class="companyInfo-box">
-       
         <div class="step">
             <!-- <el-steps :active="active" align-center>
                 <el-step title="企业简介"></el-step>
@@ -20,7 +19,7 @@
             <div>
                 <span>企业名称</span> 
                 <div class="right">
-                    <span class="company-name">企业名称企业名称企业名称</span>
+                    <span class="company-name">{{userInfo.name}}</span>
                     
                 </div>             
             </div>
@@ -94,7 +93,7 @@
                       v-bind:class='{bg:item.flag==true}'
                       @click='checkLabel(item)'>{{item.name}}</span>  
                    </div>
-                    <p class='error-label'><span><span class="iconfont icongantanhao"></span>您已添加6个企业标签，取消后再进行更新或者自定义添加。</span></p>
+                    <p class='error-label' v-show='companyShow'><span><span class="iconfont icongantanhao"></span>您已添加6个企业标签，取消后再进行更新或者自定义添加。</span></p>
                    <div class="custom_input" v-show='!custom'>
                        <input type="text" placeholder="最多6个字" maxlength="6" v-model="add">
                        <span @click='addConfirm()'>确定</span>
@@ -142,9 +141,11 @@
                     <div class="upload">
                         <cube-upload
                         :max="5"
-                        action="//jsonplaceholder.typicode.com/photos/"
-                        :simultaneous-uploads="1"
-                        @files-added="filesAdded" />
+                        :action="action"
+                        :simultaneous-uploads="5"
+                        @files-added="filesAdded" 
+                        @file-success="fileSubmitted"
+                        @file-removed="deleteFile"/>
                     </div>
                     <div class="has-success" >
                       <span @click='prevStep()'>上一步</span>
@@ -176,8 +177,9 @@ export default {
         template:1,//企业简介
         number:'',//员工人数
         centerDialogVisible: false,
-        active:1,     
-        labelBg:false,//被选择的企业标签样式
+        active:1,  
+        companyArr:[],//企业标签数组  
+        companyShow:false, 
         custom:true,//自定义按钮显示
         add:'',//自定义添加的内容
         textarea:'',//文本框里的内容
@@ -199,6 +201,10 @@ export default {
         enterprise:[],//企业标签
         mainCuisine:[],//主营菜系
         diningType:[],//餐饮类型
+        requestId:localStorage.getItem('requestId'),
+        action:'http://192.168.1.56:8889/job-route-invoker/file/upload?requestId='+localStorage.getItem('requestId'),
+        fileArr:[],
+        userInfo:{}
     }
   },
   methods:{
@@ -252,19 +258,24 @@ export default {
             return;
         }
         let flagArr=[];
+
         this.enterprise.forEach(function(v){
             if(v.flag){
                 flagArr.push(v);
             }
         })
         if(flagArr.length>=6){
-            $('.error-label').show();
+            this.companyShow=true;
         }else{
             this.custom=!this.custom;
             this.enterprise.unshift({
                 name:this.add,flag:true
             });  
-            $('.error-label').hide(); 
+            flagArr.unshift({
+                name:this.add,flag:true
+            });  
+            this.companyArr=flagArr; 
+            this.companyShow=false;
         }
        
     },
@@ -282,14 +293,21 @@ export default {
                 }
             })
             if(flagArr.length>=6){
-                $('.error-label').show();
+                that.companyShow=true;
             }else{
                 item.flag=!item.flag;
-                $('.error-label').hide();
+                that.companyShow=false;
+                flagArr.push(item);
             }
+            that.companyArr=flagArr;
         }else{
             item.flag=!item.flag;
-            $('.error-label').hide();
+            that.companyArr.forEach(function(v,i){
+                if(v.name==item.name){
+                    that.companyArr.splice(i,1)
+                }
+            })
+            that.companyShow=false;
         }  
     },
     getProvince(){
@@ -321,55 +339,144 @@ export default {
         })
     },
     next(){//点击下一步
-        // let detailReg=/^(?=.*?[\u4E00-\u9FA5])[\u4e00-\u9fffa-zA-Z\d\-]+$/;
-        // if(!this.number ){
-        //     $('.employees').show();
-        //     return;
-        // }else{
-        //     $('.employees').hide();
-        // }
-        // if(!this.province){
-        //     this.addressShow=true;
-        //     this.addressText='请选择省份'
-        //     return;
-        // }else{
-        //     this.addressShow=false;
-        // }
-        // if(!this.city){
-        //     this.addressShow=true;
-        //     this.addressText='请选择城市'
-        //     return;
-        // }else{
-        //     this.addressShow=false;
-        // }
-        // if(!this.area){
-        //     this.addressShow=true;
-        //     this.addressText='请选择所在区'
-        //     return;
-        // }else{
-        //     this.addressShow=false;
-        // }
-        // if(!this.detailArea){
-        //     this.addressShow=true;
-        //     this.addressText='请填写企业所在详细地址'
-        //     return;
-        // }else{
-        //     this.addressShow=false;
-        // }
-        // if(!detailReg.test(this.detailArea)){
-        //     this.addressShow=true;
-        //     this.addressText='详细地址有误'
-        //     return;
-        // }else{
-        //     this.addressShow=false;
-        // }
-        $('.error-label').hide(); 
+        let detailReg=/^(?=.*?[\u4E00-\u9FA5])[\u4e00-\u9fffa-zA-Z\d\-]+$/;
+        if(!this.number ){
+            $('.employees').show();
+            return;
+        }else{
+            $('.employees').hide();
+        }
+        if(!this.province){
+            this.addressShow=true;
+            this.addressText='请选择省份'
+            return;
+        }else{
+            this.addressShow=false;
+        }
+        if(!this.city){
+            this.addressShow=true;
+            this.addressText='请选择城市'
+            return;
+        }else{
+            this.addressShow=false;
+        }
+        if(!this.area){
+            this.addressShow=true;
+            this.addressText='请选择所在区'
+            return;
+        }else{
+            this.addressShow=false;
+        }
+        if(!this.detailArea){
+            this.addressShow=true;
+            this.addressText='请填写企业所在详细地址'
+            return;
+        }else{
+            this.addressShow=false;
+        }
+        if(!detailReg.test(this.detailArea)){
+            this.addressShow=true;
+            this.addressText='详细地址有误'
+            return;
+        }else{
+            this.addressShow=false;
+        }
+        this.companyShow=false;
         this.template=2;
         this.active=2;
     },
-    filesAdded(files) {
+    success(){//完成
+        if(this.cuisineNewArr.length==0){
+            this.cuisineShow=true;
+            return;
+        }else{
+            this.cuisineShow=false;
+            
+        }
+        if(this.cookTypeNewArr.length==0){
+            this.cookTypeShow=true;
+            return;
+        }else{
+            this.cookTypeShow=false;
+        }
+        let that=this;
+        // this.centerDialogVisible=true;
+        // employeNum(员工人数)
+        // province(省code值)
+        // city(市code值)
+        // area(区code值)
+        // address(地址) 
+        // abstract_  (企业简介)
+        // label  （企业标签）
+        // cookingStyles(主营菜系)
+        // cookingtType(餐饮类型)
+        // workMent(工作环境)
+        let companyTextArr=[];
+        let cuisineTextArr=[];
+        let cookTypeTextArr=[];
+        // console.log(that.companyArr)
+        // console.log(that.cuisineNewArr)
+        // console.log(that.cookTypeNewArr)
+        that.companyArr.forEach(function(value){
+            companyTextArr.push(value.name)
+        })
+        that.cuisineNewArr.forEach(function(item){
+            cuisineTextArr.push(item.name)
+        })
+        that.cookTypeNewArr.forEach(function(v){
+            cookTypeTextArr.push(v.name)
+        })
+        let companyStr=companyTextArr.join(',');
+        let cuisineStr=cuisineTextArr.join(',');
+        let cookTypeStr=cookTypeTextArr.join(',');
+        let workMent=this.fileArr.join(',');
+        // console.log(cookTypeStr)
+        // console.log(cuisineStr)
+        // console.log(companyStr)
+        let params={//发布参数
+            name:that.userInfo.name,
+            employeNum:that.number,//员工人数
+            province:that.province,
+            city:that.city,
+            area:that.area,
+            address:that.detailArea,
+            abstract_:that.textarea,//企业简介
+            label:companyStr,//企业标签
+            cookingStyles:cuisineStr,//主营菜系
+            cookingtType:cookTypeStr,//餐饮类型
+            workMent:workMent,//工作环境   
+        }
+        that.$http.post('/upload/insertEnterpriseMsg',params
+        ).then((res)=>{
+            console.log(res)
+        }).catch((error)=>{
+        })
+
+    },
+    fileSubmitted(files){
+        console.log(files);
+        if(files.status=="success"){
+            if(files.response.code=='110'){
+                this.fileArr.push(files.response.data);
+            }
+        }
+        console.log(this.fileArr)
+       
+      
+    },
+    deleteFile(files){
+        console.log(files);
+        let that=this;
+        that.fileArr.forEach(function(v,i){
+            if(files.response.data==v){
+                that.fileArr.splice(i,1)
+            }
+        })
+        console.log(this.fileArr)
+    },
+    filesAdded(files){
       let hasIgnore = false
-      const maxSize = 1 * 1024 * 1024 // 1M
+      const maxSize = 5 * 1024 * 1024 // 5M
       for (let k in files) {
         const file = files[k]
         if (file.size > maxSize) {
@@ -380,23 +487,9 @@ export default {
       hasIgnore && this.$createToast({
         type: 'warn',
         time: 1000,
-        txt: 'You selected >1M files'
+        txt: 'You selected >5M files'
       }).show()
-    },
-    success(){//完成
-        if(this.cuisineNewArr.length==0){
-            this.cuisineShow=true;
-            return;
-        }else{
-            this.cuisineShow=false;
-        }
-        if(this.cookTypeNewArr.length==0){
-            this.cookTypeShow=true;
-            return;
-        }else{
-            this.cookTypeShow=false;
-        }
-        this.centerDialogVisible=true;
+    //   this.filesAdded(files)
     },
     toRelease(){//去发布职位
         this.$router.push({path:'/allPosition'})
@@ -473,10 +566,14 @@ export default {
 
   },
   created(){
+    let userInfo=localStorage.getItem('userInfo');
+    this.userInfo=JSON.parse(userInfo);
+    console.log(this.userInfo)
     this.getProvince();
     this.getEnterprise();
     this.getMainCuisine();
     this.getDiningType();
+
   },
   mounted(){
    
@@ -486,9 +583,9 @@ export default {
 <style scoped lang='scss'>
 #companyInfo{
     height: auto;
-    min-height: 100%;
+    // min-height: 100%;
     h3{
-        margin-top: 20px;
+        margin-top: 40px;
         div{
             font-size: 18px;
             font-weight: 700;
@@ -508,7 +605,7 @@ export default {
     width: 100%;
     height: 100%;
     background: #fff;
-    margin-top: 14px;
+    margin-top: 20px;
     padding: 40px;
     border-radius: 4px;
     margin-bottom: 50px;
@@ -617,7 +714,7 @@ export default {
                     margin-bottom: 6px;
                 }
                 .label-box{
-                    width: 800px;
+                    // width: 800px;
                     >span{
                         display: inline-block;
                         border-radius: 2px;
@@ -702,7 +799,7 @@ export default {
                 }
                 .error-label{
                     color: red;
-                    display: none;
+                    // display: none;
                     margin-top: 6px;
                 }
             }
@@ -735,7 +832,7 @@ export default {
                         display: inline-block;
                         border-radius: 2px;
                         margin-right: 15px;
-                        margin-top: 15px;
+                        margin-bottom: 15px;
                         cursor: pointer;
                         height: 28px;
                         padding: 0 10px;
@@ -755,15 +852,18 @@ export default {
                     span{
                         display: inline-block;
                         width: 120px;
-                        height: 44px;
-                        line-height: 42px;
-                        background: #ccc;
+                        height: 36px;
+                        line-height: 34px;
+                        background: #DCDFE6;
                         margin-top: 40px;
                         text-align: center;
                         border-radius: 3px;
                         font-size: 15px;
                         margin-bottom: 30px;
                         cursor: pointer;
+                        background: #ff5670;
+                        margin: 20px auto 0;
+                        color: #fff;
                     }
                     span:nth-of-type(2){
                         margin-left: 20px;
@@ -853,6 +953,9 @@ input::-webkit-input-placeholder, textarea::-webkit-input-placeholder {
 #companyInfo .el-dialog__footer{
     padding: 10px 20px 40px;
 }
-
+#companyInfo .cube-upload-file-status.cubeic-right {
+    display: block;
+    color: #ff5670!important;
+}
 </style>
 

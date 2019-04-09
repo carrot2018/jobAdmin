@@ -31,7 +31,7 @@
                         </span>
                     </p>
                     <p>
-                        <span>{{parseInt(item.paymentMin/1000)+'k~'+parseInt(item.paymentMax/1000)+'k'}} 元/<span v-text='item.paytype==1?"月":"日"'></span></span>
+                        <span>{{item.paytype==1?item.paymentMin+"k~"+item.paymentMax+"k":item.paymentMax+"元"}} / <span v-text='item.paytype==1?"月":"日"'></span></span>
                         <span>{{item.cityName+'-'+item.areaName}}</span>
                     </p>
                     <p v-show='item.remark'>
@@ -120,7 +120,6 @@
                     </el-pagination>
                 </div>  
             </div> -->
-
         </div>  
   </div>
 </div>
@@ -129,9 +128,7 @@
 import Vue from 'vue';
 import CKEDITOR from 'CKEDITOR';
 import {formatDate} from '../../common/js/formatDate.js';
-// import layOut from '../layOut.vue'//退出
 export default {
-//   components: { layOut },
   data () {
     return {
         template:1,
@@ -280,8 +277,8 @@ export default {
         let that=this;
         that.$http.get('/api/job-route-invoker/job/setLockFlushZpJobsByOneDay/'+item.id+'?requestId='+that.requestId,{
         }
-        ).then((res)=>{
-            if(res.data.code=='000'){
+        ).then((res)=>{         
+            if(res.data.code=='502'){
                 this.$message({
                     type: 'success',
                     message: '刷新成功!',
@@ -327,9 +324,8 @@ export default {
 </script>
 <style scoped lang='scss'>
 #allPosition{
-    height: 100%;
-    min-height: 100%;
-
+    // height: 100%;
+    // min-height: 100%;
 }
 .content-box{
     height: 100%;

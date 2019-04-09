@@ -198,7 +198,6 @@ export default {
     } 
     .right{
         width: calc(100% - 180px);
-        min-height: 100%;
         height: 100%;
         overflow-y: auto;
         background: #f9fcfe;

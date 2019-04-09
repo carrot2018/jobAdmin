@@ -11,7 +11,7 @@
                 <span>职位名称 <span class="iconfont iconjiufuqianbaoicon14"></span></span> 
                 <div class="right">
                     <input type="text" class='job-name' placeholder="填写职位名，例：湘菜炒锅师傅"
-                    maxlength="30" v-model='name'>
+                    maxlength="30" v-model='name' :disabled='requestId!=null'>
                     <span class="job-name-tip"><span class="iconfont icongantanhao"></span> 请认真填写职位名，发布后不可更改</span>
                 </div>               
             </div>
@@ -184,7 +184,7 @@
             <div class="line"></div>
             <!-- 企业简介 -->
             <div>
-                <span class='no-line-height'>企业简介 </span> 
+                <span class='no-line-height'>职位描述</span> 
                 <div class="right">
                     <div class="textarea-box">
                         <textarea id="editor" placeholder="请简要描述工作职责或工作内容，最多1000字。" maxlength="1000"                       
@@ -315,7 +315,7 @@ export default {
         welfareArr:[],//福利待遇
         addWelfareArr:[],//被选中的福利待遇
         sensitive:false,
-        xxxx:''    
+        requestId:localStorage.getItem('requestId'),  
     }
   },
   methods:{
@@ -458,6 +458,7 @@ export default {
             description:description,//职位描述
             remark:remark,//技能标签
             welfare:welfare,//福利待遇
+           
         }
         let that=this;
         that.$http.post('/api/job-route-invoker/job/pushJob',params
@@ -469,13 +470,14 @@ export default {
                     message: '发布成功!'
                 });
                 this.sensitive=false;
+                this.centerDialogVisible=true;
             }
             if(res.data.code=='503'){
                this.sensitive=true;
             }
         }).catch((error)=>{
         })
-        // this.centerDialogVisible=true;
+        
     },
     clickCustomSkill(){//点击技能自定义
       this.customSkill=!this.customSkill;
@@ -773,11 +775,49 @@ export default {
             }                
         })
     },
-    // getText(value){
-    //     var reg = new RegExp("<.+?>","g");
-    //     var msg = value.replace(reg,'');
-    //     return msg;
-    // },
+    getEditorData(){
+        let that=this;
+        that.$http.get('/api/job-route-invoker/job/getZpJobById/'+that.editorId+'?requestId='+that.requestId,{
+        }).then((res)=>{
+           console.log(res) 
+           if(res.data.code=='000'){
+              let detail=res.data.data;
+              this.name=detail.name;
+              this.province=detail.name;
+              this.city=detail.city;
+              this.area=detail.area;
+              if(detail.paytype==1){//1 月结 2日结
+                this.month=1;
+                this.salaryOne=detail.paymentMin;
+                this.salaryTwo=detail.paymentMax;
+              }else if(detail.paytype==2){
+                this.month=2;
+                this.salaryTwo=detail.paymentMax;
+              }
+              this.jobType=detail.isParttime;
+              this.experience=detail.workYear;
+              this.age=detail.age;
+              this.editor.setData(detail.description)
+           }
+            // name:this.name,//职位名称
+            // province:this.province,
+            // city:this.city,
+            // area:this.area,
+            // address:this.detailArea,
+            // paymentMin:this.salaryOne,//薪酬最低值
+            // paymentMax:this.salaryTwo,//薪酬最高值
+            // paytype:this.month,//1 月结 2日结
+            // isParttime:this.jobType,//是否兼职 0全职1兼职
+            // workYear:this.experience,//工作经验
+            // age:age,//年龄要求
+            
+            // description:description,//职位描述
+            // remark:remark,//技能标签
+            // welfare:welfare,//福利待遇 
+        }).catch((error)=>{
+        })
+
+    }
   },
   beforeRouteLeave(to, from, next) {
       let ckeditor=this.editor.getData();
@@ -803,14 +843,12 @@ export default {
     this.getProvince();
     this.getSkillArr();
     this.getWelfareArr();
-    let that=this;
     this.editorId=this.$route.query.id;
-  },
-  beforeUpdate(){
-
+    console.log(this.editorId)
   },
   mounted(){
     let that=this;
+    that.getEditorData();
     CKEDITOR.replace('editor', {height: '200px', width: '600px', toolbar: 'toolbar_Full'});
     that.editor = CKEDITOR.instances.editor;  
     // CKEDITOR.instances.WORK_INTRODUCTION.setData(“要显示的文字内容”);
