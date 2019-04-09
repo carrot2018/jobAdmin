@@ -15,7 +15,7 @@
                 <div class='list' :class="{shutDown:template==3 || template==1&&item.publishStatus==2}" v-for='item in list'>
                     <p>
                         <span>{{item.name}}</span>
-                        <span>主动投递 <i>{{item.sendNum}}</i></span>
+                        <span>主动投递 <i>{{item.sendNum}}</i>&gt;&gt;</span>
                         <span>
                             <span>
                                 <span v-show='item.publishStatus==1&&item.refresh==0' class='refresh' @click='toRefresh(item)'>刷新<i></i></span>
@@ -141,6 +141,7 @@ export default {
         allTotal:0,
         page:false,//分页显示
         requestId:localStorage.getItem('requestId'),
+        stateColor: '#727272'
     }
   },
   methods:{
@@ -328,21 +329,24 @@ export default {
     // min-height: 100%;
 }
 .content-box{
-    height: 100%;
+    // height: 100%;
 
-    padding: 50px 80px 40px 40px;
+    padding: 27px 0 0 0;
     h3{
         height: 50px;
         line-height: 50px;
-        border-bottom: 1px solid #ccc;
+        // border-bottom: 1px solid #ccc;
         span{
-            font-size: 16px;
+            color: #142D46;
+            font-size: 24px;
             font-weight: 700;
         }
 
     }
     >.title{
-        padding-top: 25px;
+        padding-top: 17px;
+        padding-bottom: 18px;
+        border-bottom: 1px solid #e6eef1;
         span{
             cursor: pointer;
             i{
@@ -350,15 +354,16 @@ export default {
             }
         }
         span:nth-of-type(1){
+            color: #727272;
             font-size: 16px;
         }
         span:nth-of-type(2){
-            color: #666;
+            color: #727272;
             font-size: 16px;
             margin-left: 50px;
         }
         span:nth-of-type(3){
-            color: #999;
+            color: #727272;
             font-size: 16px;
             margin-left: 50px;
         }
@@ -368,10 +373,11 @@ export default {
         .list{
             cursor: pointer;
             padding: 18px;
-            border: 1px solid #e5e5e5;
-            border-radius: 3px;
-            box-shadow: 2px 2px 1px 1px #eee;
+            border-radius: 8px;
+            box-shadow: 0px 4px 12px rgba($color: #ececef, $alpha: 0.4);
             margin-top: 25px;
+            margin-bottom: 20px;
+            background: #fff;
             >p:nth-of-type(1){
                     display: -webkit-box;
                     display: -moz-box; 
@@ -381,23 +387,26 @@ export default {
                     display: flex; 
                     >span:nth-of-type(1){
                         flex: 2;
-                        font-size: 16px;
-                        font-weight: 700;
+                        font-size: 24px;
+                        color: #142d46;
                     }
                     >span:nth-of-type(2){
                         text-align: center;
                         flex: 2;
+                        font-size:18px;
                         i{
+                            
                             font-style: normal;
-                            color: #409EFF;
+                            color: #ff5571;
                         }
                     }
                     >span:nth-of-type(3){
                         flex: 2;
                         text-align: right;
+                        font-size: 18px;
                         >span{
                             margin-right: 15px;
-                            color: #409EFF;                       
+                            color: #00b7ee;                       
                         }
                         >span:nth-of-type(1){
                             .refresh{
@@ -420,7 +429,7 @@ export default {
                     }
             }
             >p:nth-of-type(2){
-                margin-top: 14px;
+                margin-top: 16px;
                     span:nth-of-type(1){
                         color: red;
                     }
@@ -433,17 +442,19 @@ export default {
                 span{
                     padding: 4px 6px;
                     display: inline-block;
-                    background: #eee;
+                    background: #f5f6fa;
                     border-radius: 2px;
                     margin-right: 10px;
                     font-size: 12px;
+                    color: #6a6a6a;
                 }
                 
             }
             >p:nth-of-type(4){
-                margin-top: 12px;
+                margin-top: 18px;
                 color: #999;
-                font-size: 12px;
+                font-size: 14px;
+                padding-right: 12px;
                 span:nth-of-type(2){
                 float: right;
                 }
@@ -453,9 +464,8 @@ export default {
         .shutDown{
             cursor: pointer;
             padding: 18px;
-            border: 1px solid #e5e5e5;
-            border-radius: 3px;
-            box-shadow: 2px 2px 1px 1px #eee;
+            border-radius: 8px;
+            box-shadow: 0px 4px 12px rgba($color: #ececef, $alpha: 0.8);
             margin-top: 25px;
             >p:nth-of-type(1){  
                     color: #999;               
@@ -467,13 +477,14 @@ export default {
                     display: flex; 
                     >span:nth-of-type(1){
                         flex: 2;
-                        font-size: 16px;
-                        font-weight: 700;
+                        font-size: 24px;
+                        // font-weight: 700;
                         color: #999;
                     }
                     >span:nth-of-type(2){
                         text-align: center;
                         flex: 2;
+                        font-size:18px;
                         i{
                             font-style: normal;
                             color: #999;
@@ -482,6 +493,7 @@ export default {
                     >span:nth-of-type(3){
                         flex: 2;
                         text-align: right;
+                        font-size: 18px;
                         >span{
                             margin-right: 15px;
                             color: #999;                       
@@ -526,9 +538,10 @@ export default {
                 
             }
             >p:nth-of-type(4){
-                margin-top: 12px;
-                color: #999;
-                font-size: 12px;
+                    margin-top: 18px;
+                    color: #999;
+                    font-size: 14px;
+                    padding-right: 12px;
                 span:nth-of-type(2){
                     float: right;
                 }
@@ -536,12 +549,13 @@ export default {
             }
         }
         .shutDown:hover{
-            background: #eee;
-            border: 1px solid #409EFF;
+            // background: #eee;
+            box-shadow: 0px 4px 12px rgba($color: #e5e5e5, $alpha: 1);
+            // border: 1px solid #409EFF;
              >p:nth-of-type(1){
                     >span:nth-of-type(3){
                         >span{                           
-                            color: #409EFF;                       
+                            color: #00b7ee;                       
                         }                     
                     }
             }

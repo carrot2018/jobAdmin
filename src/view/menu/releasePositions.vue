@@ -2,12 +2,14 @@
 <div id="releasePositions">
     <div class="content-box">
         <h3>
-            <span>发布职位</span><i>相同职位名、相同工作地点的职位只允许发布一个</i>
+            <span>发布职位</span><p>相同职位名、相同工作地点的职位只允许发布一个</p>
         </h3>
         <div class="content-1">  
             <!-- 职位名称       -->
             <div>
-                <span>职位名称 <span class="iconfont iconjiufuqianbaoicon14"></span></span> 
+                <span><span style="color:#ff5571;">*</span>职位名称 
+                  <!-- <span class="iconfont iconjiufuqianbaoicon14"></span> -->
+                  </span> 
                 <div class="right">
                     <input type="text" class='job-name' placeholder="填写职位名，例：湘菜炒锅师傅"
                     maxlength="30" v-model='name'>
@@ -30,7 +32,9 @@
             </div> -->
             <!-- 工作地点 -->
             <div>
-                <span>工作地点 <span class="iconfont iconjiufuqianbaoicon14"></span></span> 
+                <span><span style="color:#ff5571;">*</span>工作地点 
+                <!-- <span class="iconfont iconjiufuqianbaoicon14"></span> -->
+                </span> 
                 <div class="right">
                     <el-select v-model="province" filterable placeholder="省份" @change='getCity'>
                         <el-option
@@ -69,7 +73,9 @@
             </div>
             <!-- 薪资 -->
             <div>
-                <span>薪<i>薪资</i>资 <span class="iconfont iconjiufuqianbaoicon14"></span></span> 
+                <span><span style="color:#ff5571;">*</span>薪&emsp;&emsp;资 
+                <!-- <span class="iconfont iconjiufuqianbaoicon14"></span> -->
+                </span> 
                 <div class="right">
                     <div class="money" >
                         <span class="month" v-show="month==1">
@@ -120,7 +126,9 @@
             <div class="line"></div>
             <!-- 工作类型 -->
             <div>
-                <span>工作类型 <span class="iconfont iconjiufuqianbaoicon14"></span></span> 
+                <span><span style="color:#ff5571;">*</span>工作类型 
+                <!-- <span class="iconfont iconjiufuqianbaoicon14"></span> -->
+                </span> 
                 <div class="right">
                     <span class='job-type-check'>
                         <span @click='checkJobType(0)'>
@@ -231,9 +239,24 @@
                    <div class="custom" @click='clickCustomWelfare()' v-show='customWelfare'>
                        <span class="iconfont iconjia"></span><span>自定义</span>
                    </div>
-                   <p class='rule'>已阅读并遵守<span>《名厨之家职位信息发布规则》</span></p>
+                   <!-- <p class='rule'>已阅读并遵守<span>《名厨之家职位信息发布规则》</span></p>
                    <div class="next">
                        <span @click='clickBtn()'>发布</span>
+                       <span><span class="iconfont icongantanhao"></span> 每个职位默认有效期为30天，到期自动关闭，可手动重新发布</span>
+                   </div>
+                    <div class="sensitive">
+                       <span v-show='sensitive'><span class="iconfont icongantanhao"></span> 职位内容中不允许含有敏感词， 请修改后再发布</span>
+                   </div>   -->
+                    
+                </div>
+            </div>
+            <div class="box-bottom">
+                <!-- <span class='no-line-height'></span>  -->
+                <div class="right">
+                  
+                   <p class='rule'>已阅读并遵守<span>《名厨之家职位信息发布规则》</span></p>
+                   <div class="next">
+                       <span @click='release()'>发&emsp;布</span>
                        <span><span class="iconfont icongantanhao"></span> 每个职位默认有效期为30天，到期自动关闭，可手动重新发布</span>
                    </div>
                     <div class="sensitive">
@@ -1081,35 +1104,71 @@ export default {
     height: auto;
     min-height: 100%;
 }
+
+.content-box .content-1 > .box-bottom {
+  .right {
+    margin-left: 0;
+    &>p {
+      border-top: 1px solid #e5e5e5;
+      margin-top: 50px;
+      padding-top: 30px;
+      &>span {
+        color: #00a0e9;
+        text-decoration: underline ;
+      }
+    }
+    &>.next{
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      &>:nth-child(1) {
+        margin-top: 30px;
+        margin-bottom: 12px;
+        width: 180px;
+        font-size: 20px;
+        height: 40px;
+        line-height: 40px;
+        text-align: center;
+        // letter-spacing: 1em;
+        color: #fff;
+        background: #ff5570;
+      }
+      &>:nth-child(2) {
+        color: #ffbd5a;
+        font-size: 14px;
+      }
+    }
+  }
+}
+
 .content-box{
-    padding: 50px 80px 0 40px;
+    padding: 27px 0 0 0;
     h3{
-        height: 50px;
-        line-height: 50px;
-        border-bottom: 1px solid #ccc;
-        margin-right: 20px;
+        margin-top: 13px;
         span{
-            font-size: 16px;
+            color: #142D46;
+            font-size: 24px;
             font-weight: 700;
         }
-        i{
-            font-style: normal;
-            font-size: 13px;
-            color: #999;
-            position: relative;
-            top: 1px;
-            left: 8px;
+        p{
+            margin-top: 20px;
+            margin-bottom: 20px;
+            color: #878d9d;
+            font-size: 14px;
         }
     }
     .content-1{
-        padding: 0 50px;
+        padding: 30px 50px;
+        background: #fff;
+        border-radius: 16px;
+        box-shadow: 0px 4px 12px rgba(236, 236, 239, 0.8);
         .line{
             border-bottom:1px solid #e5e5e5;
         }
         >div{
             margin-top: 20px;
             >span:nth-of-type(1){
-                color: #333;
+                color: #727272;
                 width: 100px;
                 display: inline-block;
                 font-size: 15px;
@@ -1130,16 +1189,16 @@ export default {
             >.right{
                 margin-left: 100px;
                 >.job-name-tip{
-                    color: red;
+                    color: #ffbd5a;
                     span{
-                        color: red;
+                        color: #ffbd5a;
                         position: relative;
                         top: 1px;
                     }
                 }
                 .job-name{
                     width: 300px;
-                    height: 34px;
+                    height: 44px;
                     border: 1px solid #DCDFE6;
                     border-radius: 3px;
                     margin-right: 8px;
@@ -1148,7 +1207,7 @@ export default {
                 }
                 .detail-area{
                     width: 480px;
-                    height: 40px;
+                    height: 44px;
                     border: 1px solid #DCDFE6;
                     border-radius: 3px;
                     margin-top: 15px;
@@ -1249,10 +1308,12 @@ export default {
                     margin-top: 10px;
                     span{
                         display: inline-block;
-                        padding: 8px;
-                        border-radius: 2px;
+      
+                        border-radius: 20px;
+                        color: #666;
                         margin-right: 15px;
-                        background: #e5e5e5;
+                        padding: 8px 20px;
+                        border: 1px solid #e5e5e5;
                         margin-top: 15px;
                         cursor: pointer;
                     }
@@ -1262,21 +1323,23 @@ export default {
                     }
                 }
                 .custom{
-                    width: 80px;
+                    width: 95px;
                     height: 36px;
                     line-height: 34px;
-                    border: 1px solid #ccc;
-                    background: #e5e5e5;
+                    border: 1px solid #e5e5e5;
+                    // background: #e5e5e5;
+                    color: #666;
                     margin-top: 15px;
+                    // padding: 8px 20px;
                     text-align: center;
-                    border-radius: 3px;
+                    border-radius: 20px;
                     cursor: pointer;
                     span:nth-of-type(1){
                         font-size: 12px;
                     }
                 }
                 >.rule{
-                    margin-top: 40px;
+                    // margin-top: 40px;
                     color: #999;
                 }
                 .next{
@@ -1297,7 +1360,7 @@ export default {
                         margin-left: 10px;
                         color: #999;
                         span{
-                            color: #666;
+                            color: #ffbd5a;
                             position: relative;
                             top: 1px;
                         }

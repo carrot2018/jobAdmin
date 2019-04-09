@@ -1,18 +1,24 @@
 <template>
 <div id="login">
     <div class="login-box">
+        <div class="logo">
+            <img src="../../static/img/logo.png" >
+        </div>
         <p class="title">企业招聘服务平台</p>
         <div class="phone-box">
-            <span class="iconfont iconshouji1"></span>
+            <span class="iconfont iconshouji1" ></span>
             <input type="number" placeholder="输入11位手机号码" id='phone' v-model='phone' v-on:input='phoneInput'>
             <span class='no-user' v-show='phoneShow'><span class="iconfont icongantanhao"></span><span v-text='phoneText'></span></span>
         </div>
         <div class="pwd-box">  
-            <span class="iconfont iconmima"></span>    
-            <el-input placeholder="输入登录密码" v-model="password" show-password @keyup.enter='login'></el-input>
+            <span class="iconfont iconmima"></span> 
+            <div class="pwd-input">
+                <el-input placeholder="输入登录密码" v-model="password" show-password @keyup.enter='login'></el-input>
+            </div> 
             <span class='error-pwd' v-show='passwordShow'><span class="iconfont icongantanhao"></span><span v-text='passwordText'></span></span>
         </div>
         <p class='click-login' @click='login()'>登录</p>
+
     </div>
 </div>
 </template>
@@ -125,8 +131,8 @@ export default {
 <style scoped lang='scss'>
 #login{
     .login-box{
-        width: 320px;
-        background: #e5e5e5;
+        width: 360px;
+        background: #fff;
         position: absolute;
         left: 50%;
         top: 50%;
@@ -134,32 +140,67 @@ export default {
         transform: translateY(-50%);
         -webkit-transform: translateY(-50%);
         border-radius: 6px;
-        padding: 32px 30px 45px 30px;
+        padding: 32px 40px 45px 40px;
+        border: 1px solid #e5e5e5;
+        position: relative;
         >.title{
-            font-size: 18px;
+            font-size: 22px;
             color: #142D46;
             text-align: center;
             font-weight: 700;
+            padding-bottom: 24px;
+            border-bottom: 1px solid #e5e5e5;
+            letter-spacing: 2px;
         }
         >.phone-box{
+            width: 100%;
+            height: 48px;
+            line-height: 48px;
+            border: 1px solid #e6eef1;
+            border-radius: 4px;
+            background: #eee;
+            margin-top: 32px;
+            position: relative;
+            .iconfont{
+                font-size: 28px;
+                margin-left: 6px;
+            }
             #phone{
-                width: 100%;
-                height: 40px;
-                padding-left: 15px;
-                border: 1px solid #e5e5e5;
-                border-radius: 4px;
+                height: 32px!important;
+                line-height: 30px;
+                background: #eee;
+                position: absolute;
+                left: 40px;
+                top: 6px;  
+                cursor: pointer; 
             }
 
         }
-       
-        #password{
+       .pwd-box{
             width: 100%;
-            height: 40px;
-            padding-left: 10px;
-            margin-top: 20px;
-            border: 1px solid #e5e5e5;
-            border-radius: 2px;
-        }
+            height: 48px;
+            line-height: 48px;
+            border: 1px solid #e6eef1;
+            border-radius: 4px;
+            background: #eee;
+            margin-top: 32px;
+            position: relative;
+            .iconfont{
+                font-size: 22px;
+                margin-left: 9px;
+            }
+            .pwd-input{
+                width: 200px;
+                height: 40px !important;
+                line-height: 40px;
+                background: #eee;
+                position: absolute;
+                left: 40px;
+                top: 4px;
+                cursor: pointer; 
+            }
+
+       }
         .no-user,.error-pwd{
             margin: 6px 0;
             color: #e42424;
@@ -169,13 +210,20 @@ export default {
             width: 100%;
             height: 40px;
             line-height: 40px;
-            margin-top: 80px;
-            background: rgb(243, 177, 54);
+            margin-top: 72px;
+            background: #FF607a;
             color: #fff;
-            font-size: 15px;
+            font-size: 17px;
             text-align: center;
             border-radius: 4px;
             cursor: pointer;
+            font-weight: 700;
+            letter-spacing: 6px;
+        }
+        .logo{
+            position: absolute;
+            left: 0;
+            top: 0; 
         }
         input[type=number] {
             -moz-appearance: textfield;
@@ -189,12 +237,15 @@ export default {
 }
 </style>
 <style>
-#login .el-input {
-    margin-top: 30px;
+.el-input{
+    position: absolute;
+    left: 0;
+    top: 0;  
 }
 #login .el-input__inner{
     border: none;
     color: #333;
+    background: #eee!important;
 }
 #login .el-input__inner::-webkit-input-placeholder {
     color: #666;

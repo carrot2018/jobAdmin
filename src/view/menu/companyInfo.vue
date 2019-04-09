@@ -590,13 +590,13 @@ export default {
     h3{
         margin-top: 40px;
         div{
-            font-size: 18px;
+            font-size: 24px;
             font-weight: 700;
             color: #142D46;
             letter-spacing: 1px;
         }
         p{
-        margin-top: 10px;
+        margin-top: 20px;
         color: #999;
         font-size: 13px;
         }
@@ -609,9 +609,10 @@ export default {
     height: 100%;
     background: #fff;
     margin-top: 20px;
-    padding: 40px;
-    border-radius: 4px;
+    padding: 40px 50px;
+    border-radius: 16px;
     margin-bottom: 50px;
+    box-shadow: 0px 4px 12px rgba(236, 236, 239, 0.8);
     .step{
         width: 100%;
         height: 60px;
@@ -653,7 +654,7 @@ export default {
             padding: 10px 0;
             >span:nth-of-type(1){
                 color: #777;
-                width: 100px;
+                width: 80px;
                 display: inline-block;
                 font-size: 15px;
                 float: left;
@@ -667,7 +668,7 @@ export default {
                 }
             }
             >.right{
-                margin-left: 100px;
+                margin-left: 80px;
                 width: calc(100% - 80px);
                 .company-name{
                     font-size: 15px;
@@ -690,19 +691,21 @@ export default {
                     padding-left: 10px;
                 }
                 .textarea-box{
-                    width: 580px;
-                    height: 250px;
-                    border: 1px solid #DCDFE6;
+                    width: 100%;
+                    height: 250px;                
                     position: relative;
-                    border-radius: 3px;
+                    
                     >textarea{
                         position: absolute;
-                        width: 540px;
-                        height: 100px;
-                        left: 10px;
-                        top: 10px;
-                        resize:none 
-                        
+                        min-width: 100%;
+                        height: 100%;
+                        left:0;
+                        top: 0;
+                        resize:none;
+                        border: 1px solid #DCDFE6;
+                        border-radius: 4px;
+                        padding-left: 10px;
+                        padding-top: 10px;
                     }
                     >span{
                         position: absolute;
@@ -815,7 +818,7 @@ export default {
             padding: 10px 0;
             >span:nth-of-type(1){
                 color: #333;
-                width: 100px;
+                width: 80px;
                 display: inline-block;
                 font-size: 15px;
                 float: left;
@@ -825,7 +828,7 @@ export default {
                 }
             }
             >.right{
-                margin-left: 100px;
+                margin-left: 80px;
                 .label-text{
                     color: #999;
                     font-size: 13px;
