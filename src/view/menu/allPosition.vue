@@ -31,7 +31,7 @@
                         </span>
                     </p>
                     <p>
-                        <span>{{item.paytype==1?item.paymentMin+"k~"+item.paymentMax+"k":item.paymentMax+"元"}} / <span v-text='item.paytype==1?"月":"日"'></span></span>
+                        <span>{{item.paytype==1?item.paymentMinStr+"k~"+item.paymentMaxStr:item.paymentMax+"元"}} / <span v-text='item.paytype==1?"月":"日"'></span></span>
                         <span>{{item.cityName+'-'+item.areaName}}</span>
                     </p>
                     <p v-show='item.remark'>
@@ -53,73 +53,7 @@
                     </el-pagination>
                 </div>               
             </div>
-            <!-- <div class="release" v-show='template==2'>
-                <div class="list" v-for='item in list'>
-                    <p>
-                        <span>{{item.name}}</span>
-                        <span>主动投递 <i>{{item.sendNum}}</i></span>
-                        <span>
-                            <span>刷新<i></i></span>
-                            <span>编辑</span>
-                            <span>关闭</span>
-                        </span>
-                    </p>
-                    <p>
-                        <span>{{parseInt(item.paymentMin/1000)+'k~'+parseInt(item.paymentMax/1000)+'k'}} 元/月</span>
-                        <span>{{item.cityName+'-'+item.areaName}}</span>
-                    </p>
-                    <p>
-                        <span v-for='v in item.remark.split(",")'>{{v}}</span>
-                    </p>
-                    <p>
-                        <span>{{item.updatedAt|formatDate }}最后刷新</span>
-                        <span>2019-1-26 17:00发布</span>
-                    </p>
-                </div>
-                <div class="page" v-show='page'>
-                    <el-pagination @current-change="handleCurrent" 
-                        :current-page.sync="pageNum"
-                        :page-size="pageSize"
-                        background
-                        layout="prev, pager, next"
-                        :total='allTotal'>
-                    </el-pagination>
-                </div>  
-            </div> -->
-            <!-- <div class="shut-down-box" v-show='template==3'>
-                <div class="shut-down" v-for='item in list'>
-                    <p>
-                        <span>{{item.name}}</span>
-                        <span>主动投递 <i>{{item.sendNum}}</i></span>
-                        <span>
-                            <span>刷新<i></i></span>
-                            <span>编辑</span>
-                            <span>关闭</span>
-                        </span>
-                    </p>
-                    <p>
-                        <span>{{parseInt(item.paymentMin/1000)+'k~'+parseInt(item.paymentMax/1000)+'k'}} 元/月</span>
-                        <span>{{item.cityName+'-'+item.areaName}}</span>
-                    </p>
-                    <p>
-                        <span v-for='v in item.remark.split(",")'>{{v}}</span>
-                    </p>
-                    <p>
-                        <span>{{item.updatedAt|formatDate }}最后刷新</span>
-                        <span>2019-1-26 17:00发布</span>
-                    </p>
-
-                </div>
-                <div class="page" v-show='page'>
-                    <el-pagination @current-change="handleCurrent" 
-                        :current-page.sync="pageNum"
-                        :page-size="pageSize"
-                        background
-                        layout="prev, pager, next"
-                        :total='allTotal'>
-                    </el-pagination>
-                </div>  
-            </div> -->
+          
         </div>  
   </div>
 </div>
@@ -292,10 +226,6 @@ export default {
         })
     },
     editor(item){
-        let that=this;
-        // that.$http.get('/api/job-route-invoker/job/setLockFlushZpJobsByOneDay/'+item.id,
-        // ).then((res)=>{ 
-        // })
         this.$router.push({
     　　　　path: '/releasePositions',
     　　　　query:{id:item.id }　
@@ -329,13 +259,15 @@ export default {
     // min-height: 100%;
 }
 .content-box{
+<<<<<<< HEAD
     // height: 100%;
 
+=======
+>>>>>>> 564cd8b7b5f9432b5349afc77ba7e9724a07c64f
     padding: 27px 0 40px 0;
     h3{
         height: 50px;
         line-height: 50px;
-        // border-bottom: 1px solid #ccc;
         span{
             color: #142D46;
             font-size: 24px;

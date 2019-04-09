@@ -52,8 +52,6 @@
               <span
               v-for="(items,index) in item.remark"
               :key="index">{{items}}</span>
-              <!-- <span>工工作环境干净作环境干净</span>
-              <span>工作环工作环境干净境干净</span> -->
             </p>
           </div>
         </div>
@@ -152,23 +150,19 @@ export default {
 };
 </script>
 <style scoped lang='scss'>
-
 #resume {
-  height: 100%;
-  // overflow-y: auto;
+
 }
 .list-box__content__menu {
   font-size: 16px;
   color: #6a6a6a;
 }
 .content-box {
-  height: 100%;
-  // overflow-y: auto;
-  padding: 27px 0 40px 0;
+
+  padding: 50px 80px 40px 40px;
   h3 {
     height: 50px;
     line-height: 50px;
-    // border-bottom: 1px solid #ccc;
     span {
       font-size: 24px;
       font-weight: 700;

@@ -449,6 +449,9 @@ export default {
         that.$http.post('/upload/insertEnterpriseMsg',params
         ).then((res)=>{
             console.log(res)
+            if(res.data.code=='002'){//成功
+                that.centerDialogVisible=true;
+            }
         }).catch((error)=>{
         })
 
@@ -492,7 +495,7 @@ export default {
     //   this.filesAdded(files)
     },
     toRelease(){//去发布职位
-        this.$router.push({path:'/allPosition'})
+        this.$router.push({path:'/releasePositions'})
     },
     prevStep(){//点击上一步
         this.active=1;
@@ -606,7 +609,7 @@ export default {
     height: 100%;
     background: #fff;
     margin-top: 20px;
-    padding: 40px;
+    padding: 40px 50px;
     border-radius: 16px;
     margin-bottom: 50px;
     box-shadow: 0px 4px 12px rgba(236, 236, 239, 0.8);
@@ -651,7 +654,7 @@ export default {
             padding: 10px 0;
             >span:nth-of-type(1){
                 color: #777;
-                width: 100px;
+                width: 80px;
                 display: inline-block;
                 font-size: 15px;
                 float: left;
@@ -665,7 +668,7 @@ export default {
                 }
             }
             >.right{
-                margin-left: 100px;
+                margin-left: 80px;
                 width: calc(100% - 80px);
                 .company-name{
                     font-size: 15px;
@@ -688,19 +691,21 @@ export default {
                     padding-left: 10px;
                 }
                 .textarea-box{
-                    width: 580px;
-                    height: 250px;
-                    border: 1px solid #DCDFE6;
+                    width: 100%;
+                    height: 250px;                
                     position: relative;
-                    border-radius: 3px;
+                    
                     >textarea{
                         position: absolute;
-                        width: 540px;
-                        height: 100px;
-                        left: 10px;
-                        top: 10px;
-                        resize:none 
-                        
+                        min-width: 100%;
+                        height: 100%;
+                        left:0;
+                        top: 0;
+                        resize:none;
+                        border: 1px solid #DCDFE6;
+                        border-radius: 4px;
+                        padding-left: 10px;
+                        padding-top: 10px;
                     }
                     >span{
                         position: absolute;
@@ -813,7 +818,7 @@ export default {
             padding: 10px 0;
             >span:nth-of-type(1){
                 color: #333;
-                width: 100px;
+                width: 80px;
                 display: inline-block;
                 font-size: 15px;
                 float: left;
@@ -823,7 +828,7 @@ export default {
                 }
             }
             >.right{
-                margin-left: 100px;
+                margin-left: 80px;
                 .label-text{
                     color: #999;
                     font-size: 13px;

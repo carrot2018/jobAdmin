@@ -1,12 +1,29 @@
 <template>
 <div id="login">
     <div class="login-box">
-        <input type="number" placeholder="输入11位手机号码" id='phone' v-model='phone' v-on:input='phoneInput'>
-        <span class='no-user' v-show='phoneShow'><span class="iconfont icongantanhao"></span><span v-text='phoneText'></span></span>
-        <!-- <input type="password" placeholder="输入登录号码" id='password' v-model='password' v-on:input='phoneInput'> -->
-        <el-input placeholder="输入登录密码" v-model="password" show-password @keyup.enter='login'></el-input>
-        <span class='error-pwd' v-show='passwordShow'><span class="iconfont icongantanhao"></span><span v-text='passwordText'></span></span>
+        <p class="logo">
+            <img src="../../static/img/logoLogin.png" >
+        </p>
+        <p class="title">企业招聘服务平台</p>
+        <div class="phone-box">
+            <img src="../../static/img/phone.png" >
+            <input type="number" placeholder="输入11位手机号码" id='phone' v-model='phone' v-on:input='phoneInput'>
+           
+        </div>
+        <p v-show='phoneShow' class='no-user'>
+            <span class="iconfont icongantanhao"></span><span v-text='phoneText'></span>
+        </p>
+        <div class="pwd-box">  
+            <img src="../../static/img/Password.png" > 
+            <div class="pwd-input">
+                <el-input placeholder="输入登录密码" v-model="password" show-password @keyup.enter='login'></el-input>
+            </div> 
+        </div>
+        <p class='error-pwd' v-show='passwordShow'>
+            <span class="iconfont icongantanhao"></span><span v-text='passwordText'></span>
+        </p>
         <p class='click-login' @click='login()'>登录</p>
+
     </div>
 </div>
 </template>
@@ -15,10 +32,12 @@
 export default {
   data () {
     return {
-        phone:'15019230830',
+        // 15019230830
+        // 123456789
+        phone:'',
         phoneShow:false,
         phoneText:'',
-        password:'123456789',
+        password:'',
         passwordShow:false,
         passwordText:'',
         requestId:localStorage.getItem('requestId'),
@@ -96,6 +115,7 @@ export default {
                 })
                 that.toast.show()                      
             }else if(res.data.code=='500'){
+                alert(1)
                 that.toast = this.$createToast({
                     txt: '登陆失败',
                     type: 'txt',
@@ -118,9 +138,12 @@ export default {
 </script>
 <style scoped lang='scss'>
 #login{
+    background: url('../../static/img/bg.jpg') no-repeat;
+    background-size: 100% 100%;
+    height: 100%;
     .login-box{
-        width: 320px;
-        background: #e5e5e5;
+        width: 400px;
+        background: #fff;
         position: absolute;
         left: 50%;
         top: 50%;
@@ -128,61 +151,120 @@ export default {
         transform: translateY(-50%);
         -webkit-transform: translateY(-50%);
         border-radius: 6px;
-        padding: 40px 30px;
-        #phone{
+        padding: 32px 40px 45px 40px;
+        z-index: 999;
+        >.title{
+            font-size: 22px;
+            color: #142D46;
+            text-align: center;
+            font-weight: 700;
+            padding-bottom: 24px;
+            border-bottom: 1px solid #e5e5e5;
+            letter-spacing: 2px;
+        }
+        >.phone-box{
             width: 100%;
-            height: 40px;
-            padding-left: 15px;
-            border: 1px solid #e5e5e5;
+            height: 48px;
+            line-height: 48px;
+            border: 1px solid #e6eef1;
             border-radius: 4px;
+            background: #eee;
+            margin-top: 32px;
+            position: relative;
+            img{
+                margin-left: 14px;
+                height: 28px;
+                margin-top: 10px;
+            }
+            #phone{
+                width: calc(100% - 45px);
+                height: 47px!important;
+                line-height: 47px;
+                background: #eee;
+                position: absolute;
+                left: 45px;
+                top: 0;  
+            }
+
         }
-        #password{
+       .pwd-box{
             width: 100%;
-            height: 40px;
-            padding-left: 10px;
-            margin-top: 20px;
-            border: 1px solid #e5e5e5;
-            border-radius: 2px;
-        }
+            height: 48px;
+            line-height: 48px;
+            border: 1px solid #e6eef1;
+            border-radius: 4px;
+            background: #eee;
+            margin-top: 32px;
+            position: relative;
+            img{
+                margin-left: 12px;
+                height: 26px;
+                margin-top: 10px;
+            }
+            .pwd-input{
+                width: calc(100% - 45px);
+                height: 46px !important;
+                line-height: 46px;
+                background: #eee;
+                position: absolute;
+                left: 45px;
+                top: 0;
+                // cursor: pointer; 
+            }
+
+       }
         .no-user,.error-pwd{
             margin: 6px 0;
-            color: #e42424;
-            display: inline-block;
+            color: #FF607a;
         }
         .click-login{
             width: 100%;
-            height: 40px;
-            line-height: 40px;
-            margin-top: 80px;
-            background: rgb(243, 177, 54);
+            height: 48px;
+            line-height: 48px;
+            margin-top: 60px;
+            background: #FF607a;
             color: #fff;
-            font-size: 15px;
+            font-size: 17px;
             text-align: center;
             border-radius: 4px;
             cursor: pointer;
+            font-weight: 700;
+            letter-spacing: 6px;
         }
-        input[type=number] {
-            -moz-appearance: textfield;
-        }
-        input[type=number]::-webkit-inner-spin-button,
-        input[type=number]::-webkit-outer-spin-button {
-            -webkit-appearance: none;
-            margin: 0;
+        .logo{
+            position: absolute;
+            top: -70px;
+            left: 50%; 
+            transform: translateX(-50%);
+            img{
+                width: 84%;
+                margin-left: 7%;
+            }
         }
     }
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button{
+    -webkit-appearance: none !important;
+    margin: 0;
+    }
+    input[type="number"]{-moz-appearance:textfield;}
 }
 </style>
 <style>
-#login .el-input {
-    margin-top: 30px;
+.el-input{
+    position: absolute;
+    left: 0;
+    top: 0;  
 }
 #login .el-input__inner{
-    border: none;
-    color: #333;
+    border: none!important;
+    color: #333!important;
+    background: #eee!important;
+    padding: 0!important;
 }
-#login .el-input__inner::-webkit-input-placeholder {
+#login .el-input__inner::-webkit-input-placeholder,#login input::-webkit-input-placeholder {
     color: #666;
-    font-size: 13px;
+    font-size: 16px;
 }
 #login .el-input .el-input__clear {
     font-size: 20px;
