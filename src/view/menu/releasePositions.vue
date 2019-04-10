@@ -499,7 +499,7 @@ export default {
            
         }
         let that=this;
-        that.$http.post('/api/job-route-invoker/job/pushJob?requestId='+that.requestId,params
+        that.$http.post('/api/job/pushJob?requestId='+that.requestId,params
         ).then((res)=>{
             console.log(res)
             if(res.data.code=='002'){
@@ -639,7 +639,7 @@ export default {
             id:this.editorId
         }
         let that=this;
-        that.$http.post('/api/job-route-invoker/job/updateJobsById?requestId='+that.requestId,params
+        that.$http.post('/api/job/updateJobsById?requestId='+that.requestId,params
         ).then((res)=>{
             console.log(res)
             if(res.data.code=='000'){
@@ -935,7 +935,7 @@ export default {
         if(typeof that.editorId=='undefined'){
             return;
         }
-        that.$http.get('/api/job-route-invoker/job/getZpJobById/'+that.editorId+'?requestId='+that.requestId,{
+        that.$http.get('/api/job/getZpJobById/'+that.editorId+'?requestId='+that.requestId,{
         }).then((res)=>{
            console.log(res) 
            if(res.data.code=='000'){

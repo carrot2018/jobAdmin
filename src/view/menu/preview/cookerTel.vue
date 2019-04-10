@@ -177,7 +177,7 @@ export default {
       let requestId = this.$route.query.requestId;
       let sesId = this.$route.query.sesId;
 
-      axios.post('/api/job-route-invoker/getDetialList?jobsId='+jobsId+'&sesId='+sesId+'&requestId='+requestId,
+      axios.post('/api/getDetialList?jobsId='+jobsId+'&sesId='+sesId+'&requestId='+requestId,
       ).then((response) => {
         
         let res = response.data;
@@ -290,7 +290,7 @@ export default {
       // let sesId = this.sesId;
       let sesIds = this.$route.query.sesId;
       let requestId = window.localStorage.getItem('requestId')
-      axios.get('/api/job-route-invoker/updateUserRemucesBySesId?sesId='+sesIds+'&requestId='+requestId).then((response) => {
+      axios.get('/api/updateUserRemucesBySesId?sesId='+sesIds+'&requestId='+requestId).then((response) => {
         console.log(11,response);
       })
     }

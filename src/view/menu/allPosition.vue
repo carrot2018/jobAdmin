@@ -98,7 +98,7 @@ export default {
             pageNum:this.pageNum,
             pageSize:this.pageSize
         }
-        that.$http.post('/api/job-route-invoker/job/selectJobOfPageList?pushStatus='+that.template+'&requestId='+that.requestId,params
+        that.$http.post('/api/job/selectJobOfPageList?pushStatus='+that.template+'&requestId='+that.requestId,params
         ).then((res)=>{
             console.log(res)
             // if(res.data.code=='666'){
@@ -127,21 +127,21 @@ export default {
     },
     getAll(){
         console.log(this.requestId)
-        this.$http.get('/api/job-route-invoker/job/countJobs?requestId='+this.requestId,{
+        this.$http.get('/api/job/countJobs?requestId='+this.requestId,{
         }).then((res)=>{
             this.allNum=res.data.data;  
         }).catch((error)=>{
         })
     },
     getRelease(){
-        this.$http.get('/api/job-route-invoker/job/countJobReleases?requestId='+this.requestId,{
+        this.$http.get('/api/job/countJobReleases?requestId='+this.requestId,{
         }).then((res)=>{
             this.releaseNum=res.data.data;
         }).catch((error)=>{
         })
     },
     getShutDown(){
-        this.$http.get('/api/job-route-invoker/job/countJobCloses?requestId='+this.requestId,{
+        this.$http.get('/api/job/countJobCloses?requestId='+this.requestId,{
         }).then((res)=>{
             this.shutDown=res.data.data;
         }).catch((error)=>{
@@ -149,7 +149,7 @@ export default {
     },
     hasShutDown(item,index){//1 发布中 2 关闭
         let that=this;
-        that.$http.post('/api/job-route-invoker/job/updateJobsById?requestId='+that.requestId,{
+        that.$http.post('/api/job/updateJobsById?requestId='+that.requestId,{
             publishStatus:index,
             id:item.id
         }
@@ -193,7 +193,7 @@ export default {
     },
     deleteList(item){//删除
         let that=this;
-        that.$http.get('/api/job-route-invoker/job/deleteJobsById/'+item.id+'&requestId='+that.requestId,{
+        that.$http.get('/api/job/deleteJobsById/'+item.id+'&requestId='+that.requestId,{
         }
         ).then((res)=>{
             console.log(res)
@@ -215,7 +215,7 @@ export default {
     },
     toRefresh(item){
         let that=this;
-        that.$http.get('/api/job-route-invoker/job/setLockFlushZpJobsByOneDay/'+item.id+'?requestId='+that.requestId,{
+        that.$http.get('/api/job/setLockFlushZpJobsByOneDay/'+item.id+'?requestId='+that.requestId,{
         }
         ).then((res)=>{         
             if(res.data.code=='502'){

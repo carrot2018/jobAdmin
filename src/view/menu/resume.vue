@@ -95,7 +95,7 @@ export default {
 
     // 获取简历管理信息
     getResumeAdminMessage() {
-      axios.get('/api/job-route-invoker/list?requestId='+this.requestId,
+      axios.get('/api/list?requestId='+this.requestId,
       ).then((response) => {
         console.log(response)
         let res = response.data;
