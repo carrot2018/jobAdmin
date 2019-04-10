@@ -155,32 +155,37 @@ export default {
         }
         ).then((res)=>{
             console.log(res)
-            if(index==1){
-                if(res.data.code=='000'){
-                    this.$message({
-                        type: 'success',
-                        message: '发布成功!'
-                    });
-                    this.pageNum=1;
-                    this.getAll();
-                    this.getRelease();
-                    this.getShutDown();
-                    this.getList();
+            if(res.data.code=='000'){
+                if(index==1){
+                    if(res.data.code=='000'){
+                        this.$message({
+                            type: 'success',
+                            message: '发布成功!',
+                            center: true
+                        });
+                        this.pageNum=1;
+                        this.getAll();
+                        this.getRelease();
+                        this.getShutDown();
+                        this.getList();
+                    }
+                }
+                if(index==2){
+                    if(res.data.code=='000'){
+                        this.$message({
+                            type: 'success',
+                            message: '关闭成功!',
+                            center: true
+                        });
+                        this.pageNum=1;
+                        this.getAll();
+                        this.getRelease();
+                        this.getShutDown();
+                        this.getList();
+                    }
                 }
             }
-            if(index==2){
-                if(res.data.code=='000'){
-                    this.$message({
-                        type: 'success',
-                        message: '关闭成功!'
-                    });
-                    this.pageNum=1;
-                    this.getAll();
-                    this.getRelease();
-                    this.getShutDown();
-                    this.getList();
-                }
-            }
+           
            
             
         }).catch((error)=>{
@@ -195,7 +200,8 @@ export default {
             if(res.data.code=='000'){
                 this.$message({
                     type: 'success',
-                    message: '删除成功!'
+                    message: '删除成功!',
+                    center: true
                 });
                 this.getAll();
                 this.getRelease();
@@ -218,6 +224,7 @@ export default {
                     message: '刷新成功!',
                     center: true,
                 });
+                this.pageNum=1;
                 this.getList(); 
             }
            

@@ -1009,7 +1009,7 @@ export default {
         })
     }
   },
-  beforeRouteLeave(to, from, next) {
+//   beforeRouteLeave(to, from, next) {
     //   let xxx=this.centerDialogVisible;
     //   let ckeditor=this.editor.getData();
     //   if(typeof this.editorId== 'undefined'){//发布
@@ -1036,10 +1036,7 @@ export default {
     //   }else{//修改
     //     next(); 
     //   }
-  },
-  watch:{ 
-    
-  },
+//   },
   created(){
     this.getProvince();
     this.getSkillArr();

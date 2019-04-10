@@ -202,7 +202,9 @@ export default {
         mainCuisine:[],//主营菜系
         diningType:[],//餐饮类型
         requestId:localStorage.getItem('requestId'),
-        action:'http://192.168.1.111:8889/job-route-invoker/file/upload?requestId='+localStorage.getItem('requestId'),
+        // http://23e74b3832.wicp.vip
+        action:'http://23e74b3832.wicp.vip/job-route-invoker/file/upload?requestId='+localStorage.getItem('requestId'),
+        // action:'http://192.168.1.111:8889/job-route-invoker/file/upload?requestId='+localStorage.getItem('requestId'),
         fileArr:[],
         userInfo:{}
     }
@@ -446,7 +448,7 @@ export default {
             cookingtType:cookTypeStr,//餐饮类型
             workMent:workMent,//工作环境   
         }
-        that.$http.post('/api/insertEnterpriseMsg',params
+        that.$http.post('/api/job-route-invoker/insertEnterpriseMsg?requestId='+that.requestId,params
         ).then((res)=>{
             console.log(res)
             if(res.data.code=='002'){//成功
