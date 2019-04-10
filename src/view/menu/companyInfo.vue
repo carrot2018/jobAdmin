@@ -202,7 +202,9 @@ export default {
         mainCuisine:[],//主营菜系
         diningType:[],//餐饮类型
         requestId:localStorage.getItem('requestId'),
-        action:'http://192.168.1.56:8889/job-route-invoker/file/upload?requestId='+localStorage.getItem('requestId'),
+        // http://192.168.1.111:8889/
+        // action:'http://192.168.1.56:8889/job-route-invoker/file/upload?requestId='+localStorage.getItem('requestId'),
+        action:'http://192.168.1.111:8889/job-route-invoker/file/upload?requestId='+localStorage.getItem('requestId'),
         fileArr:[],
         userInfo:{}
     }
@@ -597,7 +599,7 @@ export default {
         }
         p{
         margin-top: 20px;
-        color: #999;
+        color: #878d9d;
         font-size: 13px;
         }
     }
