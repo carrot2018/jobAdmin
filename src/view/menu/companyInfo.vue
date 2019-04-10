@@ -202,6 +202,8 @@ export default {
         mainCuisine:[],//主营菜系
         diningType:[],//餐饮类型
         requestId:localStorage.getItem('requestId'),
+        // http://23e74b3832.wicp.vip
+        // action:'http://23e74b3832.wicp.vip/job-route-invoker/file/upload?requestId='+localStorage.getItem('requestId'),
         action:'http://192.168.1.111:8889/job-route-invoker/file/upload?requestId='+localStorage.getItem('requestId'),
         fileArr:[],
         userInfo:{}
@@ -209,7 +211,7 @@ export default {
   },
   methods:{
     getEnterprise(){//企业标签
-        this.$http.get('/service/taxonomies/486',{
+        this.$http.get('/service/api/taxonomies/486',{
         }).then((res)=>{
             let enterprise=res.data.allNodes;
             enterprise.forEach(function(v){
@@ -220,7 +222,7 @@ export default {
         })
     },
     getMainCuisine(){//主营菜系
-        this.$http.get('/service/taxonomies/484',{
+        this.$http.get('/service/api/taxonomies/484',{
         }).then((res)=>{
             let mainCuisine=res.data.allNodes;
             mainCuisine.forEach(function(v){
@@ -231,7 +233,7 @@ export default {
         })
     },
     getDiningType(){//餐饮类型
-        this.$http.get('/service/taxonomies/485',{
+        this.$http.get('/service/api/taxonomies/485',{
         }).then((res)=>{
             let diningType=res.data.allNodes;
             diningType.forEach(function(v){
@@ -446,7 +448,7 @@ export default {
             cookingtType:cookTypeStr,//餐饮类型
             workMent:workMent,//工作环境   
         }
-        that.$http.post('/api/insertEnterpriseMsg',params
+        that.$http.post('/api/insertEnterpriseMsg?requestId='+that.requestId,params
         ).then((res)=>{
             console.log(res)
             if(res.data.code=='002'){//成功

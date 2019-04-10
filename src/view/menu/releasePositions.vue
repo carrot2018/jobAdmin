@@ -109,14 +109,31 @@
                         </span>                       
                         <i>
                             <span @click='checkMonth(1)'>
-                                <span class="iconfont iconradio-checked1" v-show="month==1"></span> 
-                                <span class="iconfont icondanxuan" v-show="month==2"></span>                               
-                                <span>月结</span>
+                                <!-- <span class="iconfont iconradio-checked1" v-show="month==1"></span> 
+                                <span class="iconfont icondanxuan" v-show="month==2"></span>        
+                                <span>月结</span> -->
+                                <span class="radio1 radio-on" v-show="month==1">
+                                  <i class="radio-on__icon"></i>
+                                  <span>月结</span>
+                                </span> 
+
+                                <span class="radio1 radio-off" v-show="month==2">
+                                  <span>月结</span>
+                                </span>        
+                                <!-- <span>月结</span> -->
                             </span>
                             <span @click='checkMonth(2)'>
-                                <span class="iconfont iconradio-checked1" v-show="month==2"></span> 
+                                <!-- <span class="iconfont iconradio-checked1" v-show="month==2"></span> 
                                 <span class="iconfont icondanxuan" v-show="month==1"></span>    
-                                <span>日结</span>
+                                <span>日结</span> -->
+                                <span class="radio1 radio-on" v-show="month==2">
+                                  <i class="radio-on__icon"></i>
+                                  <span>日结</span>
+                                </span> 
+                                <span class="radio1 radio-off" v-show="month==1">
+                                  <span>日结</span>
+                                </span>    
+                                <!-- <span>日结</span> -->
                             </span>
                         </i>     
                     </div>
@@ -134,14 +151,30 @@
                 <div class="right">
                     <span class='job-type-check'>
                         <span @click='checkJobType(0)'>
-                            <span class="iconfont iconradio-checked1" v-show="jobType==0"></span> 
+                            <!-- <span class="iconfont iconradio-checked1" v-show="jobType==0"></span> 
                             <span class="iconfont icondanxuan" v-show="jobType==1"></span>
-                            <span>全职</span>
+                            <span>全职</span> -->
+                            <span class="radio1 radio-on" v-show="jobType==0">
+                              <i class="radio-on__icon"></i>
+                              <span>全职</span>
+                            </span> 
+
+                            <span class="radio1 radio-off" v-show="jobType==1">
+                              <span>全职</span>
+                            </span>  
                         </span>
                         <span @click='checkJobType(1)'>
-                             <span class="iconfont iconradio-checked1" v-show="jobType==1"></span> 
+                             <!-- <span class="iconfont iconradio-checked1" v-show="jobType==1"></span> 
                             <span class="iconfont icondanxuan" v-show="jobType==0"></span> 
-                            <span>兼职</span>
+                            <span>兼职</span> -->
+                            <span class="radio1 radio-on" v-show="jobType==1">
+                              <i class="radio-on__icon"></i>
+                              <span>兼职</span>
+                            </span> 
+
+                            <span class="radio1 radio-off" v-show="jobType==0">
+                              <span>兼职</span>
+                            </span>  
                         </span>
                     </span> 
                 </div>
@@ -287,6 +320,7 @@ import CKEDITOR from 'CKEDITOR';
 export default {
   data () {
     return {
+      
         editorId:'',//编辑id
         name:'',//职位名称
         centerDialogVisible: false,
@@ -343,7 +377,7 @@ export default {
   },
   methods:{
     getSkillArr(){//技能标签
-        this.$http.get('/service/taxonomies/486',{
+        this.$http.get('/service/api/taxonomies/486',{
         }).then((res)=>{
             let skillArr=res.data.allNodes;
             skillArr.forEach(function(v){
@@ -357,7 +391,7 @@ export default {
         })
     },
     getWelfareArr(){//福利待遇
-        this.$http.get('/service/taxonomies/488',{
+        this.$http.get('/service/api/taxonomies/488',{
         }).then((res)=>{
             let welfareArr=res.data.allNodes;
             welfareArr.forEach(function(v){
@@ -499,7 +533,7 @@ export default {
            
         }
         let that=this;
-        that.$http.post('/api/job-route-invoker/job/pushJob?requestId='+that.requestId,params
+        that.$http.post('/api/job/pushJob?requestId='+that.requestId,params
         ).then((res)=>{
             console.log(res)
             if(res.data.code=='002'){
@@ -639,7 +673,7 @@ export default {
             id:this.editorId
         }
         let that=this;
-        that.$http.post('/api/job-route-invoker/job/updateJobsById?requestId='+that.requestId,params
+        that.$http.post('/api/job/updateJobsById?requestId='+that.requestId,params
         ).then((res)=>{
             console.log(res)
             if(res.data.code=='000'){
@@ -935,7 +969,7 @@ export default {
         if(typeof that.editorId=='undefined'){
             return;
         }
-        that.$http.get('/api/job-route-invoker/job/getZpJobById/'+that.editorId+'?requestId='+that.requestId,{
+        that.$http.get('/api/job/getZpJobById/'+that.editorId+'?requestId='+that.requestId,{
         }).then((res)=>{
            console.log(res) 
            if(res.data.code=='000'){
@@ -1009,7 +1043,7 @@ export default {
         })
     }
   },
-  beforeRouteLeave(to, from, next) {
+//   beforeRouteLeave(to, from, next) {
     //   let xxx=this.centerDialogVisible;
     //   let ckeditor=this.editor.getData();
     //   if(typeof this.editorId== 'undefined'){//发布
@@ -1036,10 +1070,7 @@ export default {
     //   }else{//修改
     //     next(); 
     //   }
-  },
-  watch:{ 
-    
-  },
+//   },
   created(){
     this.getProvince();
     this.getSkillArr();
@@ -1129,12 +1160,43 @@ export default {
         background: #fff;
         border-radius: 16px;
         box-shadow: 0px 4px 12px rgba(236, 236, 239, 0.8);
+        .radio1 {
+          text-align: center;
+          display: inline-block;
+          height: 38px;
+          width: 100px;
+          line-height: 38px;
+          border-radius: 20px;
+          font-size: 18px;
+            position: relative;
+          letter-spacing: 3px;
+        }
+        .radio-off {
+          border: 1px solid #DCDFE6;
+          color: #666666;
+        }
+        .radio-on {
+          
+          border: 1px solid #ff5571;
+          color: #FF5571;
+          
+          .radio-on__icon {
+            height: 18px;
+            width: 18px;
+            display: inline-block;
+            position: absolute;
+            right: -2px;
+            top: -2px;
+            background: url('../../../static/img/has-checked.png') 100% no-repeat;
+          }
+        }
         .line{
             border-bottom:1px solid #e5e5e5;
         }
         >div{
             margin-top: 20px;
             >span:nth-of-type(1){
+                position: relative;
                 color: #727272;
                 width: 100px;
                 display: inline-block;
@@ -1142,6 +1204,8 @@ export default {
                 float: left;
                 margin-top: 8px;
                 span{
+                  position: absolute;
+                  left: -7px;
                     font-size: 15px;
                     color: red;
                 }
@@ -1217,19 +1281,52 @@ export default {
                         >span{
                             cursor: pointer;
                             >.iconradio-checked1{
-                                font-size: 24px!important;
-                                position: relative;
-                                top: 3px;
-                                color: #999;
+                                // font-size: 24px!important;
+                                // position: relative;
+                                // top: 3px;
+                                // color: #999;
+                                
                             }
                             >.icondanxuan{
-                                font-size: 22px!important;
-                                position: relative;
-                                top: 2px;
-                                color: #999;
+                                // font-size: 22px!important;
+                                // position: relative;
+                                // top: 2px;
+                                // color: #999;
+
                             }
+                            >.radio1 {
+                               text-align: center;
+                              display: inline-block;
+                               height: 38px;
+                              width: 100px;
+                              line-height: 38px;
+                              border-radius: 20px;
+                              font-size: 18px;
+                               position: relative;
+                              letter-spacing: 3px;
+                            }
+                            >.radio-off {
+                              border: 1px solid #DCDFE6;
+                              color: #666666;
+                            }
+                            >.radio-on {
+                             
+                              border: 1px solid #ff5571;
+                              color: #FF5571;
+                             
+                              .radio-on__icon {
+                                height: 18px;
+                                width: 18px;
+                                display: inline-block;
+                                position: absolute;
+                                right: -2px;
+                                top: -2px;
+                                background: url('../../../static/img/has-checked.png') 100% no-repeat;
+                              }
+                            }
+
                             span:nth-of-type(2){
-                                font-size: 15px;
+                                font-size: 18px;
                             }
 
                         }
@@ -1268,7 +1365,7 @@ export default {
                             color: #999;
                         }
                         span:nth-of-type(2){
-                            font-size: 15px;
+                            font-size: 18px;
                         }
 
                     }

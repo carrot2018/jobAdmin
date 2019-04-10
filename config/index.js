@@ -11,22 +11,22 @@ module.exports = {
     assetsPublicPath: '/',
     proxyTable: {
       '/api': {//自定义名字，代表的是以下target中的内容
-        // target: 'http://23e74b3832.wicp.vip/',
-        target: 'http://192.168.1.111:8889/', // 测试环境地址
+        // target: 'http://23e74b3832.wicp.vip/',//本地地址
+        target: 'http://192.168.1.111:8889/job-route-invoker/', // 测试环境地址
         changeOrigin: true,//是否允许跨域
         pathRewrite: {
           '^/api': ''
         }
       },
       '/php': {//自定义名字，代表的是以下target中的内容
-        target: 'http://beta.cookhome.club/',//微信
+        target: 'http://beta.cookhome.club/',
         changeOrigin: true,//是否允许跨域
         pathRewrite: {
           '^/php': ''
         }
       },
       '/service': {//自定义名字，代表的是以下target中的内容
-        target: 'http://cookhome.t/api/',//微信
+        target: 'http://cookhome.t/',//微信
         changeOrigin: true,//是否允许跨域
         pathRewrite: {
           '^/service': ''

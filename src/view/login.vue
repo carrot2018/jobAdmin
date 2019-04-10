@@ -54,7 +54,7 @@ export default {
     },
     isLogin(){
         let that=this;
-        that.$http.get('/api/job-route-invoker/checkLogin?loginRequestId='+that.requestId )
+        that.$http.get('/api/checkLogin?loginRequestId='+that.requestId,{})
         .then((res)=>{
             if(res.data.code=='000'){//免密登录成功
                 let userInfo=res.data.data;
@@ -88,7 +88,7 @@ export default {
             this.passwordShow=false;
         }
         let that=this;
-        that.$http.get('/api/job-route-invoker/login?mobile='+that.phone+'&password='+that.password)
+        that.$http.get('/api/login?mobile='+that.phone+'&password='+that.password)
         .then((res)=>{
             console.log(res)
             if(res.data.code=='000'){
@@ -148,13 +148,15 @@ export default {
     height: 100%;
     .login-box{
         width: 400px;
+        height: 412px;
         background: #fff;
         position: absolute;
         left: 50%;
         top: 50%;
         margin-left: -200px;
-        transform: translateY(-50%);
-        -webkit-transform: translateY(-50%);
+        // transform: translateY(-50%);
+        // -webkit-transform: translateY(-50%);
+        margin-top: -206px;
         border-radius: 6px;
         padding: 32px 40px 45px 40px;
         z-index: 999;

@@ -116,7 +116,8 @@ export default {
       let height=$('.content-box .right').height();
       console.log(height)
       $('.content-box .left').height(height);
-      this.thisRoute = this.$route.fullPath
+      this.thisRoute = this.$route.fullPath;
+
   },
 
   watch: {
