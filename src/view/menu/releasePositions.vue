@@ -35,31 +35,33 @@
                 <span><span style="color:#ff5571;">*</span>工作地点 
                 </span> 
                 <div class="right">
-                    <el-select v-model="province" filterable placeholder="省份" @change='getCity'>
-                        <el-option
-                        v-for="item in provinceArr"
-                        :key="item.id"
-                        :label="item.text"
-                        :value="item.id">
-                        </el-option>
-                    </el-select>
-                    <el-select v-model="city" filterable placeholder="城市" @change='getArea'>
-                        <el-option
-                        v-for="item in cityArr"
-                        :key="item.id"
-                        :label="item.text"
-                        :value="item.id">
-                        </el-option>
-                    </el-select>
-                    <el-select v-model="area" filterable placeholder="所在区/县">
-                        <el-option
-                        v-for="item in areaArr"
-                        :key="item.id"
-                        :label="item.text"
-                        :value="item.id">
-                        </el-option>
-                    </el-select>     
-                    <p>
+                    <p class="province">
+                        <el-select v-model="province" filterable placeholder="省份" @change='getCity'>
+                            <el-option
+                            v-for="item in provinceArr"
+                            :key="item.id"
+                            :label="item.text"
+                            :value="item.id">
+                            </el-option>
+                        </el-select>
+                        <el-select v-model="city" filterable placeholder="城市" @change='getArea'>
+                            <el-option
+                            v-for="item in cityArr"
+                            :key="item.id"
+                            :label="item.text"
+                            :value="item.id">
+                            </el-option>
+                        </el-select>
+                        <el-select v-model="area" filterable placeholder="所在区/县">
+                            <el-option
+                            v-for="item in areaArr"
+                            :key="item.id"
+                            :label="item.text"
+                            :value="item.id">
+                            </el-option>
+                        </el-select>  
+                    </p>   
+                    <p class="detail-p">
                         <input type="text" placeholder="填写详细地址，例：深南大道1001号腾讯大厦1楼7-11商铺"
                         class="detail-area" v-model='detailArea'>
                     </p>
@@ -1078,7 +1080,7 @@ export default {
   mounted(){
     let that=this;
     that.getEditorData();
-    CKEDITOR.replace('editor', {height: '200px', width: '600px', toolbar: 'toolbar_Full'});
+    CKEDITOR.replace('editor', {height: '200px', width: '100%', toolbar: 'toolbar_Full'});
     that.editor = CKEDITOR.instances.editor;  
     // CKEDITOR.instances.WORK_INTRODUCTION.setData(“要显示的文字内容”);
     that.editor.on('change',function(){
@@ -1202,14 +1204,20 @@ export default {
                     padding-left: 10px;
                     padding-right: 10px;
                 }
-                .detail-area{
-                    width: 480px;
-                    height: 44px;
-                    border: 1px solid #DCDFE6;
-                    border-radius: 3px;
-                    margin-top: 15px;
-                    padding-left: 10px;
+                .province{
+                    height: 40px;
+                    position: relative;
                 }
+                .detail-p{
+                    margin-top: 15px;
+                    .detail-area{
+                        width: 400px;
+                        height: 40px;
+                        border: 1px solid #DCDFE6;
+                        border-radius: 3px;
+                        padding-left: 10px;
+                    }
+                }              
                 .money{
                     >.month{ 
                         display: inline-block;                      
@@ -1287,8 +1295,7 @@ export default {
                 }
                 .textarea-box{
                     position: relative;
-                    border-radius: 3px;
-                    width: 600px;
+                    border-radius: 5px;
                     >span{
                         position: absolute;
                         bottom: 10px;
@@ -1301,7 +1308,7 @@ export default {
                     font-size: 13px;
                 }
                 .label-box{
-                    width: 800px;
+                    // width: 800px;
                     margin-top: 10px;
                     span{
                         display: inline-block;
@@ -1423,11 +1430,15 @@ export default {
 }
 </style>
 <style>
-#releasePositions .el-select{
-   margin-right: 10px;
+#releasePositions .province .el-select {
+    width: 130px;
+    margin-right: 20px;
+    height: 40px;   
 }
-#releasePositions .el-select>.el-input {
-   width: 150px;
+#releasePositions .el-scrollbar {
+    overflow: hidden;
+    position: relative;
+    width: 130px;
 }
 #releasePositions .money .el-input{
     width: 120px;
@@ -1439,8 +1450,15 @@ export default {
     width: 300px;
 }
 #releasePositions .job-time .el-input{
-    width: 80px;
+    width: 90px;
     margin-right: 6px;
+}
+#releasePositions .el-select{
+   margin-right: 10px;
+   width: 90px;
+}
+.el-input__inner:focus {
+    border-color: #DCDFE6!important;
 }
 #releasePositions .ck.ck-editor {
     width: 600px;

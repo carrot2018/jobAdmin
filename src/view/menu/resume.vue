@@ -69,7 +69,8 @@ export default {
       arr:[], // 简历渲染的数据
       totalNum:0, // 简历总份数
       readStatus:true, // 阅读状态
-      hasCookieImage:false
+      hasCookieImage:false,
+      requestId:localStorage.getItem('requestId'), 
     };
   },
   methods: {
@@ -94,7 +95,7 @@ export default {
 
     // 获取简历管理信息
     getResumeAdminMessage() {
-      axios.get('/api/job-route-invoker/list?requestId=8f4fc2e6-6fec-4058-a220-e8902833021c',
+      axios.get('/api/job-route-invoker/list?requestId='+this.requestId,
       ).then((response) => {
         console.log(response)
         let res = response.data;
