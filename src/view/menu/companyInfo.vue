@@ -6,10 +6,6 @@
     </h3>
     <div class="companyInfo-box">
         <div class="step">
-            <!-- <el-steps :active="active" align-center>
-                <el-step title="企业简介"></el-step>
-                <el-step title="主营餐饮"></el-step>
-            </el-steps> -->
             <span :class='{bg:active==1}'>1 • 企业简介</span>
             <!-- <span></span> -->
             <span :class='{bg:active==2}'>2 •主营餐饮</span>
@@ -494,7 +490,6 @@ export default {
         time: 1000,
         txt: 'You selected >5M files'
       }).show()
-    //   this.filesAdded(files)
     },
     toRelease(){//去发布职位
         this.$router.push({path:'/releasePositions'})
@@ -695,7 +690,8 @@ export default {
                         height: 40px;
                         border: 1px solid #DCDFE6;
                         border-radius: 3px;
-                        padding-left: 10px;
+                        // padding-left: 10px;
+                        padding: 0 10px;
                     }
                 }
                

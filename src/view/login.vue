@@ -16,7 +16,7 @@
         <div class="pwd-box">  
             <img src="../../static/img/Password.png" > 
             <div class="pwd-input">
-                <el-input placeholder="输入登录密码" v-model="password" show-password @keyup.enter='login'></el-input>
+                <el-input placeholder="输入登录密码" v-model="password" show-password  @keyup.enter='login()'></el-input>
             </div> 
         </div>
         <p class='error-pwd' v-show='passwordShow'>
@@ -32,14 +32,14 @@
 export default {
   data () {
     return {
-        // 15019230830
+        // 13538168863
         // 123456789
-        phone:'',
-        // phone:'15019230830',
+        phone:'13538168863',
+        // phone:'13538168863',
         phoneShow:false,
         phoneText:'',
-        password:'',
-        // password:'123456789',
+        password:'123456',
+        // password:'123456',
         passwordShow:false,
         passwordText:'',
         requestId:localStorage.getItem('requestId'),
@@ -49,22 +49,25 @@ export default {
     phoneInput(){//输入整数
         this.phone=this.phone.replace(/^(0+)|[^\d]+/g,'');
     },
-    pwdInput(){//输入整数
-        // this.password=this.password.replace(/^(0+)|[^\d]+/g,'');
-    },
     isLogin(){
         let that=this;
         that.$http.get('/api/checkLogin?loginRequestId='+that.requestId,{})
         .then((res)=>{
+            console.log(res)
             if(res.data.code=='000'){//免密登录成功
                 let userInfo=res.data.data;
                 window.localStorage.setItem('userInfo',JSON.stringify(userInfo));
-                that.$router.push({path:'/companyInfo'}) 
+                if(userInfo.province.length!=6 && userInfo.staffs=='0'){//企业信息未填过
+                    that.$router.push({path:'/companyInfo'}) 
+                }else{//企业信息填过
+                    that.$router.push({path:'/releasePositions'})
+                } 
             }
         })
     },
     login(){
         let phoneReg=/^1[3|4|5|6|7|8|9][0-9]{9}$/;
+        let pwdRege=/^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{8,16}$/;
         if(!this.phone){
             this.phoneShow=true;
             this.phoneText='手机号不能为空';
@@ -87,10 +90,16 @@ export default {
         }else{
             this.passwordShow=false;
         }
+        // if(!pwdRege.test(this.password)){
+        //     this.passwordShow=true;
+        //     this.passwordText='密码为8~16位的数字和英文';
+        //     return;
+        // }else{
+        //     this.passwordShow=false;
+        // }
         let that=this;
-        that.$http.get('/api/login?mobile='+that.phone+'&password='+that.password)
+        that.$http.get('/api/login?mobile='+that.phone+'&password='+that.password,{})
         .then((res)=>{
-            console.log(res)
             if(res.data.code=='000'){
                 that.toast = this.$createToast({
                     txt: '登陆成功',
@@ -104,25 +113,25 @@ export default {
                         setTimeout(function(){
                             window.localStorage.removeItem('requestId');
                         },1000*60*60*24*7)
-                        that.$router.push({path:'/companyInfo'})  
+                        if(userInfo.province.length!=6 && userInfo.staffs=='0'){//企业信息未填过
+                           that.$router.push({path:'/companyInfo'}) 
+                        }else{//企业信息填过
+                            that.$router.push({path:'/releasePositions'})
+                        } 
                     }
                 })
                 that.toast.show()    
                                     
-            }else if(res.data.code=='669'){
-                that.toast = this.$createToast({
-                    txt: '密码错误',
-                    time: 1500,
-                    type: 'txt',                  
-                })
-                that.toast.show()                      
+            }else if(res.data.code=='667'){
+                this.passwordShow=true;
+                this.passwordText='密码错误';                   
             }else if(res.data.code=='500'){
                 that.toast = this.$createToast({
                     txt: '登陆失败',
                     type: 'txt',
                     time: 1500,
                 })
-                that.toast.show()                  
+                that.toast.show();                  
             }else if(res.data.code=='668'){
                 this.phoneShow=true;
                 this.phoneText="账号不存在";

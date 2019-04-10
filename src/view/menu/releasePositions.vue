@@ -194,8 +194,8 @@
                 <span class='no-line-height'>职位描述</span> 
                 <div class="right">
                     <div class="textarea-box">
-                        <textarea id="editor" placeholder="请简要描述工作职责或工作内容，最多1000字。" maxlength="1000"                       
-                        ></textarea>
+                        <textarea id="editor" placeholder="请简要描述工作职责或工作内容，最多1000字。"                      
+                        maxlength="1000"></textarea>
                         <span>{{textareaText}}/1000</span>
                     </div>
                 </div>
@@ -1048,8 +1048,8 @@ export default {
     that.getEditorData();
     CKEDITOR.replace('editor', {height: '200px', width: '100%', toolbar: 'toolbar_Full'});
     that.editor = CKEDITOR.instances.editor;  
-    // CKEDITOR.instances.WORK_INTRODUCTION.setData(“要显示的文字内容”);
     that.editor.on('change',function(){
+        let contentEditor=that.editor.document.getBody().getText();
         if(that.editor.getData()==''){
             that.editor.getData('')
             that.textareaText=0;
@@ -1057,9 +1057,16 @@ export default {
         }else{
             setTimeout(function(){
                 let content=that.editor.document.getBody().getText();
-                that.textareaText=content.length;   
+                if(content.length<=1000){
+                    that.textareaText=content.length;
+                }else{                 
+                    content=content.substring(0,1000)
+                    let maxContent= that.editor.setData(content)
+                    that.textareaText=1000;
+                }   
             },1600)
         }     
+        
     }); 
   }
 }
@@ -1279,7 +1286,7 @@ export default {
                     >span{
                         position: absolute;
                         bottom: 10px;
-                        right: 10px; 
+                        right: 20px; 
                         color: #999;
                     }
                 }
