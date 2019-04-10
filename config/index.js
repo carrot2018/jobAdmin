@@ -12,7 +12,7 @@ module.exports = {
     proxyTable: {
       '/api': {//自定义名字，代表的是以下target中的内容
         // target: 'http://23e74b3832.wicp.vip/',//本地地址
-        target: 'http://192.168.1.111:8889/', // 测试环境地址
+        target: 'http://192.168.1.111:8889/job-route-invoker/', // 测试环境地址
         changeOrigin: true,//是否允许跨域
         pathRewrite: {
           '^/api': ''

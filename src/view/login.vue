@@ -54,7 +54,7 @@ export default {
     },
     isLogin(){
         let that=this;
-        that.$http.get('/api/job-route-invoker/checkLogin?loginRequestId='+that.requestId,{})
+        that.$http.get('/api/checkLogin?loginRequestId='+that.requestId,{})
         .then((res)=>{
             if(res.data.code=='000'){//免密登录成功
                 let userInfo=res.data.data;
@@ -88,7 +88,7 @@ export default {
             this.passwordShow=false;
         }
         let that=this;
-        that.$http.get('/api/job-route-invoker/login?mobile='+that.phone+'&password='+that.password)
+        that.$http.get('/api/login?mobile='+that.phone+'&password='+that.password)
         .then((res)=>{
             console.log(res)
             if(res.data.code=='000'){
