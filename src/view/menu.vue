@@ -13,9 +13,12 @@
                 <img src="../../static/img/huangguan.png" >
                 <span>账号权益</span>
             </span>
-            <span>
+            <span class='click-layout' @click='clickLayout()'>
                 <span v-text='userInfo.name'></span>
                 <span class="iconfont iconxiala"></span>
+                <!-- <div>
+                    退出登录
+                </div> -->
             </span>
         </div>
     </div>
@@ -94,7 +97,8 @@
 export default {
   data () {
     return {
-      thisRoute:''
+      thisRoute:'',
+      requestId:localStorage.getItem('requestId'),
     }
   },
   methods:{
@@ -103,6 +107,26 @@ export default {
     },
     handleClose(key, keyPath) {
         console.log(key, keyPath);
+    },
+    clickLayout(){
+        this.$http.get('/api/loginOut?requestId='+this.requestId,
+        ).then((res)=>{
+            console.log(res)
+            if(res.data.code=='000'){
+                this.toast = this.$createToast({
+                    txt: '退出成功',
+                    type: 'txt',
+                    time: 1500,
+                    onTimeout: () => {                   
+                        window.localStorage.removeItem('requestId'); 
+                        window.localStorage.removeItem('userInfo');  
+                        this.$router.push('login');                                           
+                    }
+                })
+                this.toast.show() 
+            }
+           
+        })
     }
 
   },

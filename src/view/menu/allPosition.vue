@@ -30,8 +30,8 @@
                         </span>
                     </p>
                     <p>
-                        <span>{{item.paytype==1?item.paymentMinStr+"~"+item.paymentMaxStr:item.paymentMax+"元"}} / <span v-text='item.paytype==1?"月":"日"'></span></span>
-                        <span>{{item.cityName+'-'+item.areaName}}</span>
+                        <span>{{item.paytype==1?item.paymentMinStr+"~"+item.paymentMaxStr:item.paymentMax}}元 / <span v-text='item.paytype==1?"月":"日"'></span></span>
+                        <span><span class="iconfont iconjiguan"></span>{{item.cityName+'-'+item.areaName}}</span>
                     </p>
                     <p v-show='item.remark'>
                         <span v-for='v in item.remark.split(",")'>{{v}}</span>
@@ -101,24 +101,14 @@ export default {
         that.$http.post('/api/job/selectJobOfPageList?pushStatus='+that.template+'&requestId='+that.requestId,params
         ).then((res)=>{
             console.log(res)
-            // if(res.data.code=='666'){
-            //     that.$message({
-            //         message: '请先登录',
-            //         center: true,
-            //         onClose:function(){
-            //             that.$router.push('/login');
-            //         }
-            //     });
-            // }else{
-                this.list=res.data.data.jobs;
-                console.log(this.list)
-                this.allTotal=res.data.data.totalRecord;  
-                if(this.allTotal>this.pageSize){
-                    this.page=true;
-                }else{
-                    this.page=false;
-                }
-            // }
+            this.list=res.data.data.jobs;
+            console.log(this.list)
+            this.allTotal=res.data.data.totalRecord;  
+            if(this.allTotal>this.pageSize){
+                this.page=true;
+            }else{
+                this.page=false;
+            }
            
         }).catch((error)=>{
             console.log(error)
@@ -193,7 +183,7 @@ export default {
     },
     deleteList(item){//删除
         let that=this;
-        that.$http.get('/api/job/deleteJobsById/'+item.id+'&requestId='+that.requestId,{
+        that.$http.get('/api/job/deleteJobsById/'+item.id+'?requestId='+that.requestId,{
         }
         ).then((res)=>{
             console.log(res)
@@ -263,6 +253,7 @@ export default {
 #allPosition{
     // height: 100%;
     // min-height: 100%;
+    // #00b7ee
 }
 .content-box{
     padding: 27px 0 40px 0;
@@ -357,11 +348,14 @@ export default {
             }
             >p:nth-of-type(2){
                 margin-top: 16px;
-                    span:nth-of-type(1){
-                        color: #FF5571;
-                    }
+                    color: #666;
                     span:nth-of-type(2){
-                     margin-left: 15px;
+                        margin-left: 15px;
+                        .iconjiguan{
+                            font-size: 18px;
+                            position: relative;
+                            top: 2px;
+                        }
                     }
             }
             >p:nth-of-type(3){

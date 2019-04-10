@@ -11,7 +11,8 @@
                   </span> 
                 <div class="right">
                     <input type="text" class='job-name' placeholder="填写职位名，例：湘菜炒锅师傅"
-                    maxlength="30" v-model='name'>
+                    maxlength="30" v-model='name' v-show='!editorId'>
+                    <span v-text='hasName' v-show='editorId' class='job-name-text'></span>
                     <span class="job-name-tip"><span class="iconfont icongantanhao"></span> 请认真填写职位名，发布后不可更改</span>
                 </div>               
             </div>
@@ -109,9 +110,6 @@
                         </span>                       
                         <i>
                             <span @click='checkMonth(1)'>
-                                <!-- <span class="iconfont iconradio-checked1" v-show="month==1"></span> 
-                                <span class="iconfont icondanxuan" v-show="month==2"></span>        
-                                <span>月结</span> -->
                                 <span class="radio1 radio-on" v-show="month==1">
                                   <i class="radio-on__icon"></i>
                                   <span>月结</span>
@@ -120,12 +118,8 @@
                                 <span class="radio1 radio-off" v-show="month==2">
                                   <span>月结</span>
                                 </span>        
-                                <!-- <span>月结</span> -->
                             </span>
                             <span @click='checkMonth(2)'>
-                                <!-- <span class="iconfont iconradio-checked1" v-show="month==2"></span> 
-                                <span class="iconfont icondanxuan" v-show="month==1"></span>    
-                                <span>日结</span> -->
                                 <span class="radio1 radio-on" v-show="month==2">
                                   <i class="radio-on__icon"></i>
                                   <span>日结</span>
@@ -133,7 +127,6 @@
                                 <span class="radio1 radio-off" v-show="month==1">
                                   <span>日结</span>
                                 </span>    
-                                <!-- <span>日结</span> -->
                             </span>
                         </i>     
                     </div>
@@ -151,9 +144,6 @@
                 <div class="right">
                     <span class='job-type-check'>
                         <span @click='checkJobType(0)'>
-                            <!-- <span class="iconfont iconradio-checked1" v-show="jobType==0"></span> 
-                            <span class="iconfont icondanxuan" v-show="jobType==1"></span>
-                            <span>全职</span> -->
                             <span class="radio1 radio-on" v-show="jobType==0">
                               <i class="radio-on__icon"></i>
                               <span>全职</span>
@@ -164,9 +154,6 @@
                             </span>  
                         </span>
                         <span @click='checkJobType(1)'>
-                             <!-- <span class="iconfont iconradio-checked1" v-show="jobType==1"></span> 
-                            <span class="iconfont icondanxuan" v-show="jobType==0"></span> 
-                            <span>兼职</span> -->
                             <span class="radio1 radio-on" v-show="jobType==1">
                               <i class="radio-on__icon"></i>
                               <span>兼职</span>
@@ -274,14 +261,6 @@
                    <div class="custom" @click='clickCustomWelfare()' v-show='customWelfare'>
                        <span class="iconfont iconjia"></span><span>自定义</span>
                    </div>
-                   <!-- <p class='rule'>已阅读并遵守<span>《名厨之家职位信息发布规则》</span></p>
-                   <div class="next">
-                       <span @click='clickBtn()'>发布</span>
-                       <span><span class="iconfont icongantanhao"></span> 每个职位默认有效期为30天，到期自动关闭，可手动重新发布</span>
-                   </div>
-                    <div class="sensitive">
-                       <span v-show='sensitive'><span class="iconfont icongantanhao"></span> 职位内容中不允许含有敏感词， 请修改后再发布</span>
-                   </div>   -->
                     
                 </div>
             </div>
@@ -305,11 +284,13 @@
             :visible.sync="centerDialogVisible"
             width="30%"
             center>
+            <img src="../../../static/img/icon.png" class='icon-img'>
             <span>职位每天可刷新1次，有求职者投递请到“简历管理”中查看。</span>
             <span slot="footer" class="dialog-footer">
                 <el-button type="primary" @click='i_know()'>我知道了</el-button>
             </span>
         </el-dialog>
+
          
     </div> 
 </div>
@@ -320,9 +301,9 @@ import CKEDITOR from 'CKEDITOR';
 export default {
   data () {
     return {
-      
         editorId:'',//编辑id
         name:'',//职位名称
+        hasName:'',//职位名称
         centerDialogVisible: false,
         moneyTip:'',//薪资提示文字
         moneyTipShow:false,//薪资提示显示
@@ -502,7 +483,13 @@ export default {
                 this.moneyTipShow=false;             
             }
         }
-        let age=this.age_1+'~'+this.age_2;
+        let age;
+        if(!this.age_2){
+            age=this.age_1;
+        }else{
+            age=this.age_1+'~'+this.age_2;
+        }
+        
         let description=this.editor.getData();
         console.log( description.length )
         let remarkArr=[],welfareArr=[];
@@ -536,13 +523,23 @@ export default {
         that.$http.post('/api/job/pushJob?requestId='+that.requestId,params
         ).then((res)=>{
             console.log(res)
-            if(res.data.code=='002'){
+            if(res.data.code=='000'){
                 this.sensitive=false;
                 this.centerDialogVisible=true;
-            }
-            if(res.data.code=='503'){
+                sessionStorage.setItem('hasRelease',true);
+            }else if(res.data.code=='500'){
+                this.sensitive=true;
+                // 当前职位已经存在
+                this.$message({
+                    type: 'success',
+                    message: '当前职位已经存在',
+                    center: true
+                });
+            }else  if(res.data.code=='503'){
                this.sensitive=true;
             }
+           
+           
         })
     },
     change(){//修改
@@ -557,10 +554,6 @@ export default {
         // welfare  福利待遇
         // id(职位主键id)
         let numReg=/^[0-9]{6}$/
-        if(!this.name ){
-            $('#scrollBox').scrollTop(0);
-            return;
-        }
         if(!this.province){
             this.addressShow=true;
             this.addressText='请选择省份'
@@ -636,12 +629,12 @@ export default {
         if(!numReg.test(this.area)){
             this.area=this.areaId;
         }    
-        if(this.salaryOne.indexOf('k')>0){
-            this.salaryOne=parseInt(this.salaryOne)
-        }
-        if(this.salaryTwo.indexOf('k')>0){
-            this.salaryTwo=parseInt(this.salaryTwo)
-        }
+        // if(this.salaryOne.indexOf('k')>0){
+        //     this.salaryOne=parseInt(this.salaryOne)
+        // }
+        // if(this.salaryTwo.indexOf('k')>0){
+        //     this.salaryTwo=parseInt(this.salaryTwo)
+        // }
         let age=this.age_1+'~'+this.age_2;
         let description=this.editor.getData();
         console.log( description.length )
@@ -678,7 +671,14 @@ export default {
             console.log(res)
             if(res.data.code=='000'){
                 this.sensitive=false;
-                this.centerDialogVisible=true;
+                this.$message({
+                    type: 'success',
+                    message: '职位修改成功!',
+                    center: true
+                }).then(function(){
+                    this.$router.push('/allPosition');
+                })
+                
             }
             if(res.data.code=='503'){
                this.sensitive=true;
@@ -974,23 +974,24 @@ export default {
            console.log(res) 
            if(res.data.code=='000'){
               let detail=res.data.data;
-              this.name=detail.name;
+              this.hasName=detail.name;
               this.province=detail.province;
               this.city=detail.cityName;
               this.area=detail.areaName;
+              this.detailArea=detail.address;
                 this.cityId=detail.city;
                 this.areaId=detail.area;
               if(detail.paytype==1){//1 月结 2日结
                 this.month=1;
-                this.salaryOne=detail.paymentMinStr;
-                this.salaryTwo=detail.paymentMaxStr;
+                this.salaryOne=detail.paymentMin*1000;
+                this.salaryTwo=detail.paymentMax*1000;
               }else if(detail.paytype==2){
                 this.month=2;
                 this.salaryTwo=detail.payment;
               }
               this.jobType=detail.isParttime;
               this.experience=detail.workYear;
-              let ageArr=detail.age.split('-');
+              let ageArr=detail.age.split('~');
               this.age_1=ageArr[0];
               this.age_2=ageArr[1];
               this.editor.setData(detail.description);
@@ -1043,39 +1044,37 @@ export default {
         })
     }
   },
-//   beforeRouteLeave(to, from, next) {
-    //   let xxx=this.centerDialogVisible;
-    //   let ckeditor=this.editor.getData();
-    //   if(typeof this.editorId== 'undefined'){//发布
-     
-    //     if(!xxx){
-    //         alert(1)
-    //         console.log(this.centerDialogVisible)
-    //         if(this.name!=''||this.province!=''||this.detailArea!=''
-    //         ||this.salaryOne!=''||this.salaryTwo!=''||this.age_1!=''||ckeditor!=''||this.experience!=''||
-    //         this.addSkillArr.length!=0|| this.addWelfareArr.length!=0){
-    //             this.$confirm('内容没有保存，确定要离开吗？', {
-    //                 confirmButtonText: '确定',
-    //                 cancelButtonText: '取消',
-    //                 center: true
-    //             }).then(() => {
-    //                 next();
-    //             })
+  beforeRouteLeave(to, from, next) {
+      let hasRelease=sessionStorage.getItem('hasRelease');
+      let ckeditor=this.editor.getData();
+      if(this.editorId==undefined){//发布
+        if(!hasRelease){
+            if(this.name!=''||this.province!=''||this.detailArea!=''
+            ||this.salaryOne!=''||this.salaryTwo!=''||this.age_1!=''||ckeditor!=''||this.experience!=''||
+            this.addSkillArr.length!=0|| this.addWelfareArr.length!=0){
+                this.$confirm('内容没有保存，确定要离开吗？', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    center: true
+                }).then(() => {
+                    next();
+                })
                 
-    //         }else{
-    //             next();
-    //         }
+            }else{
+                next();
+            }
 
-    //     } 
-    //   }else{//修改
-    //     next(); 
-    //   }
-//   },
+        } 
+      }else{//修改
+        next(); 
+      }
+  },
   created(){
     this.getProvince();
     this.getSkillArr();
     this.getWelfareArr();
     this.editorId=this.$route.query.id;
+    console.log(this.editorId)
   },
   mounted(){
     let that=this;
@@ -1170,9 +1169,9 @@ export default {
         .radio1 {
           text-align: center;
           display: inline-block;
-          height: 38px;
-          width: 100px;
-          line-height: 38px;
+          height: 35px;
+          width: 70px;
+          line-height: 35px;
           border-radius: 20px;
           font-size: 18px;
             position: relative;
@@ -1243,6 +1242,18 @@ export default {
                     padding-left: 10px;
                     padding-right: 10px;
                 }
+                .job-name-text{
+                    display: inline-block;
+                    width: 300px;
+                    height: 44px;
+                    line-height: 44px;
+                    border: 1px solid #DCDFE6;
+                    border-radius: 3px;
+                    margin-right: 8px;
+                    padding-left: 10px;
+                    padding-right: 10px;
+
+                }
                 .province{
                     height: 40px;
                     position: relative;
@@ -1259,22 +1270,17 @@ export default {
                 }              
                 .money{
                     height: 40px;
+                    position: relative;
                     >.month{ 
                         display: inline-block;  
                         height: 40px;
                         line-height: 40px;
                         position: relative;
-                        >.money-1{
-                            width: 120px;
+                        >.money-1,>.money-2{
+                            width: 115px;
                             height: 40px;                         
                             display: inline-block;
-                        }  
-                        >.money-2{
-                            width: 120px;
-                            height: 40px;
-                            display: inline-block;  
-                                                 
-                        }                 
+                        }                                    
                         span:nth-of-type(2),span:nth-of-type(4){
                             margin: 0 6px;
                         }
@@ -1284,33 +1290,21 @@ export default {
                     }
                     >i{
                         font-style: normal;                  
-                        margin-left: 20px;
+                        margin-left: 15px;
+                        position: relative;
+                        top: 2px;
                         >span{
-                            cursor: pointer;
-                            >.iconradio-checked1{
-                                // font-size: 24px!important;
-                                // position: relative;
-                                // top: 3px;
-                                // color: #999;
-                                
-                            }
-                            >.icondanxuan{
-                                // font-size: 22px!important;
-                                // position: relative;
-                                // top: 2px;
-                                // color: #999;
-
-                            }
+                            cursor: pointer;                           
                             >.radio1 {
-                               text-align: center;
-                              display: inline-block;
-                               height: 38px;
-                              width: 100px;
-                              line-height: 38px;
-                              border-radius: 20px;
-                              font-size: 18px;
-                               position: relative;
-                              letter-spacing: 3px;
+                                text-align: center;
+                                display: inline-block;
+                                height: 35px;
+                                width: 70px;
+                                line-height: 35px;
+                                border-radius: 20px;
+                                font-size: 18px;
+                                position: relative;
+                                letter-spacing: 3px;
                             }
                             >.radio-off {
                               border: 1px solid #DCDFE6;
@@ -1338,7 +1332,7 @@ export default {
 
                         }
                         >span:nth-of-type(2){
-                            margin-left: 20px;
+                            margin-left: 10px;
                         }
 
                     }
@@ -1534,7 +1528,7 @@ export default {
     width: 130px;
 }
 #releasePositions .money .el-input{
-    width: 120px;
+    width: 115px;
     height: 40px;
 }
 #releasePositions .right.age .el-input{
@@ -1570,38 +1564,49 @@ export default {
     font-size: 13px;
 }
 #releasePositions .el-dialog--center {
-    width: 40%!important;
+    width: 580px!important;
     position: absolute;
     left: 50%;
     top: 50%;
     transform: translate(-50%,-50%);
     margin-top: 0!important;
+    border-radius: 4px;
 }
 #releasePositions .el-dialog__header {
-    padding: 80px 20px 10px;
-   
+    padding: 160px 20px 10px; 
+}
+#releasePositions .el-dialog__headerbtn .el-dialog__close{
+    font-size: 26px;
+    color: #142D46;
+}
+#releasePositions .el-dialog__headerbtn .el-dialog__close:hover{
+   color: #ff5571;
 }
 #releasePositions .el-dialog__title{
     font-weight: 700;
     font-size: 22px;
+    color: #142D46;
 }
 #releasePositions .el-dialog__body {
-    padding: 10px 25px 30px;
+    padding: 0 25px 30px;
+    color: #666;
+    font-size: 15px;
 }
-#releasePositions .el-dialog__headerbtn .el-dialog__close{
-    font-size: 30px;
-}
-#releasePositions .el-dialog__footer{
-    padding: 10px 20px 40px;
 
+#releasePositions .el-dialog__footer{
+    padding: 30px 20px 40px;
 }
 #releasePositions .el-dialog--center .el-dialog__body {
     text-align: center;
 }
 #releasePositions .el-button--primary {
-    color: #333;
-    background-color: #ccc;
-    border-color: #ccc;
+    color: #fff;
+    background-color: #ff5571;
+    border-color: #ff5571;
+    width: 180px;
+    border-radius: 4px;
+    font-size: 18px;
+    letter-spacing: 3px;
 }
 #releasePositions .el-message-box__message p {
     font-size: 18px;
@@ -1621,6 +1626,29 @@ export default {
 .el-message-box__headerbtn .el-message-box__close{
     font-size: 24px;
 }
+.icon-img{
+    position: absolute;
+    top: 35px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+input::-webkit-input-placeholder, textarea::-webkit-input-placeholder {
+    color: #999;
+    font-size: 13px;
+}
+input:-moz-placeholder, textarea:-moz-placeholder {
+    color: #999;
+    font-size: 13px;
+}
+input::-moz-placeholder, textarea::-moz-placeholder {
+    color: #999;
+    font-size: 13px;
+}
+input:-ms-input-placeholder, textarea:-ms-input-placeholder {
+    color: #999;
+    font-size: 13px;
+}
+
 </style>
 
 
