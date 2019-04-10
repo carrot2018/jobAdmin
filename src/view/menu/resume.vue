@@ -6,6 +6,32 @@
       </h3>
       <div class="title">
         <span @click="checkTitle(1)">主动投递<span class="title--pink"> ({{totalNum}})</span></span>
+        <div class="title__select">
+          <el-select 
+            v-model="positionSort" 
+            clearable 
+            placeholder="按招聘职位">
+            <el-option
+              v-for="item in options1"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value">
+            </el-option>
+          </el-select>
+
+          <el-select
+            v-model="timeSort"
+            clearable 
+            style="margin-left: 20px;"
+            placeholder="按招聘时间">
+            <el-option
+              v-for="item in options2"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value">
+            </el-option>
+          </el-select>
+        </div>
       </div>
       <div class="list-box">
         <div class="every" 
@@ -71,6 +97,25 @@ export default {
       readStatus:true, // 阅读状态
       hasCookieImage:false,
       requestId:localStorage.getItem('requestId'),
+      options1:[{
+          value: '选项1',
+          label: '高级厨师'
+        }, {
+          value: '选项2',
+          label: '中级厨师'
+        }, {
+          value: '选项3',
+          label: '初级厨师'
+        }],
+      positionSort: '',
+      options2:[{
+          value: '选项1',
+          label: '升序'
+        }, {
+          value: '选项2',
+          label: '降序'
+        }],
+      timeSort: ''
     };
   },
   methods: {
@@ -166,6 +211,33 @@ export default {
 };
 </script>
 <style scoped lang='scss'>
+.el-select {
+  width: 140px;
+  
+}
+/deep/ .el-input {
+  font-size: 16px;
+  color: #666;
+}
+
+/deep/ .el-input__inner {
+  border-radius:8px;
+  &::-webkit-input-placeholder { /* Chrome */
+  color: #666;
+  }
+  &:-ms-input-placeholder { /* IE 10+ */
+  color: #666;
+  }
+  &::-moz-placeholder { /* Firefox 19+ */
+    color: #666;
+    opacity: 1;
+  }
+  &:-moz-placeholder { /* Firefox 4 - 18 */
+    color: #666;
+    opacity: 1;
+  }
+}
+
 #resume {
 
 }
@@ -186,9 +258,15 @@ export default {
     }
   }
   > .title {
-    padding-top: 17px;
+    // padding-top: 17px;
     border-bottom: 1px solid #e6eef1;
     padding-bottom: 18px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    .title__select {
+      display: inline-block;
+    }
     .title--pink {
       color: #ff5571;
     }

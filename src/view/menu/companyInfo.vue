@@ -10,9 +10,10 @@
                 <el-step title="企业简介"></el-step>
                 <el-step title="主营餐饮"></el-step>
             </el-steps> -->
-            <span :class='{bg:active==1}'>1 • 企业简介</span>
+            <span :class='{bg:active==1}'>1 • 企业简介<span v-show="active==1"></span></span>
+            
             <!-- <span></span> -->
-            <span :class='{bg:active==2}'>2 •主营餐饮</span>
+            <span :class='{bg:active==2}'>2 •主营餐饮<span v-show="active==2"></span></span>
 
         </div>
         <div class="content-1" v-show='template==1'>        
@@ -619,9 +620,10 @@ export default {
         width: 100%;
         height: 60px;
         background: #f9fcfe;
+        position: relative;
         >span:nth-of-type(1){
             display: inline-block;
-            width: 50%;
+            width: calc(50% - 30px);
             height: 100%;
             line-height: 60px;
             text-align: center;
@@ -630,6 +632,18 @@ export default {
             font-weight: 700;
             float: left;
             cursor: pointer;
+            >span {
+              position: absolute;
+              display: inline-block;
+              width: 0;
+              height: 0;
+              left: calc(50% - 30px);
+              border: 30px solid ;
+              border-color:  transparent transparent transparent #e2e9f6;
+            }
+        }
+        >span:nth-of-type(2) {
+         
         }
         >span:nth-of-type(2){
             display: inline-block;
@@ -642,11 +656,29 @@ export default {
             color:#666;
             float: left;
             cursor: pointer;
+            >span {
+              position: absolute;
+              display: inline-block;
+              width: 0;
+              height: 0;
+              left: calc(50% - 30px);
+              border: 30px solid ;
+              border-color:  transparent transparent transparent #f9fcfe;
+            }
         }
         .bg{
             color:#142D46;
             font-weight: 700;
             background: #e2e9f6;
+            // >span {
+            //   position: absolute;
+            //   display: inline-block;
+            //   width: 0;
+            //   height: 0;
+            //   left: calc(50% - 30px);
+            //   border: 30px solid ;
+            //   border-color:  transparent transparent transparent #e2e9f6;;
+            // }
         }
         
     }

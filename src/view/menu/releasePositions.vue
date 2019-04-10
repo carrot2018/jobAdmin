@@ -1099,6 +1099,11 @@ export default {
 }
 </script>
 <style scoped lang='scss'>
+
+// /deep/ .cke_ltr .cke_button__numberedlist_icon {
+//   background: url('../../../static/img/has-checked.png') no-repeat 0 -576px !important;
+// }
+
 #releasePositions{
     height: auto;
     min-height: 100%;
