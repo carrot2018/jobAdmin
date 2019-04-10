@@ -258,11 +258,6 @@ export default {
     // min-height: 100%;
 }
 .content-box{
-<<<<<<< HEAD
-    // height: 100%;
-
-=======
->>>>>>> 564cd8b7b5f9432b5349afc77ba7e9724a07c64f
     padding: 27px 0 40px 0;
     h3{
         height: 50px;

@@ -80,21 +80,25 @@
                 <div class="right">
                     <div class="money" >
                         <span class="month" v-show="month==1">
-                            <el-input
-                                v-on:input="integerOne()"
-                                placeholder="例：5000"
-                                v-model="salaryOne"
-                                clearable>
-                            </el-input> 
+                            <span class="money-1">
+                                <el-input
+                                    v-on:input="integerOne()"
+                                    placeholder="例：5000"
+                                    v-model="salaryOne"
+                                    clearable>
+                                </el-input> 
+                            </span>
                             <span>至</span> 
-                            <el-input
-                                v-on:input="integerTwo()"
-                                @focus="integerTwoFocus()"
-                                @blur="integerTwoBlur()"
-                                placeholder="例：10000"
-                                v-model="salaryTwo"
-                                clearable>
-                            </el-input> 
+                            <span class="money-2">
+                                <el-input
+                                    v-on:input="integerTwo()"
+                                    @focus="integerTwoFocus()"
+                                    @blur="integerTwoBlur()"
+                                    placeholder="例：10000"
+                                    v-model="salaryTwo"
+                                    clearable>
+                                </el-input> 
+                            </span>
                             <span>元</span>
                         </span>
                         <span class="day" v-show="month==2">
@@ -164,7 +168,7 @@
             <div>
                 <span>年龄要求 </span> 
                 <div class="right age"> 
-                    <div>    
+                    <div class="age-input">    
                         <el-input
                             v-model='age_1'
                             v-on:input="ageOne()"
@@ -251,12 +255,10 @@
                 </div>
             </div>
             <div class="box-bottom">
-                <!-- <span class='no-line-height'></span>  -->
                 <div class="right">
-                  
                    <p class='rule'>已阅读并遵守<span>《名厨之家职位信息发布规则》</span></p>
                    <div class="next">
-                       <span @click='release()'>发&emsp;布</span>
+                       <span @click='clickBtn()'>发&emsp;布</span>
                        <span><span class="iconfont icongantanhao"></span> 每个职位默认有效期为30天，到期自动关闭，可手动重新发布</span>
                    </div>
                     <div class="sensitive">
@@ -351,7 +353,6 @@ export default {
             that.skillArr.forEach(function(v){
                 that.remarkTextArr.push(v.name)                  
             })
-            // console.log( that.remarkTextArr)
         })
     },
     getWelfareArr(){//福利待遇
@@ -362,18 +363,19 @@ export default {
                 v.flag=false;
             })
             this.welfareArr=welfareArr;
-            // console.log( this.welfareArr)
             let that=this;
             that.welfareArr.forEach(function(v){
                 that.welfareTextArr.push(v.name)    
             })
-            // console.log( that.welfareTextArr)
         })
     },
     clickBtn(){
+        console.log(this.editorId)
         if(this.editorId){
+            alert(1)
             this.change();
         }else{
+            alert92
             this.release();
         }
 
@@ -512,9 +514,7 @@ export default {
             if(res.data.code=='503'){
                this.sensitive=true;
             }
-        }).catch((error)=>{
         })
-        
     },
     change(){//修改
         let detailReg=/^(?=.*?[\u4E00-\u9FA5])[\u4e00-\u9fffa-zA-Z\d\-]+$/;
@@ -946,6 +946,9 @@ export default {
     },
     getEditorData(){
         let that=this;
+        if(typeof that.editorId=='undefined'){
+            return;
+        }
         that.$http.get('/api/job-route-invoker/job/getZpJobById/'+that.editorId+'?requestId='+that.requestId,{
         }).then((res)=>{
            console.log(res) 
@@ -1035,37 +1038,27 @@ export default {
   },
   beforeRouteLeave(to, from, next) {
       let ckeditor=this.editor.getData();
-      if(this.editorId){
-         if(this.name!=''||this.province!=''||this.detailArea!=''
-        ||this.salaryOne!=''||this.salaryTwo!=''||this.age_1!=''||ckeditor!=''||this.experience!=''||
-        this.addSkillArr.length!=0|| this.addWelfareArr.length!=0){
-            this.$confirm('内容没有修改，确定要离开吗？', {
-                confirmButtonText: '确定',
-                cancelButtonText: '取消',
-                center: true
-            }).then(() => {
+      if(typeof this.editorId== 'undefined'){//发布
+        if(!this.centerDialogVisible){
+            if(this.name!=''||this.province!=''||this.detailArea!=''
+            ||this.salaryOne!=''||this.salaryTwo!=''||this.age_1!=''||ckeditor!=''||this.experience!=''||
+            this.addSkillArr.length!=0|| this.addWelfareArr.length!=0){
+                this.$confirm('内容没有保存，确定要离开吗？', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    center: true
+                }).then(() => {
+                    next();
+                })
+                
+            }else{
                 next();
-            })
-            
-        }else{
-            next();
-        }
+            }
 
-      }else{
-        if(this.name!=''||this.province!=''||this.detailArea!=''
-        ||this.salaryOne!=''||this.salaryTwo!=''||this.age_1!=''||ckeditor!=''||this.experience!=''||
-        this.addSkillArr.length!=0|| this.addWelfareArr.length!=0){
-            this.$confirm('内容没有保存，确定要离开吗？', {
-                confirmButtonText: '确定',
-                cancelButtonText: '取消',
-                center: true
-            }).then(() => {
-                next();
-            })
-            
-        }else{
-            next();
-        }
+        } 
+      }else{//修改
+        alert(2)
+        next(); 
       }
   },
   watch:{ 
@@ -1219,8 +1212,22 @@ export default {
                     }
                 }              
                 .money{
+                    height: 40px;
+                    background: cyan;
                     >.month{ 
-                        display: inline-block;                      
+                        display: inline-block;  
+                        height: 40px;
+                        position: relative;
+                        >.money-1{
+                            width: 130px;
+                            height: 40px;                         
+                            display: inline-block;
+                        }  
+                        >.money-2{
+                            width: 30px;
+                            height: 40px;
+                            display: inline-block;                       
+                        }                 
                         span{
                             margin: 0 5px;
                         }
@@ -1308,7 +1315,6 @@ export default {
                     font-size: 13px;
                 }
                 .label-box{
-                    // width: 800px;
                     margin-top: 10px;
                     span{
                         display: inline-block;
@@ -1331,10 +1337,8 @@ export default {
                     height: 36px;
                     line-height: 34px;
                     border: 1px solid #e5e5e5;
-                    // background: #e5e5e5;
                     color: #666;
                     margin-top: 15px;
-                    // padding: 8px 20px;
                     text-align: center;
                     border-radius: 20px;
                     cursor: pointer;
@@ -1343,7 +1347,6 @@ export default {
                     }
                 }
                 >.rule{
-                    // margin-top: 40px;
                     color: #999;
                 }
                 .next{
@@ -1417,12 +1420,23 @@ export default {
                 
             }
             >.right.age{
+                .age-input{
+                    height: 40px;
+                    background: #00a0e9;
+                    position: relative;
+                }
                 div{
                     span{
                         margin: 0 6px;
                     }
                 }
                 
+            }
+            >.job-time{
+                height: 40px;
+                line-height: 40px;
+                background: cyan;
+                position: relative;
             }
         
         }
@@ -1442,20 +1456,25 @@ export default {
 }
 #releasePositions .money .el-input{
     width: 120px;
+    height: 40px;
 }
 #releasePositions .right.age .el-input{
     width: 90px;
+    height: 40px;
 }
 #releasePositions .job-type .el-input{
     width: 300px;
+    height: 40px;
 }
 #releasePositions .job-time .el-input{
     width: 90px;
+    height: 40px;
     margin-right: 6px;
 }
 #releasePositions .el-select{
    margin-right: 10px;
    width: 90px;
+   height: 40px;
 }
 .el-input__inner:focus {
     border-color: #DCDFE6!important;

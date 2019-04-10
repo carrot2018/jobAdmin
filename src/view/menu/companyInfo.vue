@@ -915,14 +915,12 @@ export default {
     width: 130px;
     margin-right: 20px;
     height: 40px;
-    
 }
-.el-scrollbar {
+#companyInfo .el-scrollbar {
     width: 130px;
 }
 #companyInfo .el-input {
-    width: 130px;
-   
+    width: 130px;  
 } 
 input::-webkit-input-placeholder, textarea::-webkit-input-placeholder {
     color: #999;
