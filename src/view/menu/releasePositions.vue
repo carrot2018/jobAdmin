@@ -8,7 +8,6 @@
             <!-- 职位名称       -->
             <div>
                 <span><span style="color:#ff5571;">*</span>职位名称 
-                  <!-- <span class="iconfont iconjiufuqianbaoicon14"></span> -->
                   </span> 
                 <div class="right">
                     <input type="text" class='job-name' placeholder="填写职位名，例：湘菜炒锅师傅"
@@ -75,7 +74,6 @@
             <!-- 薪资 -->
             <div>
                 <span><span style="color:#ff5571;">*</span>薪&emsp;&emsp;资 
-                <!-- <span class="iconfont iconjiufuqianbaoicon14"></span> -->
                 </span> 
                 <div class="right">
                     <div class="money" >
@@ -314,6 +312,9 @@ export default {
         province: '',
         city: '',
         area: '',
+        provinceId: '',
+        cityId: '',
+        areaId: '',
         provinceArr:[],//省
         cityArr:[],//市
         areaArr:[],//区
@@ -372,10 +373,8 @@ export default {
     clickBtn(){
         console.log(this.editorId)
         if(this.editorId){
-            alert(1)
             this.change();
         }else{
-            alert92
             this.release();
         }
 
@@ -504,10 +503,6 @@ export default {
         ).then((res)=>{
             console.log(res)
             if(res.data.code=='002'){
-                this.$message({
-                    type: 'success',
-                    message: '发布成功!'
-                });
                 this.sensitive=false;
                 this.centerDialogVisible=true;
             }
@@ -527,6 +522,7 @@ export default {
         // remark 技能标签
         // welfare  福利待遇
         // id(职位主键id)
+        let numReg=/^[0-9]{6}$/
         if(!this.name ){
             $('#scrollBox').scrollTop(0);
             return;
@@ -600,6 +596,18 @@ export default {
                 this.moneyTipShow=false;             
             }
         }
+        if(!numReg.test(this.city)){
+            this.city=this.cityId;
+        }  
+        if(!numReg.test(this.area)){
+            this.area=this.areaId;
+        }    
+        if(this.salaryOne.indexOf('k')>0){
+            this.salaryOne=parseInt(this.salaryOne)
+        }
+        if(this.salaryTwo.indexOf('k')>0){
+            this.salaryTwo=parseInt(this.salaryTwo)
+        }
         let age=this.age_1+'~'+this.age_2;
         let description=this.editor.getData();
         console.log( description.length )
@@ -635,10 +643,6 @@ export default {
         ).then((res)=>{
             console.log(res)
             if(res.data.code=='000'){
-                this.$message({
-                    type: 'success',
-                    message: '修改成功!'
-                });
                 this.sensitive=false;
                 this.centerDialogVisible=true;
             }
@@ -894,24 +898,6 @@ export default {
     checkJobType(status){//工作类型
       this.jobType=status;
     },
-    open7() {
-        this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning',
-          center: true
-        }).then(() => {
-          this.$message({
-            type: 'success',
-            message: '删除成功!'
-          });
-        }).catch(() => {
-          this.$message({
-            type: 'info',
-            message: '已取消删除'
-          });
-        });
-    },
     i_know(){//我知道了
         this.centerDialogVisible=false;
         this.$router.push('/allPosition');//跳转到职位管理
@@ -958,13 +944,15 @@ export default {
               this.province=detail.province;
               this.city=detail.cityName;
               this.area=detail.areaName;
+                this.cityId=detail.city;
+                this.areaId=detail.area;
               if(detail.paytype==1){//1 月结 2日结
                 this.month=1;
                 this.salaryOne=detail.paymentMinStr;
                 this.salaryTwo=detail.paymentMaxStr;
               }else if(detail.paytype==2){
                 this.month=2;
-                this.salaryTwo=detail.paymentMax;
+                this.salaryTwo=detail.payment;
               }
               this.jobType=detail.isParttime;
               this.experience=detail.workYear;
@@ -974,7 +962,6 @@ export default {
               this.editor.setData(detail.description);
               let remark=detail.remark.split(',');
               let welfare=detail.welfare.split(',');   
-               console.log( remark ,welfare )
                if(remark.length>0){
                     remark.forEach(function(item){
                         if(that.remarkTextArr.indexOf(item)==-1){//不存在                       
@@ -995,71 +982,60 @@ export default {
                     })
                }   
                 if(welfare.length>0){
-                    welfare.forEach(function(item){
-                        if(that.welfareTextArr.indexOf(item)==-1){//不存在
-                            if(item){
-                                that.welfareArr.unshift({
-                                    flag:true,
-                                    name:item
-                                }) 
-                            }                         
-                        }else{
-                            that.welfareArr.forEach(function(v){
-                                if(item==v.name){
-                                    v.flag=true;
-                                }               
-                            })
+                        welfare.forEach(function(item){
+                            if(that.welfareTextArr.indexOf(item)==-1){//不存在
+                                if(item){
+                                    that.welfareArr.unshift({
+                                        flag:true,
+                                        name:item
+                                    }) 
+                                }                         
+                            }else{
+                                that.welfareArr.forEach(function(v){
+                                    if(item==v.name){
+                                        v.flag=true;
+                                    }               
+                                })
 
-                        }                      
-                    })
+                            }                      
+                        })
 
+                    }
+                
+                    console.log( that.skillArr )
+                    console.log( that.welfareArr )
+                
                 }
-               
-                console.log( that.skillArr )
-                console.log( that.welfareArr )
-               
-           }
-            // name:this.name,//职位名称
-            // province:this.province,
-            // city:this.city,
-            // area:this.area,
-            // address:this.detailArea,
-            // paymentMin:this.salaryOne,//薪酬最低值
-            // paymentMax:this.salaryTwo,//薪酬最高值
-            // paytype:this.month,//1 月结 2日结
-            // isParttime:this.jobType,//是否兼职 0全职1兼职
-            // workYear:this.experience,//工作经验
-            // age:age,//年龄要求
-            // description:description,//职位描述
-            // remark:remark,//技能标签
-            // welfare:welfare,//福利待遇 
         })
     }
   },
   beforeRouteLeave(to, from, next) {
-      let ckeditor=this.editor.getData();
-      if(typeof this.editorId== 'undefined'){//发布
-        if(!this.centerDialogVisible){
-            if(this.name!=''||this.province!=''||this.detailArea!=''
-            ||this.salaryOne!=''||this.salaryTwo!=''||this.age_1!=''||ckeditor!=''||this.experience!=''||
-            this.addSkillArr.length!=0|| this.addWelfareArr.length!=0){
-                this.$confirm('内容没有保存，确定要离开吗？', {
-                    confirmButtonText: '确定',
-                    cancelButtonText: '取消',
-                    center: true
-                }).then(() => {
-                    next();
-                })
+    //   let xxx=this.centerDialogVisible;
+    //   let ckeditor=this.editor.getData();
+    //   if(typeof this.editorId== 'undefined'){//发布
+     
+    //     if(!xxx){
+    //         alert(1)
+    //         console.log(this.centerDialogVisible)
+    //         if(this.name!=''||this.province!=''||this.detailArea!=''
+    //         ||this.salaryOne!=''||this.salaryTwo!=''||this.age_1!=''||ckeditor!=''||this.experience!=''||
+    //         this.addSkillArr.length!=0|| this.addWelfareArr.length!=0){
+    //             this.$confirm('内容没有保存，确定要离开吗？', {
+    //                 confirmButtonText: '确定',
+    //                 cancelButtonText: '取消',
+    //                 center: true
+    //             }).then(() => {
+    //                 next();
+    //             })
                 
-            }else{
-                next();
-            }
+    //         }else{
+    //             next();
+    //         }
 
-        } 
-      }else{//修改
-        alert(2)
-        next(); 
-      }
+    //     } 
+    //   }else{//修改
+    //     next(); 
+    //   }
   },
   watch:{ 
     
@@ -1121,7 +1097,6 @@ export default {
         height: 40px;
         line-height: 40px;
         text-align: center;
-        // letter-spacing: 1em;
         color: #fff;
         background: #ff5570;
       }
@@ -1213,23 +1188,24 @@ export default {
                 }              
                 .money{
                     height: 40px;
-                    background: cyan;
                     >.month{ 
                         display: inline-block;  
                         height: 40px;
+                        line-height: 40px;
                         position: relative;
                         >.money-1{
-                            width: 130px;
+                            width: 120px;
                             height: 40px;                         
                             display: inline-block;
                         }  
                         >.money-2{
-                            width: 30px;
+                            width: 120px;
                             height: 40px;
-                            display: inline-block;                       
+                            display: inline-block;  
+                                                 
                         }                 
-                        span{
-                            margin: 0 5px;
+                        span:nth-of-type(2),span:nth-of-type(4){
+                            margin: 0 6px;
                         }
                     }
                     >.day{ 
@@ -1237,7 +1213,7 @@ export default {
                     }
                     >i{
                         font-style: normal;                  
-                        margin-left: 30px;
+                        margin-left: 20px;
                         >span{
                             cursor: pointer;
                             >.iconradio-checked1{
@@ -1328,8 +1304,9 @@ export default {
                         cursor: pointer;
                     }
                     span.bg{
-                        background: pink;
+                        background: #FF5571;
                         color: #fff;
+                        border: 1px solid #FF5571;
                     }
                 }
                 .custom{
@@ -1422,7 +1399,6 @@ export default {
             >.right.age{
                 .age-input{
                     height: 40px;
-                    background: #00a0e9;
                     position: relative;
                 }
                 div{
@@ -1435,7 +1411,6 @@ export default {
             >.job-time{
                 height: 40px;
                 line-height: 40px;
-                background: cyan;
                 position: relative;
             }
         

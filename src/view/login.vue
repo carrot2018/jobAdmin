@@ -34,12 +34,12 @@ export default {
     return {
         // 15019230830
         // 123456789
-        // phone:'',
-        phone:'15019230830',
+        phone:'',
+        // phone:'15019230830',
         phoneShow:false,
         phoneText:'',
-        // password:'',
-        password:'123456789',
+        password:'',
+        // password:'123456789',
         passwordShow:false,
         passwordText:'',
         requestId:localStorage.getItem('requestId'),
@@ -256,7 +256,7 @@ export default {
 }
 </style>
 <style>
-.el-input{
+#login .el-input{
     position: absolute;
     left: 0;
     top: 0;  

@@ -469,9 +469,7 @@ export default {
             }
         }
         .shutDown:hover{
-            // background: #eee;
             box-shadow: 0px 4px 12px rgba($color: #e5e5e5, $alpha: 1);
-            // border: 1px solid #409EFF;
              >p:nth-of-type(1){
                     >span:nth-of-type(3){
                         >span{                           
