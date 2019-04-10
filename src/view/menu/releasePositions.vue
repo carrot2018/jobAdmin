@@ -315,13 +315,14 @@ export default {
         textareaText:0,//企业简介
         experienceArr:[
             // 0、1、3、5、7、10、15、20
-            { value: '1', label: '1~3'},
-            { value: '2', label: '3~5'},
-            { value: '3', label: '5~7'},
-            { value: '4', label: '7~10'},
-            { value: '5', label: '10~15'},
-            { value: '6', label: '15~20'},
-            { value: '7', label: '20'},
+            { value: '1', label: '0'},
+            { value: '2', label: '1'},
+            { value: '3', label: '3'},
+            { value: '4', label: '5'},
+            { value: '5', label: '7'},
+            { value: '6', label: '10'},
+            { value: '7', label: '15'},
+            { value: '8', label: '20'}
         ],
         jobType:0,//工作类型 全职
         province: '',
@@ -1105,6 +1106,11 @@ export default {
 }
 </script>
 <style scoped lang='scss'>
+
+// /deep/ .cke_ltr .cke_button__numberedlist_icon {
+//   background: url('../../../static/img/has-checked.png') no-repeat 0 -576px !important;
+// }
+
 #releasePositions{
     height: auto;
     min-height: 100%;

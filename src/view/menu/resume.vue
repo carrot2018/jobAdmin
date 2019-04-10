@@ -6,6 +6,32 @@
       </h3>
       <div class="title">
         <span @click="checkTitle(1)">主动投递<span class="title--pink"> ({{totalNum}})</span></span>
+        <div class="title__select">
+          <el-select 
+            v-model="positionSort" 
+            clearable 
+            placeholder="按招聘职位">
+            <el-option
+              v-for="item in options1"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value">
+            </el-option>
+          </el-select>
+
+          <el-select
+            v-model="timeSort"
+            clearable 
+            style="margin-left: 20px;"
+            placeholder="按招聘时间">
+            <el-option
+              v-for="item in options2"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value">
+            </el-option>
+          </el-select>
+        </div>
       </div>
       <div class="list-box">
         <div class="every" 
@@ -71,6 +97,25 @@ export default {
       readStatus:true, // 阅读状态
       hasCookieImage:false,
       requestId:localStorage.getItem('requestId'),
+      options1:[{
+          value: '选项1',
+          label: '高级厨师'
+        }, {
+          value: '选项2',
+          label: '中级厨师'
+        }, {
+          value: '选项3',
+          label: '初级厨师'
+        }],
+      positionSort: '',
+      options2:[{
+          value: '选项1',
+          label: '升序'
+        }, {
+          value: '选项2',
+          label: '降序'
+        }],
+      timeSort: ''
     };
   },
   methods: {
@@ -147,13 +192,63 @@ export default {
             // console.log(checkNUll(item.cookingImages),'llllllll')
             this.hasCookieImage = checkNUll(item.cookingImages) 
 
-            // 作品展示标签 是否显示
-            // if( item.cookingImages !== null && item.cookingImages.length !== 0) {
-            //   this.hasCookieImage = true
-            // }
           })
           this.arr = data
-          console.log(this.arr)
+
+        }
+      })
+    },
+
+
+    // 获取该类职位的简历
+    getJobNameResume() {
+      let name = this.$route.query.jobName;
+      axios.get('/api/list?jobName='+name+'&requestId='+this.requestId,
+      ).then((response) => {
+        console.log(99999,response)
+        let res = response.data;
+        
+        
+        this.totalNum = res.data.record;
+        // 时间戳转换成日期
+        function timestampToTime(timestamp) {
+          let date = new Date(timestamp);//时间戳为10位需*1000，时间戳为13位的话不需乘1000
+          let Y = date.getFullYear() + '-';
+          let M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1) + '-';
+          let D = (date.getDate() < 10 ? '0'+(date.getDate()) : date.getDate()) + ' ';
+          // let D = date.getDate() + ' ';
+          let h = date.getHours() + ':';
+          let m = date.getMinutes() + '';
+          let s = date.getSeconds();
+          return Y+M+D+h+m;
+        }
+
+        // 非空验证
+        function checkNUll(item) {
+          if(item !== null && item.length !== 0){
+            return true
+          } else {
+            return false
+          }
+        }
+        if(res.code === '000') {
+          let data = res.data.list;
+          data.some((item,i) => {
+            // 时间戳转换
+            item.sendTime = timestampToTime(item.sendTime)
+            // 1男，2女
+            item.sex === 1?item.sex = '男':item.sex = '女'
+            // 标签分隔
+            let mark = item.remark
+            item.remark = mark.split(",")
+            
+            // 添加状态
+            item.reads = true
+            item.isRead === 1 ? item.reads = false : item.reads = true
+            this.hasCookieImage = checkNUll(item.cookingImages) 
+
+          })
+          this.arr = data
 
         }
       })
@@ -161,11 +256,47 @@ export default {
   },
   created() {},
   mounted() {
-    this.getResumeAdminMessage();
+    console.log(this.$route.query)
+    let thisQuery = this.$route.query;
+    for( let i in thisQuery){
+      if(i === 'jobName') {
+        this.getJobNameResume()
+      } else {
+        this.getResumeAdminMessage();
+      }
+    }
+    
   }
 };
 </script>
 <style scoped lang='scss'>
+.el-select {
+  width: 140px;
+  
+}
+/deep/ .el-input {
+  font-size: 16px;
+  color: #666;
+}
+
+/deep/ .el-input__inner {
+  border-radius:8px;
+  &::-webkit-input-placeholder { /* Chrome */
+  color: #666;
+  }
+  &:-ms-input-placeholder { /* IE 10+ */
+  color: #666;
+  }
+  &::-moz-placeholder { /* Firefox 19+ */
+    color: #666;
+    opacity: 1;
+  }
+  &:-moz-placeholder { /* Firefox 4 - 18 */
+    color: #666;
+    opacity: 1;
+  }
+}
+
 #resume {
 
 }
@@ -186,9 +317,15 @@ export default {
     }
   }
   > .title {
-    padding-top: 17px;
+    // padding-top: 17px;
     border-bottom: 1px solid #e6eef1;
     padding-bottom: 18px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    .title__select {
+      display: inline-block;
+    }
     .title--pink {
       color: #ff5571;
     }

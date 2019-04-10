@@ -14,7 +14,7 @@
                 <div class='list' :class="{shutDown:template==3 || template==1&&item.publishStatus==2}" v-for='item in list'>
                     <p>
                         <span>{{item.name}}</span>
-                        <span>主动投递 <i>{{item.sendNum}}</i>&gt;&gt;</span>
+                        <span @click="goResume(item.name)">主动投递 <i>{{item.sendNum}}</i>&gt;&gt;</span>
                         <span>
                             <span>
                                 <span v-show='item.publishStatus==1&&item.refresh==0' class='refresh' @click='toRefresh(item)'>刷新<i></i></span>
@@ -108,8 +108,7 @@ export default {
                 this.page=true;
             }else{
                 this.page=false;
-            }
-           
+            }       
         }).catch((error)=>{
             console.log(error)
         })
@@ -227,6 +226,14 @@ export default {
     　　　　query:{id:item.id }　
     　　});
        
+    },
+
+    // 查看主动投递该类简历
+    goResume(name) {
+      this.$router.push({
+        path:'/resume',
+        query:{jobName:name}
+      })
     }
 
    
