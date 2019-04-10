@@ -35,7 +35,7 @@
             <div>
                 <span><span class="iconfont iconjiufuqianbaoicon14"></span>工作地点</span> 
                 <div class="right">
-                    <p>
+                    <p class="province">
                         <el-select v-model="province" filterable placeholder="省份" @change='getCity'>
                             <el-option
                             v-for="item in provinceArr"
@@ -61,7 +61,7 @@
                             </el-option>
                         </el-select>                   
                     </p>
-                    <p>
+                    <p class="detail-p">
                         <input type="text" placeholder="填写详细地址，例：深南大道1001号腾讯大厦1楼7-11商铺"
                         v-model="detailArea" class="detail-area">
                     </p>
@@ -202,8 +202,6 @@ export default {
         mainCuisine:[],//主营菜系
         diningType:[],//餐饮类型
         requestId:localStorage.getItem('requestId'),
-        // http://192.168.1.111:8889/
-        // action:'http://192.168.1.56:8889/job-route-invoker/file/upload?requestId='+localStorage.getItem('requestId'),
         action:'http://192.168.1.111:8889/job-route-invoker/file/upload?requestId='+localStorage.getItem('requestId'),
         fileArr:[],
         userInfo:{}
@@ -448,7 +446,7 @@ export default {
             cookingtType:cookTypeStr,//餐饮类型
             workMent:workMent,//工作环境   
         }
-        that.$http.post('/upload/insertEnterpriseMsg',params
+        that.$http.post('/api/insertEnterpriseMsg',params
         ).then((res)=>{
             console.log(res)
             if(res.data.code=='002'){//成功
@@ -684,14 +682,21 @@ export default {
                     margin-right: 8px;
                     padding-left: 10px;
                 }
-                .detail-area{
-                    width: 400px;
+                .province{
                     height: 40px;
-                    border: 1px solid #DCDFE6;
-                    border-radius: 3px;
-                    margin-top: 15px;
-                    padding-left: 10px;
+                    position: relative;
                 }
+                .detail-p{
+                    margin-top: 15px;
+                    .detail-area{
+                        width: 400px;
+                        height: 40px;
+                        border: 1px solid #DCDFE6;
+                        border-radius: 3px;
+                        padding-left: 10px;
+                    }
+                }
+               
                 .textarea-box{
                     width: 100%;
                     height: 250px;                
@@ -736,8 +741,9 @@ export default {
                         border: 1px solid #DCDFE6;
                     }
                     >span.bg{
-                        background: cyan;
+                        background: #FF5571;
                         color: #fff;
+                        border: 1px solid #FF5571;
                     }
                 }
                 .custom_input{
@@ -803,11 +809,10 @@ export default {
                 }
                 .tip-text{
                     margin-top: 5px;
-                    color: red;
+                    color: #FFBD5a;
                 }
                 .error-label{
-                    color: red;
-                    // display: none;
+                    color: #FFBD5a;
                     margin-top: 6px;
                 }
             }
@@ -849,8 +854,9 @@ export default {
                         border: 1px solid #DCDFE6;
                     }
                     >span.bg{
-                        background: cyan;
+                        background: #FF5571;
                         color: #fff;
+                        border: 1px solid #FF5571;
                     }
                 }
                 .upload{
@@ -861,26 +867,31 @@ export default {
                         display: inline-block;
                         width: 120px;
                         height: 36px;
-                        line-height: 34px;
-                        background: #DCDFE6;
+                        line-height: 34px;                       
                         margin-top: 40px;
                         text-align: center;
                         border-radius: 3px;
                         font-size: 15px;
                         margin-bottom: 30px;
-                        cursor: pointer;
-                        background: #ff5670;
+                        cursor: pointer;                       
                         margin: 20px auto 0;
                         color: #fff;
                     }
+                    span:nth-of-type(1){
+                        margin-left: 20px;             
+                        color:#666;
+                        border:1px solid #e5e5e5;
+                    }
                     span:nth-of-type(2){
                         margin-left: 20px;
+                        background: #ff5670;
+                        border:1px solid #ff5670;
                     }
                 
                 }
                 .tip-text{
                     span{
-                        color: red;
+                        color: #FFBD5a;
                     }
                     span:nth-of-type(1){
                         position: relative;
@@ -899,20 +910,17 @@ export default {
 }
 </style>
 <style>
-#companyInfo .el-step.is-center .el-step__line {
-    left: 60%;
-    right: -40%;
-}
+
 #companyInfo .el-select {
     width: 130px;
     margin-right: 20px;
+    height: 40px;
 }
-.el-scrollbar {
+#companyInfo .el-scrollbar {
     width: 130px;
 }
 #companyInfo .el-input {
-    width: 130px;
-   
+    width: 130px;  
 } 
 input::-webkit-input-placeholder, textarea::-webkit-input-placeholder {
     color: #999;

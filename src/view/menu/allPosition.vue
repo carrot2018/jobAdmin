@@ -1,14 +1,13 @@
 <template>
 <div id="allPosition">
   <div class='content-box'>
-        <!-- <lay-out></lay-out> -->
         <h3>
             <span>职位管理</span>
         </h3>
         <div class="title">
-            <span @click='checkTitle(1)'>全部职位(<i v-text='allNum'></i>) </span>
-            <span @click='checkTitle(2)'>发布中(<i v-text='releaseNum'></i>) </span>
-            <span @click='checkTitle(3)'>已关闭(<i v-text='shutDown'></i>)</span>
+            <span @click='checkTitle(1)' :class='{color:template==1}'>全部职位(<i v-text='allNum'></i>)</span>
+            <span @click='checkTitle(2)' :class='{color:template==2}'>发布中(<i v-text='releaseNum'></i>)</span>
+            <span @click='checkTitle(3)' :class='{color:template==3}'>已关闭(<i v-text='shutDown'></i>)</span>
         </div>
         <div class="list-box">
             <div class="content">
@@ -31,7 +30,7 @@
                         </span>
                     </p>
                     <p>
-                        <span>{{item.paytype==1?item.paymentMinStr+"k~"+item.paymentMaxStr:item.paymentMax+"元"}} / <span v-text='item.paytype==1?"月":"日"'></span></span>
+                        <span>{{item.paytype==1?item.paymentMinStr+"~"+item.paymentMaxStr:item.paymentMax+"元"}} / <span v-text='item.paytype==1?"月":"日"'></span></span>
                         <span>{{item.cityName+'-'+item.areaName}}</span>
                     </p>
                     <p v-show='item.remark'>
@@ -259,8 +258,6 @@ export default {
     // min-height: 100%;
 }
 .content-box{
-    // height: 100%;
-
     padding: 27px 0 40px 0;
     h3{
         height: 50px;
@@ -277,24 +274,18 @@ export default {
         padding-bottom: 18px;
         border-bottom: 1px solid #e6eef1;
         span{
+            color: #727272;
+            font-size: 16px;
             cursor: pointer;
             i{
                 font-style: normal;
             }
         }
-        span:nth-of-type(1){
-            color: #727272;
-            font-size: 16px;
-        }
-        span:nth-of-type(2){
-            color: #727272;
-            font-size: 16px;
+        span:nth-of-type(2),span:nth-of-type(3){
             margin-left: 50px;
         }
-        span:nth-of-type(3){
-            color: #727272;
-            font-size: 16px;
-            margin-left: 50px;
+        .color{
+            color:#FF5571;
         }
         
     }
@@ -344,7 +335,7 @@ export default {
                                     position: absolute;
                                     width: 7px;
                                     height: 7px;
-                                    background: red;
+                                    background: #FF5571;
                                     border-radius: 7px;
                                     right: -8px;
                                     top: -4px;
@@ -360,10 +351,10 @@ export default {
             >p:nth-of-type(2){
                 margin-top: 16px;
                     span:nth-of-type(1){
-                        color: red;
+                        color: #FF5571;
                     }
                     span:nth-of-type(2){
-                    margin-left: 15px;
+                     margin-left: 15px;
                     }
             }
             >p:nth-of-type(3){

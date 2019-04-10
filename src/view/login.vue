@@ -34,10 +34,12 @@ export default {
     return {
         // 15019230830
         // 123456789
-        phone:'',
+        // phone:'',
+        phone:'15019230830',
         phoneShow:false,
         phoneText:'',
-        password:'',
+        // password:'',
+        password:'123456789',
         passwordShow:false,
         passwordText:'',
         requestId:localStorage.getItem('requestId'),
@@ -115,13 +117,16 @@ export default {
                 })
                 that.toast.show()                      
             }else if(res.data.code=='500'){
-                alert(1)
                 that.toast = this.$createToast({
                     txt: '登陆失败',
                     type: 'txt',
                     time: 1500,
                 })
                 that.toast.show()                  
+            }else if(res.data.code=='668'){
+                this.phoneShow=true;
+                this.phoneText="账号不存在";
+                return;            
             }
            
         })
@@ -147,7 +152,7 @@ export default {
         position: absolute;
         left: 50%;
         top: 50%;
-        margin-left: -160px;
+        margin-left: -200px;
         transform: translateY(-50%);
         -webkit-transform: translateY(-50%);
         border-radius: 6px;
@@ -209,13 +214,13 @@ export default {
                 position: absolute;
                 left: 45px;
                 top: 0;
-                // cursor: pointer; 
             }
 
        }
         .no-user,.error-pwd{
-            margin: 6px 0;
             color: #FF607a;
+            height: 20px;
+            line-height: 20px;
         }
         .click-login{
             width: 100%;

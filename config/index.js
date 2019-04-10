@@ -1,7 +1,6 @@
 'use strict'
 // Template version: 1.3.1
 // see http://vuejs-templates.github.io/webpack for documentation.
-
 const path = require('path')
 module.exports = {
   dev: {
@@ -27,17 +26,10 @@ module.exports = {
         }
       },
       '/service': {//自定义名字，代表的是以下target中的内容
-        target: 'http://cookhome.d/api/',//微信
+        target: 'http://cookhome.t/api/',//微信
         changeOrigin: true,//是否允许跨域
         pathRewrite: {
           '^/service': ''
-        }
-      },
-      '/upload': {//自定义名字，代表的是以下target中的内容
-        target: 'http://192.168.1.56:8762/',//微信
-        changeOrigin: true,//是否允许跨域
-        pathRewrite: {
-          '^/upload': ''
         }
       },
 
