@@ -70,7 +70,7 @@ export default {
       totalNum:0, // 简历总份数
       readStatus:true, // 阅读状态
       hasCookieImage:false,
-      requestId:localStorage.getItem('requestId'), 
+      requestId:localStorage.getItem('requestId'),
     };
   },
   methods: {
@@ -114,6 +114,15 @@ export default {
           let s = date.getSeconds();
           return Y+M+D+h+m;
         }
+
+        // 非空验证
+        function checkNUll(item) {
+          if(item !== null && item.length !== 0){
+            return true
+          } else {
+            return false
+          }
+        }
         if(res.code === '000') {
           data.some((item,i) => {
             // 时间戳转换
@@ -129,13 +138,18 @@ export default {
             //   item.isRead = false
             // }
             
-            // 添加
+            // 添加状态
             item.reads = true
             item.isRead === 1 ? item.reads = false : item.reads = true
             // console.log( mark.split(","))
-            if(item.cookingImages.length !== 0) {
-              this.hasCookieImage = true
-            }
+            
+            // console.log(checkNUll(item.cookingImages),'llllllll')
+            this.hasCookieImage = checkNUll(item.cookingImages) 
+
+            // 作品展示标签 是否显示
+            // if( item.cookingImages !== null && item.cookingImages.length !== 0) {
+            //   this.hasCookieImage = true
+            // }
           })
           this.arr = data
           console.log(this.arr)
@@ -160,7 +174,7 @@ export default {
 }
 .content-box {
 
-  padding: 50px 80px 40px 40px;
+  padding: 27px 0px 40px 0px;
   h3 {
     height: 50px;
     line-height: 50px;

@@ -599,7 +599,7 @@ export default {
         }
         p{
         margin-top: 20px;
-        color: #999;
+        color: #878d9d;
         font-size: 13px;
         }
     }
