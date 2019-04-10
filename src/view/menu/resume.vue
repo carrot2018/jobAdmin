@@ -99,7 +99,7 @@ export default {
       ).then((response) => {
         console.log(response)
         let res = response.data;
-        let data = res.data.list;
+        
         
         this.totalNum = res.data.record;
         // 时间戳转换成日期
@@ -124,6 +124,7 @@ export default {
           }
         }
         if(res.code === '000') {
+          let data = res.data.list;
           data.some((item,i) => {
             // 时间戳转换
             item.sendTime = timestampToTime(item.sendTime)

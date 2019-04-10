@@ -182,7 +182,7 @@ export default {
         
         let res = response.data;
         this.sesId = res.data.remuces.sesId;
-        // console.log('88888', res.data.remuces[0].sesId)
+        console.log('88888', response.data.data)
         
         // 时间戳转换成日期格式
         function timestampToTime(timestamp) {
@@ -200,9 +200,13 @@ export default {
         if(res.data.detialList.length !== 0) {
 
           res.data.detialList.some((item,i) => {
-            let mark = item.remark
-            // 标签分割
-            item.remark = mark.split(",")
+            if(item.mark !== null && item.mark !== undefined) {
+              
+               let mark = item.remark
+              // 标签分割
+              item.remark = mark.split(",")
+            }
+           
             // 期望工资下限
             item.expectMinPayment = parseInt(item.expectMinPayment/1000)
             // 期望工资上限
@@ -226,11 +230,14 @@ export default {
           // }
         
         // 展示菜品图片
-        if(res.data.remuces.length !== 0) {
+        if(res.data.remuces.length !== 0 && res.data.remuces !== null) {
           res.data.remuces.some((item,i) => {
-            // 展示图片
-            let cookingImages = item.cookingImages
-            item.cookingImages = cookingImages.split(",")
+             if(item.cookingImages !== null && item.cookingImages !== undefined) {
+               // 展示图片
+              let cookingImages = item.cookingImages
+              item.cookingImages = cookingImages.split(",")
+             }
+            
           })
 
           this.remuces = res.data.remuces[0]
