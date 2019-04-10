@@ -343,7 +343,7 @@ export default {
   },
   methods:{
     getSkillArr(){//技能标签
-        this.$http.get('/service/taxonomies/486',{
+        this.$http.get('/service/api/taxonomies/486',{
         }).then((res)=>{
             let skillArr=res.data.allNodes;
             skillArr.forEach(function(v){
@@ -357,7 +357,7 @@ export default {
         })
     },
     getWelfareArr(){//福利待遇
-        this.$http.get('/service/taxonomies/488',{
+        this.$http.get('/service/api/taxonomies/488',{
         }).then((res)=>{
             let welfareArr=res.data.allNodes;
             welfareArr.forEach(function(v){

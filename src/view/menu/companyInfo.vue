@@ -211,7 +211,7 @@ export default {
   },
   methods:{
     getEnterprise(){//企业标签
-        this.$http.get('/service/taxonomies/486',{
+        this.$http.get('/service/api/taxonomies/486',{
         }).then((res)=>{
             let enterprise=res.data.allNodes;
             enterprise.forEach(function(v){
@@ -222,7 +222,7 @@ export default {
         })
     },
     getMainCuisine(){//主营菜系
-        this.$http.get('/service/taxonomies/484',{
+        this.$http.get('/service/api/taxonomies/484',{
         }).then((res)=>{
             let mainCuisine=res.data.allNodes;
             mainCuisine.forEach(function(v){
@@ -233,7 +233,7 @@ export default {
         })
     },
     getDiningType(){//餐饮类型
-        this.$http.get('/service/taxonomies/485',{
+        this.$http.get('/service/api/taxonomies/485',{
         }).then((res)=>{
             let diningType=res.data.allNodes;
             diningType.forEach(function(v){

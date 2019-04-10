@@ -26,7 +26,7 @@ module.exports = {
         }
       },
       '/service': {//自定义名字，代表的是以下target中的内容
-        target: 'http://cookhome.t/api/',//微信
+        target: 'http://cookhome.t/',//微信
         changeOrigin: true,//是否允许跨域
         pathRewrite: {
           '^/service': ''
