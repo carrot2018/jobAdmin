@@ -14,7 +14,7 @@
                 <div class='list' :class="{shutDown:template==3 || template==1&&item.publishStatus==2}" v-for='item in list'>
                     <p>
                         <span>{{item.name}}</span>
-                        <span>主动投递 <i>{{item.sendNum}}</i>&gt;&gt;</span>
+                        <span @click="goResume(item.name)">主动投递 <i>{{item.sendNum}}</i>&gt;&gt;</span>
                         <span>
                             <span>
                                 <span v-show='item.publishStatus==1&&item.refresh==0' class='refresh' @click='toRefresh(item)'>刷新<i></i></span>
@@ -100,7 +100,7 @@ export default {
         }
         that.$http.post('/api/job/selectJobOfPageList?pushStatus='+that.template+'&requestId='+that.requestId,params
         ).then((res)=>{
-            console.log(res)
+            console.log('xxxx',res)
             // if(res.data.code=='666'){
             //     that.$message({
             //         message: '请先登录',
@@ -237,6 +237,14 @@ export default {
     　　　　query:{id:item.id }　
     　　});
        
+    },
+
+    // 查看主动投递该类简历
+    goResume(name) {
+      this.$router.push({
+        path:'/resume',
+        query:{jobName:name}
+      })
     }
 
    

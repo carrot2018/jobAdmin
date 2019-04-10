@@ -192,13 +192,63 @@ export default {
             // console.log(checkNUll(item.cookingImages),'llllllll')
             this.hasCookieImage = checkNUll(item.cookingImages) 
 
-            // 作品展示标签 是否显示
-            // if( item.cookingImages !== null && item.cookingImages.length !== 0) {
-            //   this.hasCookieImage = true
-            // }
           })
           this.arr = data
-          console.log(this.arr)
+
+        }
+      })
+    },
+
+
+    // 获取该类职位的简历
+    getJobNameResume() {
+      let name = this.$route.query.jobName;
+      axios.get('/api/list?jobName='+name+'&requestId='+this.requestId,
+      ).then((response) => {
+        console.log(99999,response)
+        let res = response.data;
+        
+        
+        this.totalNum = res.data.record;
+        // 时间戳转换成日期
+        function timestampToTime(timestamp) {
+          let date = new Date(timestamp);//时间戳为10位需*1000，时间戳为13位的话不需乘1000
+          let Y = date.getFullYear() + '-';
+          let M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1) + '-';
+          let D = (date.getDate() < 10 ? '0'+(date.getDate()) : date.getDate()) + ' ';
+          // let D = date.getDate() + ' ';
+          let h = date.getHours() + ':';
+          let m = date.getMinutes() + '';
+          let s = date.getSeconds();
+          return Y+M+D+h+m;
+        }
+
+        // 非空验证
+        function checkNUll(item) {
+          if(item !== null && item.length !== 0){
+            return true
+          } else {
+            return false
+          }
+        }
+        if(res.code === '000') {
+          let data = res.data.list;
+          data.some((item,i) => {
+            // 时间戳转换
+            item.sendTime = timestampToTime(item.sendTime)
+            // 1男，2女
+            item.sex === 1?item.sex = '男':item.sex = '女'
+            // 标签分隔
+            let mark = item.remark
+            item.remark = mark.split(",")
+            
+            // 添加状态
+            item.reads = true
+            item.isRead === 1 ? item.reads = false : item.reads = true
+            this.hasCookieImage = checkNUll(item.cookingImages) 
+
+          })
+          this.arr = data
 
         }
       })
@@ -206,7 +256,16 @@ export default {
   },
   created() {},
   mounted() {
-    this.getResumeAdminMessage();
+    console.log(this.$route.query)
+    let thisQuery = this.$route.query;
+    for( let i in thisQuery){
+      if(i === 'jobName') {
+        this.getJobNameResume()
+      } else {
+        this.getResumeAdminMessage();
+      }
+    }
+    
   }
 };
 </script>
