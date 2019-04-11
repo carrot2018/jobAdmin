@@ -7,7 +7,7 @@
         <p class="title">企业招聘服务平台</p>
         <div class="phone-box">
             <img src="../../static/img/phone.png" >
-            <input type="number" placeholder="输入11位手机号码" id='phone' v-model='phone' v-on:input='phoneInput'>
+            <input type="number" placeholder="输入11位手机号码" id='phone' v-model='phone' v-on:input='phoneInput' maxlength="11" @keyup.enter='pwdFocus()'>
            
         </div>
         <p v-show='phoneShow' class='no-user'>
@@ -16,7 +16,7 @@
         <div class="pwd-box">  
             <img src="../../static/img/Password.png" > 
             <div class="pwd-input">
-                <el-input placeholder="输入登录密码" v-model="password" show-password  @keyup.enter='login()'></el-input>
+                <el-input placeholder="输入登录密码" v-model="password" show-password maxlength="16"></el-input>
             </div> 
         </div>
         <p class='error-pwd' v-show='passwordShow'>
@@ -32,13 +32,11 @@
 export default {
   data () {
     return {
-        // 13538168863
-        // 123456789
-        phone:'13538168863',
+        phone:'15019230830',
         // phone:'13538168863',
         phoneShow:false,
         phoneText:'',
-        password:'123456',
+        password:'123456789',
         // password:'123456',
         passwordShow:false,
         passwordText:'',
@@ -46,6 +44,9 @@ export default {
     }
   },
   methods:{
+    pwdFocus(){
+        $('.pwd-input input').focus();
+    },
     phoneInput(){//输入整数
         this.phone=this.phone.replace(/^(0+)|[^\d]+/g,'');
     },
@@ -53,8 +54,7 @@ export default {
         let that=this;
         that.$http.get('/api/checkLogin?loginRequestId='+that.requestId,{})
         .then((res)=>{
-            console.log(res)
-            if(res.data.code=='000'){//免密登录成功
+            if(res.data.code=='202'){//免密登录成功
                 let userInfo=res.data.data;
                 window.localStorage.setItem('userInfo',JSON.stringify(userInfo));
                 if(userInfo.province.length!=6 && userInfo.staffs=='0'){//企业信息未填过
@@ -100,7 +100,7 @@ export default {
         let that=this;
         that.$http.get('/api/login?mobile='+that.phone+'&password='+that.password,{})
         .then((res)=>{
-            if(res.data.code=='000'){
+            if(res.data.code=='202'){
                 that.toast = this.$createToast({
                     txt: '登陆成功',
                     type: 'txt',
@@ -122,17 +122,17 @@ export default {
                 })
                 that.toast.show()    
                                     
-            }else if(res.data.code=='667'){
+            }else if(res.data.message=='密码不正确'){
                 this.passwordShow=true;
                 this.passwordText='密码错误';                   
-            }else if(res.data.code=='500'){
+            }else if(res.data.message=='登录失败'){
                 that.toast = this.$createToast({
                     txt: '登陆失败',
                     type: 'txt',
                     time: 1500,
                 })
                 that.toast.show();                  
-            }else if(res.data.code=='668'){
+            }else if(res.data.message=='账号不存在'){
                 this.phoneShow=true;
                 this.phoneText="账号不存在";
                 return;            

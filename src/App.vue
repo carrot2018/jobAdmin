@@ -11,7 +11,7 @@
 *{
   margin: 0;padding: 0;
   box-sizing: border-box;
-  -webkit-overflow-scrolling: touch;
+  /* -webkit-overflow-scrolling: touch; */
   font-family:'MicrosoftYaHei';
 }
 a{

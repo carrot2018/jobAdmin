@@ -126,7 +126,7 @@ export default {
         this.$http.get('/api/loginOut?requestId='+this.requestId,
         ).then((res)=>{
             console.log(res)
-            if(res.data.code=='000'){
+            if(res.data.code=='202'){
                 this.toast = this.$createToast({
                     txt: '退出成功',
                     type: 'txt',
@@ -139,6 +139,15 @@ export default {
                 })
                 this.toast.show() 
             }
+            if(res.data.message=='退出登陆失败'){
+                this.toast = this.$createToast({
+                    txt: '退出登陆失败',
+                    type: 'txt',
+                    time: 1500,                  
+                })
+                this.toast.show() 
+            }
+
            
         })
     }
