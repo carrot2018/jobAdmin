@@ -1136,10 +1136,12 @@ export default {
                     next();
                 }).catch(() => {});                               
             }else{
+                console.log(3)
                 next();
             }
 
         }else{
+            console.log(4)
             next(); 
         }
       }else{//修改
