@@ -76,6 +76,12 @@ const router = new vueRouter({
       component: resolve => require(['@/view/menu/preview/notCookerTel.vue'], resolve),
       meta: {requireAuth: true}
     },
+    // {
+    //   path: '/releaseRules',
+    //   name: 'releaseRules',
+    //   component: resolve => require(['@/view/ReleaseRules.vue'], resolve),
+    //   meta: {requireAuth: true}
+    // },
     {
       path: '/login',
       name: '登录',

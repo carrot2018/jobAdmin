@@ -358,6 +358,13 @@ export default {
     }
   },
   methods:{
+
+    // showRules(){
+    //   this.$router.push({
+    //     name: 'releaseRules'
+    //   })
+    // },
+
     getSkillArr(){//技能标签
         this.$http.get('/service/api/taxonomies/486',{
         }).then((res)=>{
@@ -1125,6 +1132,7 @@ export default {
       margin-top: 50px;
       padding-top: 30px;
       &>span {
+        cursor: pointer;
         color: #00a0e9;
         text-decoration: underline ;
       }
