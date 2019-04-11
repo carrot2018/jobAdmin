@@ -8,7 +8,7 @@
             <!-- 职位名称       -->
             <div>
                 <span><span style="color:#ff5571;">*</span>职位名称 
-                  </span> 
+                </span> 
                 <div class="right">
                     <input type="text" class='job-name' placeholder="填写职位名，例：湘菜炒锅师傅"
                     maxlength="30" v-model='name' v-show='!editorId'>
@@ -17,19 +17,20 @@
                 </div>               
             </div>
             <!-- 职位类别 -->
-            <!-- <div>
-                <span>职位类别 <span class="iconfont iconjiufuqianbaoicon14"></span></span> 
-                <div class="right job-type">
-                    <el-select v-model="value4" filterable placeholder="选择类别">
+            <div>
+                <span><span style="color:#ff5571;">*</span>职位类别 
+                </span> 
+                <div class="right job-type">                   
+                    <el-select v-model="experience" filterable placeholder="选择类别">
                         <el-option
-                        v-for="item in options"
+                        v-for="item in experienceArr"
                         :key="item.value"
                         :label="item.label"
                         :value="item.value">
                         </el-option>
                     </el-select>
                 </div>
-            </div> -->
+            </div>
             <!-- 工作地点 -->
             <div>
                 <span><span style="color:#ff5571;">*</span>工作地点 
@@ -368,7 +369,8 @@ export default {
             this.skillArr=skillArr;
             let that=this;
             that.skillArr.forEach(function(v){
-                that.remarkTextArr.push(v.name)                  
+                that.remarkTextArr.push(v.name)   
+                              
             })
         })
     },
@@ -387,7 +389,7 @@ export default {
         })
     },
     clickBtn(){
-        console.log(this.editorId)
+        // console.log(this.editorId)
         if(this.editorId){
             this.change();
         }else{
@@ -464,14 +466,14 @@ export default {
             }else{
                 this.moneyTipShow=false;
             }
-            if(!this.salaryTwo){
-                this.moneyTipShow=true;
-                this.moneyTip='请填写薪资范围';
-                $('#scrollBox').scrollTop(0);
-                return;
-            }else{
-                this.moneyTipShow=false;
-            }
+            // if(!this.salaryTwo){
+            //     this.moneyTipShow=true;
+            //     this.moneyTip='请填写薪资范围';
+            //     $('#scrollBox').scrollTop(0);
+            //     return;
+            // }else{
+            //     this.moneyTipShow=false;
+            // }
         }
         if(this.month==2){
             this.salaryOne='';
@@ -492,9 +494,9 @@ export default {
         }
         
         let description=this.editor.getData();
-        console.log( description.length )
+        // console.log( description.length )
         let remarkArr=[],welfareArr=[];
-        console.log( this.addSkillArr, this.addWelfareArr)
+        // console.log( this.addSkillArr, this.addWelfareArr)
         this.addSkillArr.forEach(function(v){
            remarkArr.push(v.name)   
         })
@@ -523,7 +525,7 @@ export default {
         let that=this;
         that.$http.post('/api/job/pushJob?requestId='+that.requestId,params
         ).then((res)=>{
-            console.log(res)
+            // console.log(res)
             if(res.data.code=='000'){
                 this.sensitive=false;
                 this.centerDialogVisible=true;
@@ -638,9 +640,9 @@ export default {
         // }
         let age=this.age_1+'~'+this.age_2;
         let description=this.editor.getData();
-        console.log( description.length )
+        // console.log( description.length )
         let remarkArr=[],welfareArr=[];
-        console.log( this.addSkillArr, this.addWelfareArr)
+        // console.log( this.addSkillArr, this.addWelfareArr)
         this.addSkillArr.forEach(function(v){
            remarkArr.push(v.name)   
         })
@@ -669,17 +671,17 @@ export default {
         let that=this;
         that.$http.post('/api/job/updateJobsById?requestId='+that.requestId,params
         ).then((res)=>{
-            console.log(res)
+            // console.log(res)
             if(res.data.code=='000'){
                 this.sensitive=false;
                 this.$message({
                     type: 'success',
                     message: '职位修改成功!',
-                    center: true,
-                    onClose:function(){
-                        this.$router.push('/allPosition')
-                    }
+                    center: true,                  
                 })
+                setTimeout(function(){
+                    that.$router.push('/allPosition');
+                },1500)
                 
             }
             if(res.data.code=='503'){
@@ -709,7 +711,7 @@ export default {
                 that.skillTip=false;
             }
             that.addSkillArr=addSkillArr;
-            console.log(that.addSkillArr)
+            // console.log(that.addSkillArr)
         }else{
             item.flag=!item.flag;
             that.addSkillArr.forEach(function(v,i){
@@ -718,7 +720,7 @@ export default {
                 }
             })
            
-            console.log(that.addSkillArr);
+            // console.log(that.addSkillArr);
             that.skillTip=false;
         }  
     },
@@ -748,7 +750,7 @@ export default {
                 name:this.addSkill,flag:true
             }); 
             this.addSkillArr=addSkillArr;
-            console.log( this.addSkillArr)
+            // console.log( this.addSkillArr)
             this.skillTip=false;
         }
         
@@ -779,7 +781,7 @@ export default {
                 this.welfareTip=false;
             }
             this.addWelfareArr=addWelfareArr;
-            console.log(that.addWelfareArr)
+            // console.log(that.addWelfareArr)
         }else{
             item.flag=!item.flag;
             that.addWelfareArr.forEach(function(v,i){
@@ -787,7 +789,7 @@ export default {
                     that.addWelfareArr.splice(i,1)
                 }
             })         
-            console.log(that.addWelfareArr);
+            // console.log(that.addWelfareArr);
             this.welfareTip=false;
         }  
     },
@@ -973,7 +975,7 @@ export default {
         }
         that.$http.get('/api/job/getZpJobById/'+that.editorId+'?requestId='+that.requestId,{
         }).then((res)=>{
-           console.log(res) 
+        //    console.log(res) 
            if(res.data.code=='000'){
               let detail=res.data.data;
               this.hasName=detail.name;
@@ -1039,8 +1041,8 @@ export default {
 
                     }
                 
-                    console.log( that.skillArr )
-                    console.log( that.welfareArr )
+                    // console.log( that.skillArr )
+                    // console.log( that.welfareArr )
                 
                 }
         })
@@ -1076,11 +1078,14 @@ export default {
     this.getSkillArr();
     this.getWelfareArr();
     this.editorId=this.$route.query.id;
-    console.log(this.editorId)
+    // console.log(this.editorId)
   },
   mounted(){
     let that=this;
-    that.getEditorData();
+    setTimeout(function(){
+        that.getEditorData();
+    },1000)
+    
     CKEDITOR.replace('editor', {height: '200px', width: '100%', toolbar: 'toolbar_Full'});
     that.editor = CKEDITOR.instances.editor;  
     that.editor.on('change',function(){
@@ -1107,11 +1112,6 @@ export default {
 }
 </script>
 <style scoped lang='scss'>
-
-// /deep/ .cke_ltr .cke_button__numberedlist_icon {
-//   background: url('../../../static/img/has-checked.png') no-repeat 0 -576px !important;
-// }
-
 #releasePositions{
     height: auto;
     min-height: 100%;
@@ -1233,7 +1233,8 @@ export default {
             >.right{
                 margin-left: 100px;
                 >.job-name-tip{
-                    color: #ffbd5a;
+                    color: #ffbd5a;  
+                    font-size: 15px;                
                     span{
                         color: #ffbd5a;
                         position: relative;
@@ -1241,7 +1242,7 @@ export default {
                     }
                 }
                 .job-name{
-                    width: 300px;
+                    width: 260px;
                     height: 44px;
                     border: 1px solid #DCDFE6;
                     border-radius: 3px;
@@ -1251,7 +1252,7 @@ export default {
                 }
                 .job-name-text{
                     display: inline-block;
-                    width: 300px;
+                    width: 260px;
                     height: 44px;
                     line-height: 44px;
                     border: 1px solid #DCDFE6;
@@ -1459,9 +1460,9 @@ export default {
                 .sensitive{
                     padding-bottom: 20px;
                     >span{
-                        color: red;
+                        color: #FF5571;
                         span{
-                            color: red;
+                            color: #FF5571;
                             position: relative;
                             top: 1px;
                         }
@@ -1496,7 +1497,7 @@ export default {
                 
                 }
                 .error-label{
-                    color: red;
+                    color: #FF5571;
                     margin-top: 8px;
                 }
                 
@@ -1542,22 +1543,23 @@ export default {
     width: 90px;
     height: 40px;
 }
-#releasePositions .job-type .el-input{
-    width: 300px;
-    height: 40px;
+#releasePositions .job-type .el-select{
+    width: 260px;
 }
-#releasePositions .job-time .el-input{
-    width: 90px;
+#releasePositions .job-type .el-input{
+    width: 260px;
     height: 40px;
-    margin-right: 6px;
 }
 #releasePositions .el-select{
    margin-right: 10px;
    width: 90px;
    height: 40px;
 }
-.el-input__inner:focus {
+#releasePositions .el-input__inner:focus {
     border-color: #DCDFE6!important;
+}
+#releasePositions .el-select .el-input.is-focus .el-input__inner{
+    border-color: #FF5571!important;
 }
 #releasePositions .ck.ck-editor {
     width: 600px;

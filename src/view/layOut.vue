@@ -25,10 +25,7 @@ export default {
   created(){
     let userInfo=localStorage.getItem('userInfo');
     this.userInfo=JSON.parse(userInfo);
-    console.log(this.userInfo)
-
-
-
+    // console.log(this.userInfo)
   },
   mounted(){
    

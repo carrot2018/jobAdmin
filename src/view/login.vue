@@ -53,7 +53,7 @@ export default {
         let that=this;
         that.$http.get('/api/checkLogin?loginRequestId='+that.requestId,{})
         .then((res)=>{
-            console.log(res)
+            // console.log(res)
             if(res.data.code=='000'){//免密登录成功
                 let userInfo=res.data.data;
                 window.localStorage.setItem('userInfo',JSON.stringify(userInfo));

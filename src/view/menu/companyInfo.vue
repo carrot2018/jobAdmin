@@ -1019,6 +1019,16 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder {
     display: block;
     color: #ff5670!important;
 }
+/* #companyInfo .el-select .el-input.is-focus .el-input__inner{
+    border-color: #e2e9f6!important;
+} */
+/* #companyInfo .el-select-dropdown__item.selected{
+    color:#e2e9f6!important;
+} */
+.el-select-dropdown__item.selected {
+    color: #e2e9f6;
+    font-weight: 700;
+}
 .icon-img{
     position: absolute;
     top: 35px;

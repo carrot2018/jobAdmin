@@ -497,6 +497,29 @@ export default {
     }
 }
 </style>
+<style>
+/* 分页样式 */
+.el-pager li {
+    height: 36px!important;
+    line-height: 36px!important;
+    min-width: 36px!important;
+    font-size: 16px!important;
+}
+.el-pagination button, .el-pagination span:not([class*=suffix]) {
+    height: 36px!important;
+    line-height: 36px!important;
+    min-width: 36px!important;
+}
+.el-pagination.is-background .el-pager li:not(.disabled).active {
+    background-color: #00b7ee!important;
+    color: #FFF!important;
+    font-size: 16px!important;
+}
+.el-pager li:hover {
+    color: #00b7ee!important;
+}
+</style>
+
 
 
 
