@@ -1,96 +1,196 @@
 <template>
 <div id="cookerTel">
-  <div 
-  class='content-box'>
-    <h3>
-        <span @click='checkTitle(1)' :class='{item:template==1}'>在线简历 /  </span>
-        <span @click='checkTitle(2)' :class='{item:template==2}'>证书及荣誉 /</span>
-        <span @click='checkTitle(3)' :class='{item:template==3}'>联系方式</span>
-    </h3>
-    <div class="name">
-        <span>
-          <img src="../../../../static/img/logo.png" >
-          <span>{{remuces.realName}}</span>
-          <span class="iconfont iconfemale"></span>
-          <span v-show='template==2'>
-            <i>普</i>
-          </span>
-          <span v-show='template==2'>
-            <i>厨师证</i>
-          </span>
-        </span>
-        <span v-show='template!=3'>
-          <span><span class="iconfont iconcakes"></span><i>{{remuces.birthday}}</i>岁 &emsp;/&emsp;</span>
-          <span><span class="iconfont iconfangwuzongshu"></span><i></i>{{remuces.bornProvinceName}} &emsp;/&emsp;</span>
-          <span><span class="iconfont iconjiguan"></span><i></i>当前在{{remuces.currentCityName}}</span>
-        </span>
+  <h3>
+    <span @click='checkTitle(1)' :class='{item:template==1}'>在线简历</span>&emsp;|&emsp;
+    <span @click='checkTitle(2)' :class='{item:template==2}'>证书及荣誉</span>&emsp;|&emsp;
+    <span @click='checkTitle(3)' :class='{item:template==3}'>联系方式</span>
+  </h3>
+  <div class='content-box'>
+    
+    <div class="message">
+        <div class="message-box">
+          <div class="message-left">
+            <span class="message-left__name">{{remuces.realName}}</span>
+            <i class="message-left__img">
+              <img src="static/img/man.png" alt="">
+            </i>
+          </div>
+          
+          <div class="message-right">
+            <p><img src="static/img/Age.png" alt=""><span>{{remuces.birthday}}岁</span>&emsp;|&emsp;</p>
+            <p><img src="static/img/Nativeplace.png" alt=""><span>{{remuces.bornProvinceName}}</span> &emsp;|&emsp;</p>
+            <p><img src="static/img/Location.png" alt=""><span>当前在{{remuces.currentCityName}}</span></p>
+          </div>
+        </div>
+
+        <div class="message-img">
+          <img src="static/img/icon.png" alt="">
+        </div>
+        
     </div>
-    <div class="resume_1" v-show="template==1">
-      <p>
-        <span>自我评价</span>
-        <span>
-          <i 
-          v-for="(item1,index) in detialList.remark"
-          :key="index">{{item1}}</i>
-        </span>
-      </p>
-      <p>            
-        <span>期望工作</span>
-        <span>
-          <span>{{detialList.expectJob}} /  </span>
-          <span>{{detialList.currentCity}} /</span>
-          <span>{{detialList.expectMinPayment}}k-{{detialList.expectMaxPayment}}k</span>
-        </span>  
-      </p>
-      <p>            
-        <span>师承</span>
-        <span>{{detialList.master}}</span>
-      </p>
-      <p>            
-        <span>擅长菜系 </span>
-        <span>{{detialList.cookingStyle}}</span>
-      </p>
-      <p>            
-        <span>擅长菜品 </span>
-        <span>{{detialList.discribe}}</span>
-      </p>
-      <p class='p_pic'>
-        <img v-for='(item, index) in remuces.cookingImages'
-        :key="index"
-        :src="item">
-      </p>
-      <div>            
-        <span>工作经历 </span>
-        <div>
-          <div 
-          v-for='(item1, index) in works' 
-          class='item'
-          :key="index">
-            <p>
-              <span>{{item1.company}}  /  {{item1.position}}  /  {{item1.isParttime}}  /  {{item1.cityName}}</span>
-              <span>{{item1.startTime}} 至 {{item1.endTime}}</span>
-            </p>
-            <p>{{item1.description}}               
-            </p>
+
+    <!-- 在线简历 -->
+    <div class="resume-1" v-show="template==1">
+      <div class="resume-1__content">
+        <div class="resume-1__content__left">
+          <span class="resume-1__content__text">自我评价</span>  
+        </div>
+        <div class="resume-1__content__right">
+          <span class="resume-1__content__right__line"></span>
+          <div class="resume-1__content__right__remark">
+            <p 
+              v-for="(item1,index) in detialList.remark"
+              :key="index"
+            >{{item1}}</p>
           </div>
         </div>
       </div>
-      <!-- 教育经历 -->
-      <div>            
-        <span>教育经历 </span>
-        <div>
-          <div 
-          v-for='(item2, index) in educations'
-          :key="index"
-          >
-            <p>
-              <span>{{item2.school}}  /  {{item2.major}}</span>
-              <span>{{item2.joinDate}} 至 {{item2.leaveDate}}</span>
-            </p>
+
+      <div class="resume-1__content">
+        <div class="resume-1__content__left">
+          <span class="resume-1__content__text">期望工作</span>  
+        </div>
+        <div class="resume-1__content__right">
+          <span class="resume-1__content__right__line"></span>
+          <div class="resume-1__content__right__expectedWork">
+            <div class="resume-1__content__right__expectedWork__left">
+              <p>期望职位</p>
+              <p>期望地区</p>
+              <p>期望薪资</p>
+            </div>
+            <div class="resume-1__content__right__expectedWork__right">
+              <p>{{detialList.expectJob}}</p>
+              <p>{{detialList.currentCity}}</p>
+              <p>{{detialList.expectMinPayment}}k-{{detialList.expectMaxPayment}}k</p>
+            </div>
           </div>
+
         </div>
       </div>
-      <div>            
+
+      <div class="resume-1__content">
+        <div class="resume-1__content__left">
+          <span class="resume-1__content__text">厨艺展示</span>  
+        </div>
+        <div class="resume-1__content__right">
+          <span class="resume-1__content__right__line"></span>
+          <div class="resume-1__content__right__expectedWork">
+            <div class="resume-1__content__right__expectedWork__left">
+              <p>师承</p>
+              <p>擅长菜系</p>
+              <p>擅长菜品</p>
+            </div>
+            <div class="resume-1__content__right__expectedWork__right">
+              <p>{{detialList.master}}</p>
+              <p>{{detialList.cookingStyle}}</p>
+              <p>{{detialList.discribe}}</p>
+            </div>
+          </div>
+          
+        </div>
+      </div>
+
+      <div class="resume-1__content">
+        <div class="resume-1__content__left">
+          <span class="resume-1__content__text">厨艺作品</span>  
+        </div>
+        <div class="resume-1__content__right">
+          <span class="resume-1__content__right__line"></span>
+          <div class="resume-1__content__right__cookingWorks">
+           
+              <!-- <img v-for='(item, index) in remuces.cookingImages'
+                :key="index"
+                :src="item"
+              > -->
+
+              <img v-for='i in 10'
+                
+                src="../../../../static/img/icon.png"
+              >
+          </div>
+          
+        </div>
+      </div>
+    
+      <div class="resume-1__content">
+        <div class="resume-1__content__left">
+          <span class="resume-1__content__text">工作经历</span>  
+        </div>
+        <div class="resume-1__content__right">
+          <span class="resume-1__content__right__line"></span>
+          <div class="resume-1__content__right__workExperience">
+            <!-- <div 
+              v-for='(item1, index) in works' 
+              :key="index"
+              class="works"
+            >
+             <p class="works__left"><span>{{item1.startTime}} 至</span><span>{item1.endTime}}</span></p>
+              <p class="works__right">
+                <span class="works__right__title">{{item1.company}} &emsp;|&emsp;{{item1.position}}&emsp;|&emsp;{{item1.isParttime}}&emsp;|&emsp;{{item1.cityName}}</span>
+                <span class="works__right__text">{{item1.description}}</span>
+              </p>
+             
+              
+            </div> -->
+             <div 
+              v-for='i in 2' 
+              class="works"
+            >
+             <p class="works__left"><span>2019.1 至</span><span>2012.12</span></p>
+              <p class="works__right">
+                <span class="works__right__title">问问餐饮有限公司&emsp;|&emsp;主厨&emsp;|&emsp;全职&emsp;|&emsp;深圳</span>
+                 <span class="works__right__text">无动为大大所大所所的啊无动为大大所大所所的啊无动为大大所大所所的啊无动为大大所大所所的啊无动为大大所大所所的啊无动为大大所大所所的啊无动为大大所大所所的啊无动为大大所大所所的啊</span>
+              </p>
+             
+             
+            </div>
+          </div>
+          
+        </div>
+      </div>
+
+
+      <div class="resume-1__content">
+        <div class="resume-1__content__left">
+          <span class="resume-1__content__text">教育经历</span>  
+        </div>
+        <div class="resume-1__content__right">
+          <span class="resume-1__content__right__line"></span>
+          <div class="resume-1__content__right__educationExperience">
+
+             <!-- <div 
+              v-for='(item2, index) in educations'
+              :key="index"
+              class="education"
+              >
+                <p class="education__left">
+                  <span>{{item2.school}}  |  {{item2.major}}</span>
+                </p>
+                <p class="education__right">
+                  <span>{{item2.joinDate}} 至 {{item2.leaveDate}}</span>
+                </p>
+               
+              </div> -->
+              
+              <div 
+              v-for='i in 2'
+              class="education"
+              >
+                <p class="education__left">
+                  <span>西点学校  |  蛋糕</span>
+                </p>
+                <p class="education__right">
+                  <span>2009.1 至 2012.1</span>
+                </p>
+                
+              </div>
+          </div>
+          
+        </div>
+      </div>
+      
+     
+     <!--  <div>            
         <span>获得荣誉 </span>
         <div>
           <div v-for='(item3, index) in prizes'
@@ -101,52 +201,125 @@
             </p>
           </div>
         </div>
-      </div>
+      </div> -->
 
-    </div> 
+    </div>  
+
     <div class='resume_2' v-show="template==2">
-      <div class="text">获奖证书</div>
-      <div class="box">
-        <div class="win" 
-        v-for="(item,index) in qualifications"
-        :key="index">
-          <img :src="item.image" >
-          <div>
-            <div>
-              <p>{{item.name}}</p>
-              <p>{{item.receiveTime}}</p>
+
+      <div class="resume-2__content">
+        <div class="resume-2__content__left">
+          <span class="resume-2__content__text">获奖证书</span>  
+        </div>
+        <div class="resume-2__content__right">
+          <span class="resume-2__content__right__line"></span>
+          <div class="resume-2__content__right__awardCertificate">
+            <!-- <div class="awardCertificate" 
+              v-for="(item,index) in qualifications"
+              :key="index">
+
+              <div class="awardCertificate__left">
+                <img :src="item.image" >
+              </div>
+
+              <div class="awardCertificate__right">
+                <p class="awardCertificate__right__title">{{item.name}}</p>
+                <p class="awardCertificate__right__time">{{item.receiveTime}}</p>
+              </div>
+             
+            </div> -->
+
+            <div class="awardCertificate" 
+              v-for="i in 2"
+            >
+              <div class="awardCertificate__left">
+                <img src="static/img/icon.png" >
+              </div>
+              
+              <div class="awardCertificate__right">
+                <p class="awardCertificate__right__title">十大最好吃的顺德菜</p>
+                <p class="awardCertificate__right__time">2018.12</p>
+              </div>
+              
             </div>
+
           </div>
         </div>
       </div>
-      <div class="text">荣誉照片</div>
-      <div class="box">
-        <div class="win" 
-        v-for='(item, index) in prizes'
-        :key="index">
-          <img :src="item.image" >
-          <div>
-            <div>
-              <p>{{item.prizeNotes}}</p>
-              <p>{{item.receiveTime}}</p>
-            </div>          
+
+      <div class="resume-2__content">
+        <div class="resume-2__content__left">
+          <span class="resume-2__content__text">荣誉照片</span>  
+        </div>
+        <div class="resume-2__content__right">
+          <span class="resume-2__content__right__line"></span>
+          <div class="resume-2__content__right__honoraryPhotos">
+            <!-- <div class="awardCertificate" 
+              v-for="(item,index) in prizes"
+              :key="index">
+
+              <div class="awardCertificate__left">
+                <img :src="item.image" >
+              </div>
+
+              <div class="awardCertificate__right">
+                <p class="awardCertificate__right__title">{{item.prizeNotes}}</p>
+                <p class="awardCertificate__right__time">{{item.receiveTime}}</p>
+              </div>
+             
+            </div> -->
+
+            <div class="honoraryPhotos" 
+              v-for="i in 2"
+            >
+              <div class="honoraryPhotos__left">
+                <img src="static/img/icon.png" >
+              </div>
+              
+              <div class="honoraryPhotos__right">
+                <p class="honoraryPhotos__right__title">十大最好吃的顺德菜</p>
+                <p class="honoraryPhotos__right__time">2018.12</p>
+              </div>
+              
+            </div>
+
           </div>
         </div>
       </div>
 
     </div>
+
     <div class='resume_3' v-show="template==3">
+
+      <div class="resume-3__content">
+        <div class="resume-3__content__left">
+          <span class="resume-3__content__text">联系方式</span>  
+        </div>
+        <div class="resume-3__content__right">
+          <span class="resume-3__content__right__line"></span>
+          <div class="resume-3__content__right__phoneNum">
+            <p class="phoneNum">
+              <i class="phoneNum__icon"></i>
+              <span>手机号码&emsp;&emsp;{{remuces.mobile}}</span>
+            </p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!--<div class='resume_3' v-show="template==3">
       <p>
         <span class="iconfont iconshouji"></span>
         <span>手机号码</span>
         <span>{{remuces.mobile}}</span>
       </p>
-      <!-- <p>
+       <p>
         <span class="iconfont iconyouxiang"></span>
         <span>联系邮箱</span>
         <span>13700000000@163.com</span>
-      </p> -->
-    </div>
+      </p> 
+    </div>-->
   </div>
 </div>
 </template>
@@ -198,13 +371,12 @@ export default {
         
         // 个人详细
         if(res.data.detialList.length !== 0) {
-
           res.data.detialList.some((item,i) => {
-            if(item.mark !== null && item.mark !== undefined) {
-              
-               let mark = item.remark
+            if(item.remark !== null && item.remark !== undefined) {
+              let mark = item.remark
               // 标签分割
               item.remark = mark.split(",")
+              
             }
            
             // 期望工资下限
@@ -313,239 +485,366 @@ export default {
 </script>
 <style scoped lang='scss'>
 #cookerTel{
-    height: 100%;
-    padding: 30px 50px;
-    width: 1200px;
+    min-height: 100%;
+    // height: 100%;
+    padding: 60px 0 40px 0;
+    width: 100%;
+    background: url('../../../../static/img/telbg.png')
 }
-.content-box{
-  padding-bottom: 30px;
-  >h3{
-    font-size: 16px;
-    color: #666;
+h3{
+    display: block;
+    width: 800px;
+    margin: 0 auto;
+    font-size: 20px;
+    color: #727272;
     cursor: pointer;
+    margin-bottom: 30px;
     >.item{
+      font-size: 24px;
       color: #333;
     }
   }
+.content-box{
+  margin: 0 auto;
+   width: 800px;
+   background: #fff;
+  // padding-bottom: 30px;
+  padding: 0 40px;
  
-  >.name{
-    width: 870px;
-    height: 60px;
-    line-height: 60px;
+  .message{
+    width: 100%;
+    height: 190px;
+    // line-height: 60px;
     margin-top: 30px;
-    >span:nth-of-type(1){
-      display: inline-block;
-      >img{
-        width: 32px;height: 32px;
-        border-radius: 50%;
-        position: relative;
-        top: 10px;
-      }
-      >span:nth-of-type(1){
-        font-size: 20px;
-        font-weight: 700;
-        margin-left: 4px;
-      }
-      >span:nth-of-type(2){
-        font-size: 20px;
-        color: #666;
-        margin-left: 4px;
-      }
-      >span:nth-of-type(3){
-        padding: 3px 8px;
-        border: 1px solid #eee;
-        text-align: center;
-        margin-left: 4px;
-        border-radius: 3px;
-        i{
-          font-style: normal;
-        }
-      }
-      >span:nth-of-type(4){
-        text-align: center;
-        padding: 3px 8px;
-        background: #f5f5f5;
-        border: 1px solid #eee;
-        margin-left: 6px;
-        border-radius: 3px;
-        i{
-          font-style: normal;
-        }
-      }
-    }
-    >span:nth-of-type(2){
-      float: right;
-      >span{
-        // margin-right: 20px;
-        color: #666;
-        >span:nth-of-type(1){
-          margin-right: 8px;
-        }
-        >i{
-          font-style: normal;
-        }
-      }
-      >span:last-of-type{
-        margin-right: 0;
-      }
-    }
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     
-  }
-  >.resume_1{
-    >p{
-      color: #666;
-      margin-top: 15px;
-      >span:nth-of-type(1){
-        width: 70px;
-        display: inline-block;
-        float: left;
-      }
-      >span:nth-of-type(2){
-        position: relative;
-        top: -3px;
-        i{
-          display: inline-block;
-          padding: 3px 6px;
-          background: #f5f5f5;
-          border:1px solid #eee;
-          font-style: normal;
+    .message-box{
+      .message-left{
+        display: flex;
+        align-items: flex-end;
+        height: 30px;
+        &__name {
+          color: #000;
+          font-size: 28px;
           margin-right: 5px;
-          border-radius: 2px;
         }
-      }
-      >p{
-        margin-left: 80px;
-        width: 100%;
-        >span{
-          display: block;
-         
-        }
-      }
-      
-    }
-    >div{
-      color: #666;
-      margin-top: 34px;
-      >span:nth-of-type(1){
-        width: 70px;
-        display: inline-block;
-        float: left;
-      }
-      >div{
-        margin-left: 70px;
-        width: 800px;
-        >div{
-          margin-top: 10px;
-          >p:nth-of-type(1){
-            margin-bottom: 20px;
-            >span:nth-of-type(2){
-              float: right;
-            }
-          }
-          >p:nth-of-type(2){
-            margin-top: 10px;
-            line-height: 20px;
-            text-align: justify;
-          }
-        }
-        >div.item{
-          margin-top: 25px;
-        }
-       
-      }
-    }
-    >.p_pic{
-      width: 550px;
-      margin-top: 24px;
-      img{
-        display: inline-block;
-        width: 80px;
-        height: 80px;
-        border-radius: 2px;
-        margin-right: 10px;
-        margin-top: 10px;
-      }
-    }
-    >p:nth-of-type(1),p:nth-of-type(2),p:nth-of-type(3){
-      margin-top: 30px;
-    }
-  }
-  >.resume_2{
-    .text{
-      margin-top: 20px;
-      font-size: 15px;
-      color: #666;
-    }
-    .box{
-      >div{
-        // height: 100px;
-        margin-top: 10px;
-        >img{
+        &__img {
           display: inline-block;
-          width: 100px;
-          height: 100px;
-          border-radius: 2px;
-          float: left;
+          width: 24px;
+          height: 24px;
+          img {
+            width: 100%;
+          }
         }
-        >div{
-          margin-left: 110px;
-          width: 300px;
-          height: 100px;
-          position: relative;
-          >div{
-            position: absolute;
-            top: 50%;
-            -webkit-transform: translateY(-50%);
-            -moz-transform: translateY(-50%);
-            transform: translateY(-50%);
-            p:nth-of-type(1){
-              color: #333;
-            }
-            p:nth-of-type(2){
-              color: #666;
-              margin-top: 8px;
+      }
+      .message-right {
+        margin-top: 25px;
+        height: 30px;
+        line-height: 30px;
+        display: flex;
+        color: #727272;
+        >p {
+          height: 30px;
+          line-height: 30px;
+          // display: inline-block;
+          display: flex;
+          align-items: center;
+          >img {
+            margin-right: 5px;
+          }
+        }
+      }
+    }
+    .message-img {
+      height: 120px;
+      width: 120px;
+      img {
+        height: 100%;
+        width: 100%;
+      }
+    }
+  }
+   
+  .resume-1{
+    &__content{
+      color: #333;
+      font-size: 20px;
+      display: flex;
+      &__left {
+        flex-shrink: 0;
+          .resume-1__content__text {
+            display: inline-block;
+            font-size: 20px;
+            color: #333;
+          }
+        }
+        &__right {
+        margin-left: 38px;
+        flex: 1;
+          &__line {
+            width: 100%;
+            // margin-left: 38px;
+            height: 24px;
+            display: inline-block;
+            background: url('../../../../static/img/telbg.png');
+          }
+
+          &__remark {
+            margin-top: 20px;
+            width: 100%;
+            display: flex;
+            margin-bottom: 50px;
+            p {
+              margin-right: 12px;
+              font-size: 14px;
+              color: #141e32;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              // width: 88px;
+              padding: 0 20px;
+              height: 30px;
+              border-radius: 20px;
+              background: #dbdce0;
             }
           }
-         
+
+          &__expectedWork {
+            margin: 20px 0 50px 0;
+            width: 100%;
+            display: flex;
+            font-size: 16px;
+            &__left {
+              color: #999;
+            }
+            &__right {
+              margin-left: 20px;
+              color: #4c4c4c;
+            }
+            p {
+              height: 30px;
+            }
+          }
+
+          &__cookingWorks {
+            margin: 20px 0 50px 0;
+            width: 100%;
+            // display: flex;
+            img {
+              height: 140px;
+              width: 25%;
+            }
+          }
+
+          &__workExperience {
+            margin: 6px 0 26px 0;
+            width: 100%;
+            // display: flex;
+            
+            .works {
+              position: relative;
+              padding-bottom: 24px;
+              &:nth-last-of-type(2) {
+                border-bottom: 1px solid #eee;
+              }
+              .works__left {
+                position: absolute;
+                left: -120px;
+                top: 24px;
+                >span {
+                  font-size: 16px;
+                  color: #666;
+                  display: block;
+                }
+              }
+              .works__right {
+                &__title{
+                  font-size: 16px;
+                  color: #142d46;
+                  font-weight: 600;
+                  display: inline-block;
+                  margin-bottom: 26px;
+                  margin-top: 24px;
+                }
+                &__text {
+                  display: inline-block;
+                  font-size: 14px;
+                  line-height: 24px;
+                }
+              }
+            }
+          }
+
+
+          &__educationExperience {
+            margin: 0 0 30px 0;
+            width: 100%;
+            // display: flex;
+            .education {
+              padding: 26px 0;
+              display: flex;
+              justify-content: space-between;
+              &:nth-last-of-type(2) {
+                border-bottom: 1px solid #eee;
+              }
+              .education__left {
+                 >span {
+                   font-size: 16px;
+                  color: #142d46;
+                  font-weight: 600;
+                  display: inline-block;
+                 }
+              }
+              .education__right {
+                >span {
+                   font-size: 14px;
+                  color: #666;
+                  display: inline-block;
+                 }
+              }
+            }
+          }
         }
       }
+
+  }
+
+  .resume-2{
+    &__content{
+      color: #333;
+      font-size: 20px;
+      display: flex;
+      &__left {
+        flex-shrink: 0;
+          .resume-2__content__text {
+            display: inline-block;
+            font-size: 20px;
+            color: #333;
+          }
+        }
+        &__right {
+        margin-left: 38px;
+        flex: 1;
+          &__line {
+            width: 100%;
+            // margin-left: 38px;
+            height: 24px;
+            display: inline-block;
+            background: url('../../../../static/img/telbg.png');
+          }
+
+          &__awardCertificate {
+            margin: 20px 0 50px 0;
+            width: 100%;
+            .awardCertificate {
+              display: flex;
+              align-items: center;
+              &__left {
+                height: 140px;
+                width: 140px;
+              }
+              &__right {
+                margin-left: 20px;
+                &__title {
+                  font-size: 20px;
+                  color: #333;
+                }
+                &__time {
+                  font-size: 16px;
+                  color: #727272;
+                  margin-top: 10px;
+                }
+              }
+            }
+          }
+
+          &__honoraryPhotos {
+            margin: 20px 0 50px 0;
+            width: 100%;
+            .honoraryPhotos {
+              display: flex;
+              align-items: center;
+              &__left {
+                height: 140px;
+                width: 140px;
+              }
+              &__right {
+                margin-left: 20px;
+                &__title {
+                  font-size: 20px;
+                  color: #333;
+                }
+                &__time {
+                  font-size: 16px;
+                  color: #727272;
+                  margin-top: 10px;
+                }
+              }
+            }
+          }
+
+        }
     }
   }
-  >.resume_3{
-    p{
-      margin-top: 14px;
-      span{
-        color: #666;
-      }
-      span:last-of-type{
-        margin-left: 6px;
-      }
-     
-    }
-    p:first-of-type{
-      >span:first-of-type{
-        font-size: 24px;
-        position: relative;
-        top: 4px;
-      }
-      span:nth-of-type(2){
-        margin-left: 3px;
-      }
-    }
-    p:last-of-type{
-      span:nth-of-type(2){
-        margin-left: 6px;
-      }
-      >span:first-of-type{
-        font-size: 20px;
-        position: relative;
-        top: 2px;
-        margin-left: 2px;
-        width: 20px;
-      }
+
+  .resume-3{
+    
+    &__content{
+      color: #333;
+      font-size: 20px;
+      display: flex;
+       
+      &__left {
+        flex-shrink: 0;
+          .resume-3__content__text {
+            display: inline-block;
+            font-size: 20px;
+            color: #333;
+          }
+        }
+        &__right {
+        margin-left: 38px;
+        flex: 1;
+          &__line {
+            width: 100%;
+            // margin-left: 38px;
+            height: 24px;
+            display: inline-block;
+            background: url('../../../../static/img/telbg.png');
+          }
+
+          &__phoneNum {
+            margin: 20px 0 50px 0;
+            width: 100%;
+            
+            .phoneNum {
+              display: flex;
+              align-items: center;
+              &__icon {
+                display: inline-block;
+                width: 14px;
+                height: 20px;
+                background-image: url('../../../../static/img/phoneNum.png');
+                background-size: 100% 100%;
+                margin-right: 15px;
+              }
+              >span {
+                font-size: 20px;
+                color: #333;
+              }
+            }
+            
+          }
+
+        }
     }
   }
+
 }
+  
+
 </style>
 
 
