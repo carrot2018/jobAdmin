@@ -6,22 +6,14 @@
     </h3>
     <div class="companyInfo-box">
         <div class="step">
-            <!-- <el-steps :active="active" align-center>
-                <el-step title="企业简介"></el-step>
-                <el-step title="主营餐饮"></el-step>
-            </el-steps> -->
             <span :class='{bg:active==1}'>1 • 企业简介<span v-show="active==1"></span></span>
-            
-            <!-- <span></span> -->
             <span :class='{bg:active==2}'>2 •主营餐饮<span v-show="active==2"></span></span>
-
         </div>
         <div class="content-1" v-show='template==1'>        
             <div>
                 <span>企业名称</span> 
                 <div class="right">
-                    <span class="company-name">{{userInfo.name}}</span>
-                    
+                    <span class="company-name">{{userInfo.name}}</span>                  
                 </div>             
             </div>
             <div>
@@ -161,6 +153,7 @@
             :visible.sync="centerDialogVisible"
             width="30%"
             center>
+            <img src="../../../static/img/icon.png" class='icon-img'>
             <span>你填写的企业资料将会在审核通过后向求职者展示。</span>
             <span slot="footer" class="dialog-footer">
                 <el-button type="primary" @click='toRelease()'>马上开启招聘</el-button>
@@ -177,7 +170,7 @@ export default {
     return {
         template:1,//企业简介
         number:'',//员工人数
-        centerDialogVisible: false,
+        centerDialogVisible:false,
         active:1,  
         companyArr:[],//企业标签数组  
         companyShow:false, 
@@ -257,7 +250,7 @@ export default {
                 message: '请输入自定义内容',
                 type: 'warning',
                 center: true
-            });
+            })
             return;
         }
         let flagArr=[];
@@ -495,7 +488,6 @@ export default {
         time: 1000,
         txt: 'You selected >5M files'
       }).show()
-    //   this.filesAdded(files)
     },
     toRelease(){//去发布职位
         this.$router.push({path:'/releasePositions'})
@@ -727,7 +719,8 @@ export default {
                         height: 40px;
                         border: 1px solid #DCDFE6;
                         border-radius: 3px;
-                        padding-left: 10px;
+                        // padding-left: 10px;
+                        padding: 0 10px;
                     }
                 }
                
@@ -960,6 +953,18 @@ input::-webkit-input-placeholder, textarea::-webkit-input-placeholder {
     color: #999;
     font-size: 13px;
 }
+input:-moz-placeholder, textarea:-moz-placeholder {
+    color: #999;
+    font-size: 13px;
+}
+input::-moz-placeholder, textarea::-moz-placeholder {
+    color: #999;
+    font-size: 13px;
+}
+input:-ms-input-placeholder, textarea:-ms-input-placeholder {
+    color: #999;
+    font-size: 13px;
+}
 #companyInfo .el-input__inner::-webkit-input-placeholder{
     color: #999;
     font-size: 13px;
@@ -979,33 +984,54 @@ input::-webkit-input-placeholder, textarea::-webkit-input-placeholder {
     text-align: center;
 }
 #companyInfo .el-dialog--center {
-    width: 34%!important;
+    width: 580px!important;
     position: absolute;
     left: 50%;
     top: 50%;
     transform: translate(-50%,-50%);
     margin-top: 0!important;
+    border-radius: 4px;
 }
 #companyInfo .el-dialog__header {
-    padding: 80px 20px 10px;
-   
+    padding: 160px 20px 10px; 
 }
 #companyInfo .el-dialog__title{
     font-weight: 700;
     font-size: 22px;
+    color: #142D46;
 }
 #companyInfo .el-dialog__body {
-    padding: 10px 25px 30px;
+    padding: 0 25px 30px;
+    font-size: 15px;
+    color: #666;
 }
 #companyInfo .el-dialog__headerbtn .el-dialog__close{
-    font-size: 30px;
+    font-size: 26px;
+    color: #142D46;
+}
+#companyInfo .el-dialog__headerbtn .el-dialog__close:hover{
+   color: #ff5571;
 }
 #companyInfo .el-dialog__footer{
-    padding: 10px 20px 40px;
+    padding: 30px 20px 40px;
 }
 #companyInfo .cube-upload-file-status.cubeic-right {
     display: block;
     color: #ff5670!important;
+}
+.icon-img{
+    position: absolute;
+    top: 35px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+#companyInfo .el-button--primary {
+    color: #fff;
+    background-color: #ff5571;
+    border-color: #ff5571;
+    width: 180px;
+    border-radius: 4px;
+    font-size: 18px;
 }
 </style>
 

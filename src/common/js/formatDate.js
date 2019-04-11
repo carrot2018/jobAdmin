@@ -5,7 +5,7 @@ export function formatDate(timestamp) {
     var M = date.getMonth()+1+'-';
     var D = date.getDate() + ' ';
     var h = date.getHours() + ':';
-    var m = date.getMinutes() + ':';
+    var m = date.getMinutes();
     // var s = date.getSeconds();
     return Y+M+D+h+m;
 }  
