@@ -98,15 +98,15 @@
           <span class="resume-1__content__right__line"></span>
           <div class="resume-1__content__right__cookingWorks">
            
-              <!-- <img v-for='(item, index) in remuces.cookingImages'
+              <img v-for='(item, index) in remuces.cookingImages'
                 :key="index"
                 :src="item"
-              > -->
+              >
 
-              <img v-for='i in 10'
+              <!-- <img v-for='i in 10'
                 
                 src="../../../../static/img/icon.png"
-              >
+              > -->
           </div>
           
         </div>
@@ -119,20 +119,20 @@
         <div class="resume-1__content__right">
           <span class="resume-1__content__right__line"></span>
           <div class="resume-1__content__right__workExperience">
-            <!-- <div 
+            <div 
               v-for='(item1, index) in works' 
               :key="index"
               class="works"
             >
-             <p class="works__left"><span>{{item1.startTime}} 至</span><span>{item1.endTime}}</span></p>
+             <p class="works__left"><span>{{item1.startTime}} 至</span><span>{{item1.endTime}}</span></p>
               <p class="works__right">
                 <span class="works__right__title">{{item1.company}} &emsp;|&emsp;{{item1.position}}&emsp;|&emsp;{{item1.isParttime}}&emsp;|&emsp;{{item1.cityName}}</span>
                 <span class="works__right__text">{{item1.description}}</span>
               </p>
              
               
-            </div> -->
-             <div 
+            </div>
+             <!-- <div 
               v-for='i in 2' 
               class="works"
             >
@@ -143,7 +143,7 @@
               </p>
              
              
-            </div>
+            </div> -->
           </div>
           
         </div>
@@ -158,32 +158,32 @@
           <span class="resume-1__content__right__line"></span>
           <div class="resume-1__content__right__educationExperience">
 
-             <!-- <div 
+             <div 
               v-for='(item2, index) in educations'
               :key="index"
               class="education"
               >
                 <p class="education__left">
-                  <span>{{item2.school}}  |  {{item2.major}}</span>
+                  <span>{{item2.school}}&emsp;|&emsp;{{item2.major}}</span>
                 </p>
                 <p class="education__right">
                   <span>{{item2.joinDate}} 至 {{item2.leaveDate}}</span>
                 </p>
                
-              </div> -->
+              </div>
               
-              <div 
+              <!-- <div 
               v-for='i in 2'
               class="education"
               >
                 <p class="education__left">
-                  <span>西点学校  |  蛋糕</span>
+                  <span>西点学校&emsp;|&emsp;蛋糕</span>
                 </p>
                 <p class="education__right">
                   <span>2009.1 至 2012.1</span>
                 </p>
                 
-              </div>
+              </div> -->
           </div>
           
         </div>
@@ -214,7 +214,7 @@
         <div class="resume-2__content__right">
           <span class="resume-2__content__right__line"></span>
           <div class="resume-2__content__right__awardCertificate">
-            <!-- <div class="awardCertificate" 
+            <div class="awardCertificate" 
               v-for="(item,index) in qualifications"
               :key="index">
 
@@ -227,7 +227,7 @@
                 <p class="awardCertificate__right__time">{{item.receiveTime}}</p>
               </div>
              
-            </div> -->
+            </div>
 
             <div class="awardCertificate" 
               v-for="i in 2"
@@ -254,17 +254,17 @@
         <div class="resume-2__content__right">
           <span class="resume-2__content__right__line"></span>
           <div class="resume-2__content__right__honoraryPhotos">
-            <!-- <div class="awardCertificate" 
+            <!-- <div class="honoraryPhotos" 
               v-for="(item,index) in prizes"
               :key="index">
 
-              <div class="awardCertificate__left">
+              <div class="honoraryPhotos__left">
                 <img :src="item.image" >
               </div>
 
-              <div class="awardCertificate__right">
-                <p class="awardCertificate__right__title">{{item.prizeNotes}}</p>
-                <p class="awardCertificate__right__time">{{item.receiveTime}}</p>
+              <div class="honoraryPhotos__right">
+                <p class="honoraryPhotos__right__title">{{item.prizeNotes}}</p>
+                <p class="honoraryPhotos__right__time">{{item.receiveTime}}</p>
               </div>
              
             </div> -->
@@ -500,17 +500,23 @@ h3{
     cursor: pointer;
     margin-bottom: 30px;
     >.item{
+      min-width: 100px;
       font-size: 24px;
       color: #333;
+      &:nth-of-type(2) {
+        min-width: 124px;
+      }
     }
   }
 .content-box{
+  // min-height: 700px;
+  min-height: 970px;
   margin: 0 auto;
    width: 800px;
    background: #fff;
   // padding-bottom: 30px;
   padding: 0 40px;
- 
+  box-shadow: 0 2px 12px #dedede;
   .message{
     width: 100%;
     height: 190px;
@@ -631,10 +637,17 @@ h3{
           &__cookingWorks {
             margin: 20px 0 50px 0;
             width: 100%;
-            // display: flex;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: flex-start;
             img {
               height: 140px;
-              width: 25%;
+              width: 24%;
+              // border: 1px solid red;
+              margin-right: 8px;
+              &:nth-of-type(4n) {
+                margin-right: 0
+              }
             }
           }
 
@@ -669,7 +682,7 @@ h3{
                   margin-top: 24px;
                 }
                 &__text {
-                  display: inline-block;
+                  display: block;
                   font-size: 14px;
                   line-height: 24px;
                 }

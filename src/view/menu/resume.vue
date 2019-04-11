@@ -168,7 +168,7 @@ export default {
             return false
           }
         }
-        if(res.code === '000') {
+        if(res.code === '202') {
           let data = res.data.list;
           data.some((item,i) => {
             // 时间戳转换
@@ -231,7 +231,7 @@ export default {
             return false
           }
         }
-        if(res.code === '000') {
+        if(res.code === '202') {
           let data = res.data.list;
           data.some((item,i) => {
             // 时间戳转换
