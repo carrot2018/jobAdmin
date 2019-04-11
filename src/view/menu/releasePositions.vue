@@ -675,9 +675,10 @@ export default {
                 this.$message({
                     type: 'success',
                     message: '职位修改成功!',
-                    center: true
-                }).then(function(){
-                    this.$router.push('/allPosition');
+                    center: true,
+                    onClose:function(){
+                        this.$router.push('/allPosition')
+                    }
                 })
                 
             }
@@ -984,8 +985,8 @@ export default {
                 this.areaId=detail.area;
               if(detail.paytype==1){//1 月结 2日结
                 this.month=1;
-                this.salaryOne=detail.paymentMin*1000;
-                this.salaryTwo=detail.paymentMax*1000;
+                this.salaryOne=detail.paymentMin;
+                this.salaryTwo=detail.paymentMax;
               }else if(detail.paytype==2){
                 this.month=2;
                 this.salaryTwo=detail.payment;

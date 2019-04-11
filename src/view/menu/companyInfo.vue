@@ -13,8 +13,7 @@
             <div>
                 <span>企业名称</span> 
                 <div class="right">
-                    <span class="company-name">{{userInfo.name}}</span>
-                    
+                    <span class="company-name">{{userInfo.name}}</span>                  
                 </div>             
             </div>
             <div>

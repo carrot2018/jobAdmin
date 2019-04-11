@@ -16,9 +16,9 @@
             <span class='click-layout' @click='clickLayout()'>
                 <span v-text='userInfo.name'></span>
                 <span class="iconfont iconxiala"></span>
-                <!-- <div>
+                <div>
                     退出登录
-                </div> -->
+                </div>
             </span>
         </div>
     </div>
