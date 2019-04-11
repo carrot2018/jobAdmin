@@ -142,7 +142,7 @@ export default {
     getResumeAdminMessage() {
       axios.get('/api/list?requestId='+this.requestId,
       ).then((response) => {
-        console.log(response)
+        console.log(12312312,response)
         let res = response.data;
         
         
@@ -256,15 +256,19 @@ export default {
   },
   created() {},
   mounted() {
-    console.log(this.$route.query)
+    // 判断是否是从职位管理跳转过来的
     let thisQuery = this.$route.query;
-    for( let i in thisQuery){
-      if(i === 'jobName') {
+    // console.log(thisQuery.jobName)
+    
+      if(thisQuery.jobName !== undefined) {
+        // 点击职位主动投递跳转过来调用的
         this.getJobNameResume()
       } else {
+        // 展示所有简历信息
+        
         this.getResumeAdminMessage();
       }
-    }
+    
     
   }
 };

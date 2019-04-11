@@ -13,16 +13,17 @@
                 <img src="../../static/img/huangguan.png" >
                 <span>账号权益</span>
             </span>
-            <span class='click-layout' @click='clickLayout()'>
-                <span v-text='userInfo.name'></span>
-                <span class="iconfont iconxiala"></span>
-                <div>
-                    退出登录
+            <span class='click-layout'>
+                <span v-text='userInfo.name' @click='showLayout()'></span>
+                <span class="iconfont iconxiala" @click='showLayout()'></span>
+                <div v-show="isLayout" @click='clickLayout()' class="layout-Btn">
+                  <i></i>
+                  <span>退出</span> 
                 </div>
             </span>
         </div>
     </div>
-    <div class="content-box">
+    <div class="content-box" @click='closeLayout()'>
         <div class="left">
             <div class="logo-title">
         
@@ -99,6 +100,7 @@ export default {
     return {
       thisRoute:'',
       requestId:localStorage.getItem('requestId'),
+      isLayout:false
     }
   },
   methods:{
@@ -108,6 +110,18 @@ export default {
     handleClose(key, keyPath) {
         console.log(key, keyPath);
     },
+
+    // 显示/关闭 退出登录按钮
+    showLayout() {
+      this.isLayout === false ? this.isLayout = true : this.isLayout = false;
+    },
+
+    // 关闭退出登录按钮
+    closeLayout() {
+      this.isLayout = false
+    },
+
+    // 退出登录
     clickLayout(){
         this.$http.get('/api/loginOut?requestId='+this.requestId,
         ).then((res)=>{
@@ -231,6 +245,38 @@ export default {
                     position: relative;
                     top: 2px;
                 } 
+            }
+            .click-layout {
+              position: relative;
+              .layout-Btn {
+                position: absolute;
+                height: 48px;
+                width: 144px;
+                z-index: 888;
+                right: 0;
+                
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                background: white;
+                border: 1px solid #eee;
+                border-radius: 6px;
+              
+                >i {
+                  display: inline-block;
+                  height: 18px;
+                  width: 18px;
+                  background-image: url('../../static/img/exit.jpg');
+                  background-size: 100%;
+                  margin-right: 5px;
+                }
+                >span {
+                  display: inline-block;
+                  font-size: 18px;
+                  color: #6b6b6b;
+                  letter-spacing: 5px;
+                }
+              }
             }
         }
     }      
