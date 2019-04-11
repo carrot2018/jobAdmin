@@ -11,8 +11,8 @@ module.exports = {
     assetsPublicPath: '/',
     proxyTable: {
       '/api': {//自定义名字，代表的是以下target中的内容
-        // target: 'http://23e74b3832.wicp.vip/job-route-invoker/',//本地地址
-        target: 'http://192.168.1.111:8889/job-route-invoker/', // 测试环境地址
+        target: 'http://23e74b3832.wicp.vip/job-route-invoker/',//本地地址
+        // target: 'http://192.168.1.111:8889/job-route-invoker/', // 测试环境地址
         changeOrigin: true,//是否允许跨域
         pathRewrite: {
           '^/api': ''
@@ -36,7 +36,7 @@ module.exports = {
     },
 
     // Various Dev Server settings
-    host: 'localhost', // can be overwritten by process.env.HOST
+    host: '192.168.1.30', // can be overwritten by process.env.HOST
     // host: '192.168.1.30', // can be overwritten by process.env.HOST
     // host: '192.168.3.170', // can be overwritten by process.env.HOST
     // host: '192.168.31.32', // can be overwritten by process.env.HOST

@@ -1,5 +1,5 @@
 <template>
-<div id="releasePositions">
+<div id="releasePositions" >
     <div class="content-box">
         <h3>
             <span>发布职位</span><p>相同职位名、相同工作地点的职位只允许发布一个</p>
@@ -218,9 +218,19 @@
                         <textarea id="editor" placeholder="请简要描述工作职责或工作内容，最多1000字。"                      
                         maxlength="1000"></textarea>
                         <span>{{textareaText}}/1000</span>
+                        <span @click='look()'>查看示例</span>
+                    </div>
+                    <div class='look-sample' v-show="lookSample">
+                        <p>示例内容：</p>
+                        <p>1.掌握客情和菜单，负责备齐加工原料</p>
+                        <p>2.指导摘菜工工作，负责按加工规格要求对原料进行切割、酱汁</p>
+                        <p>3.与切配岗、点心岗密切联系，保证加工原料及时适量，不断改进加工工艺，提高出净率</p>
+                        <p>4.随时保证本岗位的卫生整洁，及时清运垃圾</p>
+                        <p>5.合理使用和维护好所有器械设备，妥善保管加工用具</p>
                     </div>
                 </div>
             </div>
+           
             <!-- 技能标签 -->
             <div>
                 <span class='no-line-height'>技能标签 </span> 
@@ -267,7 +277,7 @@
             </div>
             <div class="box-bottom">
                 <div class="right">
-                   <p class='rule'>已阅读并遵守<span>《名厨之家职位信息发布规则》</span></p>
+                   <p class='rule'>已阅读并遵守<span class='rule-text' @click='toRule()'>《名厨之家职位信息发布规则》</span></p>
                    <div class="next">
                        <span @click='clickBtn()'>发&emsp;布</span>
                        <span><span class="iconfont icongantanhao"></span> 每个职位默认有效期为30天，到期自动关闭，可手动重新发布</span>
@@ -278,8 +288,7 @@
                     
                 </div>
             </div>
-
-        </div> 
+        </div>
         <el-dialog
             title="恭喜你，职位发布成功！"
             :visible.sync="centerDialogVisible"
@@ -290,11 +299,10 @@
             <span slot="footer" class="dialog-footer">
                 <el-button type="primary" @click='i_know()'>我知道了</el-button>
             </span>
-        </el-dialog>
-
-         
-    </div> 
+        </el-dialog>   
+    </div>
 </div>
+
 </template>
 <script>
 import Vue from 'vue';
@@ -302,6 +310,7 @@ import CKEDITOR from 'CKEDITOR';
 export default {
   data () {
     return {
+        lookSample:false,
         editorId:'',//编辑id
         name:'',//职位名称
         hasName:'',//职位名称
@@ -359,13 +368,15 @@ export default {
     }
   },
   methods:{
-
-    // showRules(){
-    //   this.$router.push({
-    //     name: 'releaseRules'
-    //   })
-    // },
-
+    look(){
+      this.lookSample=!this.lookSample;
+    },
+    toRule(){
+      this.rule=true;
+    },
+    toCancel(){
+      this.rule=false;
+    },
     getSkillArr(){//技能标签
         this.$http.get('/service/api/taxonomies/486',{
         }).then((res)=>{
@@ -533,11 +544,11 @@ export default {
         that.$http.post('/api/job/pushJob?requestId='+that.requestId,params
         ).then((res)=>{
             // console.log(res)
-            if(res.data.code=='000'){
+            if(res.data.code=='202'){
                 this.sensitive=false;
                 this.centerDialogVisible=true;
                 sessionStorage.setItem('hasRelease',true);
-            }else if(res.data.code=='500'){
+            }else if(res.data.code=='201'){
                 this.sensitive=true;
                 // 当前职位已经存在
                 this.$message({
@@ -545,7 +556,7 @@ export default {
                     message: '当前职位已经存在',
                     center: true
                 });
-            }else  if(res.data.code=='503'){
+            }else  if(res.data.message=='带有敏感词'){
                this.sensitive=true;
             }
            
@@ -679,7 +690,7 @@ export default {
         that.$http.post('/api/job/updateJobsById?requestId='+that.requestId,params
         ).then((res)=>{
             // console.log(res)
-            if(res.data.code=='000'){
+            if(res.data.code=='202'){
                 this.sensitive=false;
                 this.$message({
                     type: 'success',
@@ -691,7 +702,7 @@ export default {
                 },1500)
                 
             }
-            if(res.data.code=='503'){
+            if(res.data.message=='带有敏感词'){
                this.sensitive=true;
             }
         })
@@ -983,7 +994,7 @@ export default {
         that.$http.get('/api/job/getZpJobById/'+that.editorId+'?requestId='+that.requestId,{
         }).then((res)=>{
         //    console.log(res) 
-           if(res.data.code=='000'){
+           if(res.data.code=='202'){
               let detail=res.data.data;
               this.hasName=detail.name;
               this.province=detail.province;
@@ -1068,6 +1079,7 @@ export default {
                     cancelButtonText: '取消',
                     center: true
                 }).then(() => {
+                    to.meta.keepAlive = true;
                     next();
                 })
                 
@@ -1127,14 +1139,14 @@ export default {
 .content-box .content-1 > .box-bottom {
   .right {
     margin-left: 0;
-    &>p {
+    &>p.rule {
       border-top: 1px solid #e5e5e5;
       margin-top: 50px;
       padding-top: 30px;
-      &>span {
-        cursor: pointer;
+      >.rule-text{
         color: #00a0e9;
         text-decoration: underline ;
+        cursor: pointer;
       }
     }
     &>.next{
@@ -1393,11 +1405,24 @@ export default {
                 .textarea-box{
                     position: relative;
                     border-radius: 5px;
-                    >span{
+                    >span:nth-of-type(1){
                         position: absolute;
                         bottom: 10px;
                         right: 20px; 
                         color: #999;
+                    }
+                    >span:nth-of-type(2){
+                        position: absolute;
+                        bottom: -20px;
+                        right: 0;
+                        color: #00a0e9;
+                        cursor: pointer;
+                    }
+                }
+                .look-sample{                 
+                    p{
+                        line-height: 21px;
+                        color: #666;
                     }
                 }
                 .label-text{
@@ -1436,10 +1461,7 @@ export default {
                     span:nth-of-type(1){
                         font-size: 12px;
                     }
-                }
-                >.rule{
-                    color: #999;
-                }
+                }            
                 .next{
                     >span:nth-of-type(1){
                         display: inline-block;

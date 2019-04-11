@@ -5,9 +5,10 @@
             <span>职位管理</span>
         </h3>
         <div class="title">
-            <span @click='checkTitle(1)' :class='{color:template==1}'>全部职位(<i v-text='allNum'></i>)</span>
-            <span @click='checkTitle(2)' :class='{color:template==2}'>发布中(<i v-text='releaseNum'></i>)</span>
-            <span @click='checkTitle(3)' :class='{color:template==3}'>已关闭(<i v-text='shutDown'></i>)</span>
+            <span @click='checkTitle(1)' :class='{color:template==1}'>全部职位<i v-show='allNum'>({{allNum}})</i></span>
+            <span @click='checkTitle(2)' :class='{color:template==2}'>发布中<i v-show='releaseNum'>({{releaseNum}})</i></span>
+            <span @click='checkTitle(3)' :class='{color:template==3}'>已关闭
+                <i v-show='shutDown'>({{shutDown}})</i></span>
         </div>
         <div class="list-box">
             <div class="content">
@@ -17,7 +18,7 @@
                         <span @click="goResume(item.name)">主动投递 <i>{{item.sendNum}}</i>&gt;&gt;</span>
                         <span>
                             <span>
-                                <span v-show='item.publishStatus==1&&item.refresh==0' class='refresh' @click='toRefresh(item)'>刷新<i></i></span>
+                                <span v-show='item.publishStatus==1&&item.refresh==0' class='refresh' @click='toRefresh(item,$event)'>刷新<i></i></span>
                                 <span v-show='item.publishStatus==1&&item.refresh==1' class='hasRefresh'>已刷新</span>
                                 <span v-show='item.publishStatus==2' @click='hasShutDown(item,1)'>发布</span>                               
                             </span>
@@ -100,40 +101,44 @@ export default {
         }
         that.$http.post('/api/job/selectJobOfPageList?pushStatus='+that.template+'&requestId='+that.requestId,params
         ).then((res)=>{
-            console.log(res)
-            this.list=res.data.data.jobs;
-            console.log(this.list)
-            this.allTotal=res.data.data.totalRecord;  
-            if(this.allTotal>this.pageSize){
-                this.page=true;
-            }else{
-                this.page=false;
-            }       
-        }).catch((error)=>{
-            console.log(error)
+            // console.log(res)
+             if(res.data.code=='202'){
+                this.list=res.data.data.jobs;
+                // console.log(this.list)
+                this.allTotal=res.data.data.totalRecord;  
+                if(this.allTotal>this.pageSize){
+                    this.page=true;
+                }else{
+                    this.page=false;
+                }       
+             }
+           
         })
-
     },
     getAll(){
         console.log(this.requestId)
         this.$http.get('/api/job/countJobs?requestId='+this.requestId,{
         }).then((res)=>{
-            this.allNum=res.data.data;  
-        }).catch((error)=>{
+            if(res.data.code=='202'){
+                this.allNum=res.data.data;
+            }
+              
         })
     },
     getRelease(){
         this.$http.get('/api/job/countJobReleases?requestId='+this.requestId,{
         }).then((res)=>{
-            this.releaseNum=res.data.data;
-        }).catch((error)=>{
+            if(res.data.code=='202'){
+                this.allNum=res.data.data;
+            }
         })
     },
     getShutDown(){
         this.$http.get('/api/job/countJobCloses?requestId='+this.requestId,{
         }).then((res)=>{
-            this.shutDown=res.data.data;
-        }).catch((error)=>{
+            if(res.data.code=='202'){
+                this.shutDown=res.data.data;
+            }
         })
     },
     hasShutDown(item,index){//1 发布中 2 关闭
@@ -144,9 +149,9 @@ export default {
         }
         ).then((res)=>{
             console.log(res)
-            if(res.data.code=='000'){
+            if(res.data.code=='202'){
                 if(index==1){
-                    if(res.data.code=='000'){
+                    if(res.data.code=='202'){
                         this.$message({
                             type: 'success',
                             message: '发布成功!',
@@ -160,7 +165,7 @@ export default {
                     }
                 }
                 if(index==2){
-                    if(res.data.code=='000'){
+                    if(res.data.code=='202'){
                         this.$message({
                             type: 'success',
                             message: '关闭成功!',
@@ -186,7 +191,7 @@ export default {
         }
         ).then((res)=>{
             console.log(res)
-            if(res.data.code=='000'){
+            if(res.data.code=='202'){
                 this.$message({
                     type: 'success',
                     message: '删除成功!',
@@ -202,19 +207,22 @@ export default {
         }).catch((error)=>{
         })
     },
-    toRefresh(item){
+    toRefresh(item,event){
         let that=this;
         that.$http.get('/api/job/setLockFlushZpJobsByOneDay/'+item.id+'?requestId='+that.requestId,{
         }
         ).then((res)=>{         
-            if(res.data.code=='502'){
+            if(res.data.code=='202'){
                 this.$message({
                     type: 'success',
                     message: '刷新成功!',
                     center: true,
                 });
-                this.pageNum=1;
-                this.getList(); 
+                $(event.target).text('已刷新')
+                $(event.target).css('color','#999');
+                // this.pageNum=1;
+                // this.getList(); 
+                // $('#scrollBox').scrollTop(0)
             }
            
         }).catch((error)=>{

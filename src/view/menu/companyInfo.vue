@@ -445,7 +445,7 @@ export default {
         that.$http.post('/api/insertEnterpriseMsg?requestId='+that.requestId,params
         ).then((res)=>{
             console.log(res)
-            if(res.data.code=='002'){//成功
+            if(res.data.code=='202'){//成功
                 that.centerDialogVisible=true;
             }
         }).catch((error)=>{
@@ -459,9 +459,7 @@ export default {
                 this.fileArr.push(files.response.data);
             }
         }
-        console.log(this.fileArr)
-       
-      
+        // console.log(this.fileArr)
     },
     deleteFile(files){
         console.log(files);
@@ -471,7 +469,7 @@ export default {
                 that.fileArr.splice(i,1)
             }
         })
-        console.log(this.fileArr)
+        // console.log(this.fileArr)
     },
     filesAdded(files){
       let hasIgnore = false
