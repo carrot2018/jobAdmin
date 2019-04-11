@@ -21,14 +21,18 @@
                 <span><span style="color:#ff5571;">*</span>职位类别 
                 </span> 
                 <div class="right job-type">                   
-                    <el-select v-model="experience" filterable placeholder="选择类别">
+                    <el-select v-model="jobTypeStr" filterable placeholder="选择类别">
                         <el-option
-                        v-for="item in experienceArr"
-                        :key="item.value"
-                        :label="item.label"
-                        :value="item.value">
+                        v-for="item in jobTypeArr"
+                        :key="item.id"
+                        :label="item.name"
+                        :value="item.id">
                         </el-option>
                     </el-select>
+                    <p class='tip' v-show='jobTypeText'>
+                        <span class="iconfont icongantanhao"></span>
+                        <span>请选择职位类别</span>  
+                    </p>
                 </div>
             </div>
             <!-- 工作地点 -->
@@ -299,7 +303,16 @@
             <span slot="footer" class="dialog-footer">
                 <el-button type="primary" @click='i_know()'>我知道了</el-button>
             </span>
-        </el-dialog>   
+        </el-dialog> 
+        <div class="model" v-show="leaveModel">
+            <div class="model-box">
+                <p class="title">内容没有保存，确定要离开吗？</p>
+                <p class="confirm-cancel">
+                    <span>取消</span>
+                    <span>确定</span>
+                </p>
+            </div>
+        </div>  
     </div>
 </div>
 
@@ -310,6 +323,7 @@ import CKEDITOR from 'CKEDITOR';
 export default {
   data () {
     return {
+        leaveModel:false,
         lookSample:false,
         editorId:'',//编辑id
         name:'',//职位名称
@@ -364,7 +378,10 @@ export default {
         sensitive:false,
         requestId:localStorage.getItem('requestId'),  
         remarkTextArr:[],
-        welfareTextArr:[]
+        welfareTextArr:[],
+        jobTypeArr:[],
+        jobTypeStr:'',
+        jobTypeText:false
     }
   },
   methods:{
@@ -372,7 +389,7 @@ export default {
       this.lookSample=!this.lookSample;
     },
     toRule(){
-      this.rule=true;
+       window.open('http://zhao.cookhome.t/open/jobRule.html');
     },
     toCancel(){
       this.rule=false;
@@ -406,6 +423,14 @@ export default {
             })
         })
     },
+    getJobType(){//职位类别
+        this.$http.get('/api/job/getJobTypeOfList/483?requestId='+this.requestId,{
+        }).then((res)=>{
+            if(res.data.code=='202'){
+                this.jobTypeArr=res.data.data;
+            }
+        })
+    },
     clickBtn(){
         // console.log(this.editorId)
         if(this.editorId){
@@ -431,9 +456,17 @@ export default {
         // description 职位描述
         // remark 技能标签
         // welfare  福利待遇
+        // "position":500//职位类别id
         if(!this.name ){
             $('#scrollBox').scrollTop(0);
             return;
+        }
+        if(!this.jobTypeStr ){
+            this.jobTypeText=true;
+            $('#scrollBox').scrollTop(0);
+            return;
+        }else{
+            this.jobTypeText=false;
         }
         if(!this.province){
             this.addressShow=true;
@@ -469,7 +502,8 @@ export default {
         }
         if(!detailReg.test(this.detailArea)){
             this.addressShow=true;
-            this.addressText='详细地址有误'
+            this.addressText='详细地址有误';
+            this.detailArea='';
             $('#scrollBox').scrollTop(0);
             return;
         }else{
@@ -538,12 +572,12 @@ export default {
             description:description,//职位描述
             remark:remark,//技能标签
             welfare:welfare,//福利待遇
+            position:this.jobTypeStr
            
         }
         let that=this;
         that.$http.post('/api/job/pushJob?requestId='+that.requestId,params
         ).then((res)=>{
-            // console.log(res)
             if(res.data.code=='202'){
                 this.sensitive=false;
                 this.centerDialogVisible=true;
@@ -552,12 +586,19 @@ export default {
                 this.sensitive=true;
                 // 当前职位已经存在
                 this.$message({
-                    type: 'success',
                     message: '当前职位已经存在',
                     center: true
                 });
-            }else  if(res.data.message=='带有敏感词'){
+                this.sensitive=false;
+                this.$router.push({path:'/allPosition'})
+            }else if(res.data.message=='带有敏感词'){
                this.sensitive=true;
+            }else if(res.data.message=='操作失败'){
+                this.$message({
+                    message: '发布失败',
+                    center: true
+                });
+                this.sensitive=false;
             }
            
            
@@ -574,7 +615,14 @@ export default {
         // remark 技能标签
         // welfare  福利待遇
         // id(职位主键id)
-        let numReg=/^[0-9]{6}$/
+        let numReg=/^[0-9]{6}$/;
+        if(!this.jobTypeStr ){
+            this.jobTypeText=true;
+            $('#scrollBox').scrollTop(0);
+            return;
+        }else{
+            this.jobTypeText=false;
+        }
         if(!this.province){
             this.addressShow=true;
             this.addressText='请选择省份'
@@ -684,7 +732,8 @@ export default {
             description:description,//职位描述
             remark:remark,//技能标签
             welfare:welfare,//福利待遇
-            id:this.editorId
+            id:this.editorId,
+            position:this.jobTypeStr
         }
         let that=this;
         that.$http.post('/api/job/updateJobsById?requestId='+that.requestId,params
@@ -701,12 +750,17 @@ export default {
                     that.$router.push('/allPosition');
                 },1500)
                 
-            }
-            if(res.data.message=='带有敏感词'){
+            }else if(res.data.message=='操作失败'){
+                this.$message({
+                    message: '修改失败',
+                    center: true
+                });
+                this.sensitive=false;
+            }else if(res.data.message=='带有敏感词'){
                this.sensitive=true;
             }
-        })
-        
+           
+        })       
     },
     clickCustomSkill(){//点击技能自定义
       this.customSkill=!this.customSkill;
@@ -729,7 +783,6 @@ export default {
                 that.skillTip=false;
             }
             that.addSkillArr=addSkillArr;
-            // console.log(that.addSkillArr)
         }else{
             item.flag=!item.flag;
             that.addSkillArr.forEach(function(v,i){
@@ -737,8 +790,6 @@ export default {
                     that.addSkillArr.splice(i,1)
                 }
             })
-           
-            // console.log(that.addSkillArr);
             that.skillTip=false;
         }  
     },
@@ -768,7 +819,6 @@ export default {
                 name:this.addSkill,flag:true
             }); 
             this.addSkillArr=addSkillArr;
-            // console.log( this.addSkillArr)
             this.skillTip=false;
         }
         
@@ -807,7 +857,6 @@ export default {
                     that.addWelfareArr.splice(i,1)
                 }
             })         
-            // console.log(that.addWelfareArr);
             this.welfareTip=false;
         }  
     },
@@ -955,8 +1004,10 @@ export default {
       this.jobType=status;
     },
     i_know(){//我知道了
+        let that=this;
         this.centerDialogVisible=false;
-        this.$router.push('/allPosition');//跳转到职位管理
+        alert(4)
+        this.$router.push({path:'/allPosition'})
     },
     getProvince(){
         let that=this;
@@ -1001,6 +1052,7 @@ export default {
               this.city=detail.cityName;
               this.area=detail.areaName;
               this.detailArea=detail.address;
+              this.jobTypeStr=detail.position;
                 this.cityId=detail.city;
                 this.areaId=detail.area;
               if(detail.paytype==1){//1 月结 2日结
@@ -1058,19 +1110,21 @@ export default {
                         })
 
                     }
-                
-                    // console.log( that.skillArr )
-                    // console.log( that.welfareArr )
-                
+                             
                 }
         })
     }
   },
   beforeRouteLeave(to, from, next) {
       let hasRelease=sessionStorage.getItem('hasRelease');
+      console.log(hasRelease)
+      console.log(this.editorId)
       let ckeditor=this.editor.getData();
-      if(this.editorId==undefined){//发布
-        if(!hasRelease){
+      if(typeof this.editorId=='undefined'){//发布
+        console.log(1)
+        console.log(hasRelease)
+        if(hasRelease==null){
+            console.log(2)
             if(this.name!=''||this.province!=''||this.detailArea!=''
             ||this.salaryOne!=''||this.salaryTwo!=''||this.age_1!=''||ckeditor!=''||this.experience!=''||
             this.addSkillArr.length!=0|| this.addWelfareArr.length!=0){
@@ -1079,25 +1133,26 @@ export default {
                     cancelButtonText: '取消',
                     center: true
                 }).then(() => {
-                    to.meta.keepAlive = true;
                     next();
-                })
-                
+                }).catch(() => {});                               
             }else{
                 next();
             }
 
-        } 
+        }else{
+            next(); 
+        }
       }else{//修改
+        console.log(3)
         next(); 
       }
   },
   created(){
+    this.getJobType();
     this.getProvince();
     this.getSkillArr();
     this.getWelfareArr();
     this.editorId=this.$route.query.id;
-    // console.log(this.editorId)
   },
   mounted(){
     let that=this;
@@ -1135,7 +1190,63 @@ export default {
     height: auto;
     min-height: 100%;
 }
+.model{
+    width: 100%;
+    min-height: 100%;
+    position: fixed;
+    top:0;
+    left: 0;
+    z-index: 999;
+    background: rgba(0,0,0,.5);
+    .model-box{
+        width: 360px;
+        min-height: 200px;
+        position: absolute;
+        top:50%;
+        left: 50%;
+        margin-left: -150px;
+        margin-top: -150px;
+        background: #fff;
+        border-radius: 5px;
+        .title{
+            margin-top: 60px;
+            text-align: center;
+            font-size: 18px;
+            margin-bottom: 50px;
+            color: #666;
+            font-size: 18px;
+            font-weight: 700;
 
+        }
+        .confirm-cancel{
+            padding: 0 85px;
+            span{
+                display: inline-block;             
+                cursor: pointer;
+                background: #fff;
+                border: 1px solid #dcdfe6;
+                color: #606266;
+                -webkit-appearance: none;
+                text-align: center;
+                box-sizing: border-box;
+                outline: 0;
+                margin: 0;
+                transition: .1s;
+                font-weight: 500;
+                padding: 12px 20px;
+                font-size: 14px;
+                border-radius: 4px;
+            }
+            span:nth-of-type(2){
+                background: #ff5570;
+                border: 1px solid #ff5570;
+                color: #fff;
+                margin-left: 40px;
+            }
+        }
+    }
+
+}
 .content-box .content-1 > .box-bottom {
   .right {
     margin-left: 0;
@@ -1171,7 +1282,6 @@ export default {
     }
   }
 }
-
 .content-box{
     padding: 27px 0 40px 0;
     h3{
@@ -1240,7 +1350,7 @@ export default {
                   position: absolute;
                   left: -7px;
                     font-size: 15px;
-                    color: red;
+                    color: #ff5571;
                 }
                 i{
                     visibility: hidden;
@@ -1368,7 +1478,7 @@ export default {
                 .tip{
                     margin-top: 6px;
                     span{
-                        color: red;
+                        color: #ff5571;
                     }
                     span:nth-of-type(1){
                         position: relative;

@@ -448,7 +448,12 @@ export default {
             if(res.data.code=='202'){//成功
                 that.centerDialogVisible=true;
             }
-        }).catch((error)=>{
+            if(res.data.code=='201'){//企业信息已存在
+                this.$message({
+                    message: '企业信息已存在!',
+                    center: true
+                });
+            }
         })
 
     },
@@ -685,7 +690,7 @@ export default {
                 position: relative;
                 span{
                     font-size: 12px;
-                    color: red;
+                    color: #ff5571;
                     position: absolute;
                     left: -12px;
                     top: 0;
@@ -828,7 +833,7 @@ export default {
                     color: #fff;
                 }
                 .employees{
-                    color: red;
+                    color: #ff5571;
                     margin-top: 5px;
                     display: none;
                 }
@@ -856,7 +861,7 @@ export default {
                 float: left;
                 span{
                     font-size: 16px;
-                    color: red;
+                    color: #ff5571;
                 }
             }
             >.right{
