@@ -39,7 +39,7 @@
           <span class="resume-1__content__right__line"></span>
           <div class="resume-1__content__right__remark">
             <p 
-              v-for="(item1,index) in detialList.remark"
+              v-for="(item1,index) in remuces.remark"
               :key="index"
             >{{item1}}</p>
           </div>
@@ -61,7 +61,7 @@
             <div class="resume-1__content__right__expectedWork__right">
               <p>{{detialList.expectJob}}</p>
               <p>{{detialList.currentCity}}</p>
-              <p>{{detialList.expectMinPayment}}k-{{detialList.expectMaxPayment}}k</p>
+              <p>{{detialList.expectMinPayment}}{{detialList.expectMaxPayment}}</p>
             </div>
           </div>
 
@@ -228,7 +228,7 @@
               </div>
              
             </div>
-
+<!-- 
             <div class="awardCertificate" 
               v-for="i in 2"
             >
@@ -241,7 +241,7 @@
                 <p class="awardCertificate__right__time">2018.12</p>
               </div>
               
-            </div>
+            </div> -->
 
           </div>
         </div>
@@ -254,7 +254,7 @@
         <div class="resume-2__content__right">
           <span class="resume-2__content__right__line"></span>
           <div class="resume-2__content__right__honoraryPhotos">
-            <!-- <div class="honoraryPhotos" 
+            <div class="honoraryPhotos" 
               v-for="(item,index) in prizes"
               :key="index">
 
@@ -267,9 +267,9 @@
                 <p class="honoraryPhotos__right__time">{{item.receiveTime}}</p>
               </div>
              
-            </div> -->
+            </div>
 
-            <div class="honoraryPhotos" 
+            <!-- <div class="honoraryPhotos" 
               v-for="i in 2"
             >
               <div class="honoraryPhotos__left">
@@ -281,7 +281,7 @@
                 <p class="honoraryPhotos__right__time">2018.12</p>
               </div>
               
-            </div>
+            </div> -->
 
           </div>
         </div>
@@ -330,11 +330,11 @@ export default {
     return {
       template:1,
       detialList:[],
-      remuces:[],
-      works:[],
-      educations:[],
-      prizes:[],
-      qualifications:[],
+      remuces:[], 
+      works:[], // 工作经历
+      educations:[], // 教育经历
+      prizes:[{'prizeNotes':'无'}], // 获得荣誉
+      qualifications:[{'name':'无'}], // 获奖证书
 
       sesId:0 // 发送简历的用户id
       
@@ -352,7 +352,7 @@ export default {
 
       axios.post('/api/getDetialList?jobsId='+jobsId+'&sesId='+sesId+'&requestId='+requestId,
       ).then((response) => {
-        
+        console.log('88888', response)
         let res = response.data;
         this.sesId = res.data.remuces.sesId;
         console.log('88888', response.data.data)
@@ -380,9 +380,9 @@ export default {
             }
            
             // 期望工资下限
-            item.expectMinPayment = parseInt(item.expectMinPayment/1000)
+            item.expectMinPayment = parseInt(item.expectMinPayment/1000) + 'k-'
             // 期望工资上限
-            item.expectMaxPayment = parseInt(item.expectMaxPayment/1000)
+            item.expectMaxPayment = parseInt(item.expectMaxPayment/1000) + 'k'
       
           })
 
@@ -410,6 +410,12 @@ export default {
               item.cookingImages = cookingImages.split(",")
              }
             
+            if(item.remark !== null && item.remark !== undefined) {
+              let mark = item.remark
+              // 标签分割
+              item.remark = mark.split(",")
+              
+            }
           })
 
           this.remuces = res.data.remuces[0]
@@ -757,6 +763,9 @@ h3{
               &__left {
                 height: 140px;
                 width: 140px;
+                img {
+                  width: 100%;
+                }
               }
               &__right {
                 margin-left: 20px;

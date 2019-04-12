@@ -1131,6 +1131,14 @@ export default {
 }
 </script>
 <style scoped lang='scss'>
+
+/deep/ .cke_ltr {
+  .cke_button__numberedlist_icon {
+    background: url('../../../static/img/ck1-off.png') no-repeat 0 -576px !important;
+    z-index: 999;
+  }
+}
+
 #releasePositions{
     height: auto;
     min-height: 100%;

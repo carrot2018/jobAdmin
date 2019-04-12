@@ -76,12 +76,24 @@
             </p>
             <p>
               <span
-              v-for="(items,index) in item.remark"
+              v-for="(items,index) in item.cookingStyle"
               :key="index">{{items}}</span>
             </p>
           </div>
         </div>
       </div>
+
+      <div class="page" v-show='page'>
+          <el-pagination 
+            @current-change="handleCurrent" 
+            :current-page.sync="pageNum"
+            :page-size="pageSize"
+            background
+            layout="prev, pager, next"
+            :total='allTotal'>
+          </el-pagination>
+      </div>  
+
     </div>
   </div>
 </template>
@@ -115,10 +127,31 @@ export default {
           value: '选项2',
           label: '降序'
         }],
-      timeSort: ''
+      timeSort: '',
+      pageNum:1,
+      pageSize:30,
+      allTotal:0,
+      page: false
     };
   },
   methods: {
+
+    handleCurrent(val) {
+      console.log(`当前页: ${val}`, val);
+      this.pageNum = val;
+      let thisQuery = this.$route.query;
+    // console.log(thisQuery.jobName)
+    
+      if(thisQuery.jobName !== undefined) {
+        // 点击职位主动投递跳转过来调用的
+        this.getJobNameResume()
+      } else {
+        // 展示所有简历信息
+        
+        this.getResumeAdminMessage();
+      }
+    },
+
     preview(item,jobsId,sesId) {
       //预览简历
       // if (item == 1) {
@@ -140,7 +173,11 @@ export default {
 
     // 获取简历管理信息
     getResumeAdminMessage() {
-      axios.get('/api/list?requestId='+this.requestId,
+
+      let pageNum = this.pageNum;
+      let pageSize = this.pageSize;
+
+      axios.get('/api/list?pageNum='+pageNum+'&pageSize='+pageSize+'&requestId='+this.requestId
       ).then((response) => {
         console.log(12312312,response)
         let res = response.data;
@@ -169,30 +206,45 @@ export default {
           }
         }
         if(res.code === '202') {
+          this.pageSize = res.data.pageSize;
+          this.pageNum = res.data.pageNum;
+
+          this.allTotal = res.data.record;
+
+          if(this.allTotal > this.pageSize){
+            this.page = true;
+          }else{
+            this.page = false
+          }
           let data = res.data.list;
+          console.log('rrr1213',data)
+         
           data.some((item,i) => {
             // 时间戳转换
             item.sendTime = timestampToTime(item.sendTime)
             // 1男，2女
             item.sex === 1?item.sex = '男':item.sex = '女'
             // 标签分隔
+            let cookingStyle = item.cookingStyle
+            if(cookingStyle !== null && cookingStyle.length !== 0) {
+              item.cookingStyle = cookingStyle.split(",")
+            }
+
             let mark = item.remark
-            item.remark = mark.split(",")
-            
-            // 0未读，1已读
-            // if(item.isRead === 1) {
-            //   item.isRead = false
-            // }
+            if(mark !== null && mark.length !== 0) {
+              item.remark = mark.split(",")
+            }
+          
+            // console.log( mark.split(","))
             
             // 添加状态
             item.reads = true
             item.isRead === 1 ? item.reads = false : item.reads = true
-            // console.log( mark.split(","))
-            
-            // console.log(checkNUll(item.cookingImages),'llllllll')
-            this.hasCookieImage = checkNUll(item.cookingImages) 
 
+            this.hasCookieImage = checkNUll(item.cookingImages) 
+            
           })
+          // console.log('rrr1213',data)
           this.arr = data
 
         }
@@ -202,8 +254,10 @@ export default {
 
     // 获取该类职位的简历
     getJobNameResume() {
+      let pageNum = this.pageNum;
+      let pageSize = this.pageSize;
       let name = this.$route.query.jobName;
-      axios.get('/api/list?jobName='+name+'&requestId='+this.requestId,
+      axios.get('/api/list?pageNum='+pageNum+'&pageSize='+pageSize+'&jobName='+name+'&requestId='+this.requestId,
       ).then((response) => {
         console.log(99999,response)
         let res = response.data;
@@ -232,6 +286,16 @@ export default {
           }
         }
         if(res.code === '202') {
+          this.pageSize = res.data.pageSize;
+          this.pageNum = res.data.pageNum;
+          this.allTotal = res.data.record;
+
+          if(this.allTotal > this.pageSize){
+            this.page = true;
+          }else{
+            this.page = false
+          }
+
           let data = res.data.list;
           data.some((item,i) => {
             // 时间戳转换
@@ -239,14 +303,21 @@ export default {
             // 1男，2女
             item.sex === 1?item.sex = '男':item.sex = '女'
             // 标签分隔
+            let cookingStyle = item.cookingStyle
+            if(cookingStyle !== null && cookingStyle.length !== 0) {
+              item.cookingStyle = cookingStyle.split(",")
+            }
+
+
             let mark = item.remark
-            item.remark = mark.split(",")
+            if(mark !== null && mark.length !== 0) {
+              item.remark = mark.split(",")
+            }
             
             // 添加状态
             item.reads = true
             item.isRead === 1 ? item.reads = false : item.reads = true
             this.hasCookieImage = checkNUll(item.cookingImages) 
-
           })
           this.arr = data
 
@@ -299,6 +370,11 @@ export default {
     color: #666;
     opacity: 1;
   }
+}
+
+/deep/ .el-pagination {
+  text-align: center;
+  margin-top: 10px;
 }
 
 #resume {
