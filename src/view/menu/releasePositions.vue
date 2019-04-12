@@ -112,6 +112,7 @@
                                 v-model="salaryTwo"
                                 clearable>
                             </el-input> 
+                            <span>元</span>
                         </span>                       
                         <i>
                             <span @click='checkMonth(1)'>
@@ -1121,7 +1122,6 @@ export default {
       console.log(this.editorId)
       let ckeditor=this.editor.getData();
       if(typeof this.editorId=='undefined'){//发布
-        console.log(1)
         console.log(hasRelease)
         if(hasRelease==null){
             console.log(2)
@@ -1136,16 +1136,13 @@ export default {
                     next();
                 }).catch(() => {});                               
             }else{
-                console.log(3)
                 next();
             }
 
         }else{
-            console.log(4)
             next(); 
         }
       }else{//修改
-        console.log(3)
         next(); 
       }
   },

@@ -386,6 +386,10 @@ export default {
             >p:nth-of-type(2){
                 margin-top: 16px;
                     color: #666;
+                    >span:nth-of-type(1){
+                        color: red;
+                        font-size: 15px;
+                    }
                     span:nth-of-type(2){
                         margin-left: 15px;
                         .iconjiguan{
