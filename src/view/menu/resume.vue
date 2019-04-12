@@ -6,7 +6,7 @@
       </h3>
       <div class="title">
         <span @click="checkTitle(1)">主动投递<span class="title--pink"> ({{totalNum}})</span></span>
-        <div class="title__select">
+        <!-- <div class="title__select">
           <el-select 
             v-model="positionSort" 
             clearable 
@@ -31,7 +31,7 @@
               :value="item.value">
             </el-option>
           </el-select>
-        </div>
+        </div> -->
       </div>
       <div class="list-box">
         <div class="every" 
@@ -135,9 +135,22 @@ export default {
     };
   },
   methods: {
+    tokenExpiration(code,msg) {
+      if(code === '203') {
+        if(msg === '请先登陆然后操作每个业务请求,请先带上本地cooke的requestId') {
+          localStorage.removeItem('requestId');
+          this.$router.replace({
+            path: '/login'
+          })
+          this.$message.warning('手动登录超过七天后需要再次登录哦');
+        } else {
+          this.$message.error('操作失败');
+        }
+      }
+    },
 
+    // 分页
     handleCurrent(val) {
-      console.log(`当前页: ${val}`, val);
       this.pageNum = val;
       let thisQuery = this.$route.query;
     // console.log(thisQuery.jobName)
@@ -159,7 +172,7 @@ export default {
       // } else {
       //   this.$router.push("/notCookerTel");
       // }
-      console.log(123123,sesId)
+      // console.log(123123,sesId)
       
       this.$router.push({
         path: '/cookerTel',
@@ -179,11 +192,11 @@ export default {
 
       axios.get('/api/list?pageNum='+pageNum+'&pageSize='+pageSize+'&requestId='+this.requestId
       ).then((response) => {
-        console.log(12312312,response)
+        // console.log(12312312,response)
         let res = response.data;
         
         
-        this.totalNum = res.data.record;
+        
         // 时间戳转换成日期
         function timestampToTime(timestamp) {
           let date = new Date(timestamp);//时间戳为10位需*1000，时间戳为13位的话不需乘1000
@@ -206,6 +219,7 @@ export default {
           }
         }
         if(res.code === '202') {
+          this.totalNum = res.data.record;
           this.pageSize = res.data.pageSize;
           this.pageNum = res.data.pageNum;
 
@@ -217,7 +231,7 @@ export default {
             this.page = false
           }
           let data = res.data.list;
-          console.log('rrr1213',data)
+          // console.log('rrr1213',data)
          
           data.some((item,i) => {
             // 时间戳转换
@@ -247,7 +261,10 @@ export default {
           // console.log('rrr1213',data)
           this.arr = data
 
-        }
+        } 
+        // else {
+        //   this.tokenExpiration(res.code,res.message)
+        // }
       })
     },
 

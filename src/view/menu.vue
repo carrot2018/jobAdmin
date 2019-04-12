@@ -125,7 +125,7 @@ export default {
     clickLayout(){
         this.$http.get('/api/loginOut?requestId='+this.requestId,
         ).then((res)=>{
-            console.log(res)
+            console.log('2323',res)
             if(res.data.code=='202'){
                 this.toast = this.$createToast({
                     txt: '退出成功',
@@ -169,7 +169,7 @@ export default {
 
   watch: {
     $route(to,from){
-      console.log(to)
+      // console.log(to)
       // 监听路由变化，高亮菜单选项
       this.thisRoute = to.path
       sessionStorage.removeItem('hasRelease');

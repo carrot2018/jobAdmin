@@ -352,7 +352,6 @@ export default {
 
       axios.post('/api/getDetialList?jobsId='+jobsId+'&sesId='+sesId+'&requestId='+requestId,
       ).then((response) => {
-        console.log('88888', response)
         let res = response.data;
         this.sesId = res.data.remuces.sesId;
         console.log('88888', response.data.data)
@@ -468,7 +467,7 @@ export default {
       })
     },
 
-    // 更改
+    // 更改阅读状态
     getReadStatus() {
       console.log(this.$route.query)
       // console.log(this.sesId,this.sesId,this.sesId)

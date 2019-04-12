@@ -5,8 +5,54 @@
 </template>
 
 <script>
+import axios from "axios";
+export default {
+  data() {
+    return {
+      
+    }
+  },
+  methods: {
+    isLogin(){
+      let requestId = localStorage.getItem('requestId');
+      // let requestId = this.requestId;
+      axios.get('/api/checkLogin?loginRequestId='+requestId)
+      .then((res)=>{
 
+          if (res.data.code ==='203'){
+            if (res.data.message === '请先登陆然后操作每个业务请求,请先带上本地cooke的requestId' || res.data.message === '免密登录失败,当前用户未登录') {
+              // localStorage.removeItem('requestId');
+              this.$router.replace({
+                path: '/login'
+              })
+              this.$message.warning('登录过期，请重新登录');
+            } else {
+              this.$message.error('操作失败');
+            }
+          }
+      })
+    },
+  },
+  mounted() {
+    
+  },
+  watch: {
+
+    $route: {
+      handler: function(val, oldVal){
+        console.log(val)
+        if (val.path !== '/login') {
+          this.isLogin()
+        }
+      },
+      // 深度观察监听
+      deep: true
+    }
+  
+  },
+}
 </script>
+
 <style>
 *{
   margin: 0;padding: 0;

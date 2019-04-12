@@ -101,14 +101,16 @@ export default {
         that.$http.get('/api/login?mobile='+that.phone+'&password='+that.password,{})
         .then((res)=>{
             if(res.data.code=='202'){
+              let requestId=res.data.data.requestId;
+              window.localStorage.setItem('requestId',requestId);
                 that.toast = this.$createToast({
                     txt: '登陆成功',
                     type: 'txt',
                     time: 1500,
                     onTimeout: () => {
-                        let requestId=res.data.data.requestId;
+                        // let requestId=res.data.data.requestId;
                         let userInfo=res.data.data.user;
-                        window.localStorage.setItem('requestId',requestId);
+                        // window.localStorage.setItem('requestId',requestId);
                         window.localStorage.setItem('userInfo',JSON.stringify(userInfo));
                         setTimeout(function(){
                             window.localStorage.removeItem('requestId');
