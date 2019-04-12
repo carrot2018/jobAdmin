@@ -1007,7 +1007,6 @@ export default {
     i_know(){//我知道了
         let that=this;
         this.centerDialogVisible=false;
-        alert(4)
         this.$router.push({path:'/allPosition'})
     },
     getProvince(){
