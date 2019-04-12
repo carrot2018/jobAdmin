@@ -138,7 +138,7 @@ export default {
                         font-size: 15px;
                         span{
                             font-size: 16px;
-                            color: red;
+                            color: #ff5571;
                         }
                     }
                     #company{

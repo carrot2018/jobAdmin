@@ -172,6 +172,7 @@ export default {
       console.log(to)
       // 监听路由变化，高亮菜单选项
       this.thisRoute = to.path
+      sessionStorage.removeItem('hasRelease');
     }
   }
 }

@@ -444,10 +444,8 @@ export default {
       .list-box__content {
         cursor: pointer;
         padding: 24px 0 30px 30px;
-        // border: 1px solid #e5e5e5;
         border-radius: 3px;
 
-        // margin-top: 8px;
         > p:nth-of-type(1) {
           position: relative;
           > span:nth-of-type(1) {
@@ -455,7 +453,6 @@ export default {
 
             .content__realname {
               font-size: 24px;
-              // font-weight: 600;
               color: #142D46;
             }
 
@@ -463,7 +460,7 @@ export default {
               position: absolute;
               width: 7px;
               height: 7px;
-              background: red;
+              background: #ff5571;
               border-radius: 7px;
               right: -8px;
               top: -4px;

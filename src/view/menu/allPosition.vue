@@ -5,10 +5,10 @@
             <span>职位管理</span>
         </h3>
         <div class="title">
-            <span @click='checkTitle(1)' :class='{color:template==1}'>全部职位<i v-show='allNum'>({{allNum}})</i></span>
-            <span @click='checkTitle(2)' :class='{color:template==2}'>发布中<i v-show='releaseNum'>({{releaseNum}})</i></span>
-            <span @click='checkTitle(3)' :class='{color:template==3}'>已关闭
-                <i v-show='shutDown'>({{shutDown}})</i></span>
+            <span @click='checkTitle(1)' :class='{color:template==1}'>全部职位<i>({{allNum}})</i></span>
+            <span @click='checkTitle(2)' :class='{color:template==2}'>发布中<i>({{releaseNum}})</i></span>
+            <span @click='checkTitle(3)' :class='{color:template==3}'>已关闭<i>({{shutDown}})</i></span>
+                
         </div>
         <div class="list-box">
             <div class="content">
@@ -75,7 +75,8 @@ export default {
         allTotal:0,
         page:false,//分页显示
         requestId:localStorage.getItem('requestId'),
-        stateColor: '#727272'
+        stateColor: '#727272',
+        
     }
   },
   methods:{
@@ -129,7 +130,7 @@ export default {
         this.$http.get('/api/job/countJobReleases?requestId='+this.requestId,{
         }).then((res)=>{
             if(res.data.code=='202'){
-                this.allNum=res.data.data;
+                this.releaseNum=res.data.data;
             }
         })
     },
@@ -149,36 +150,49 @@ export default {
         }
         ).then((res)=>{
             console.log(res)
-            if(res.data.code=='202'){
-                if(index==1){
-                    if(res.data.code=='202'){
-                        this.$message({
-                            type: 'success',
-                            message: '发布成功!',
-                            center: true
-                        });
-                        this.pageNum=1;
-                        this.getAll();
-                        this.getRelease();
-                        this.getShutDown();
-                        this.getList();
-                    }
+            if(index==1){
+                if(res.data.code=='202'){
+                    this.$message({
+                        type: 'success',
+                        message: '发布成功!',
+                        center: true
+                    });
+                    this.pageNum=1;
+                    this.getAll();
+                    this.getRelease();
+                    this.getShutDown();
+                    this.getList();
                 }
-                if(index==2){
-                    if(res.data.code=='202'){
-                        this.$message({
-                            type: 'success',
-                            message: '关闭成功!',
-                            center: true
-                        });
-                        this.pageNum=1;
-                        this.getAll();
-                        this.getRelease();
-                        this.getShutDown();
-                        this.getList();
-                    }
+                if(res.data.code=='203'){
+                    this.$message({
+                        type: 'success',
+                        message: '发布失败!',
+                        center: true
+                    });
                 }
             }
+            if(index==2){
+                if(res.data.code=='202'){
+                    this.$message({
+                        type: 'success',
+                        message: '关闭成功!',
+                        center: true
+                    });
+                    this.pageNum=1;
+                    this.getAll();
+                    this.getRelease();
+                    this.getShutDown();
+                    this.getList();
+                }
+                if(res.data.code=='203'){
+                    this.$message({
+                        type: 'success',
+                        message: '关闭失败!',
+                        center: true
+                    });
+                }
+            }
+
            
            
             
@@ -224,18 +238,27 @@ export default {
                 // this.getList(); 
                 // $('#scrollBox').scrollTop(0)
             }
+            if(res.data.code=='203'){
+                this.$message({
+                    // type: 'fail',
+                    message: '刷新失败!',
+                    center: true,
+                });
+               
+            }
            
-        }).catch((error)=>{
         })
     },
     editor(item){
+        this.$http.get('/api/job/setLockFlushZpJobsByOneDay/'+item.id+'?requestId='+this.requestId,{
+        }).then((res)=>{          
+        })
         this.$router.push({
     　　　　path: '/releasePositions',
     　　　　query:{id:item.id }　
     　　});
        
     },
-
     // 查看主动投递该类简历
     goResume(name) {
       this.$router.push({
@@ -253,7 +276,6 @@ export default {
     },
   },
   created(){
-    // this.requestId=localStorage.getItem('requestId');
     this.getAll();
     this.getRelease();
     this.getShutDown();
@@ -364,6 +386,10 @@ export default {
             >p:nth-of-type(2){
                 margin-top: 16px;
                     color: #666;
+                    >span:nth-of-type(1){
+                        color: red;
+                        font-size: 15px;
+                    }
                     span:nth-of-type(2){
                         margin-left: 15px;
                         .iconjiguan{

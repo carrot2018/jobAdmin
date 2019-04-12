@@ -133,6 +133,7 @@
                     <p class="label-text">请使用jpg、png、gif格式图片，每张图片不超过10M，最多可上传 5 张；</p>
                     <div class="upload">
                         <cube-upload
+                        v-model='workMent'
                         :max="5"
                         :action="action"
                         :simultaneous-uploads="5"
@@ -200,41 +201,48 @@ export default {
         // action:'http://23e74b3832.wicp.vip/job-route-invoker/file/upload?requestId='+localStorage.getItem('requestId'),
         action:'http://192.168.1.111:8889/job-route-invoker/file/upload?requestId='+localStorage.getItem('requestId'),
         fileArr:[],
-        userInfo:{}
+        userInfo:{},
+        lookLabel:[],
+        lookStyles:[],
+        lookType:[],
+        workMent:[]
     }
   },
   methods:{
     getEnterprise(){//企业标签
-        this.$http.get('/service/api/taxonomies/486',{
+        let that=this;
+        that.$http.get('/service/api/taxonomies/486',{
         }).then((res)=>{
             let enterprise=res.data.allNodes;
             enterprise.forEach(function(v){
                 v.flag=false;
+                that.lookLabel.push(v.name)
             })
-            this.enterprise=enterprise;
-        }).catch((error)=>{
+            that.enterprise=enterprise;
         })
     },
     getMainCuisine(){//主营菜系
-        this.$http.get('/service/api/taxonomies/484',{
+        let that=this;
+        that.$http.get('/service/api/taxonomies/484',{
         }).then((res)=>{
             let mainCuisine=res.data.allNodes;
             mainCuisine.forEach(function(v){
                 v.flag=false;
+                that.lookStyles.push(v)
             })
-            this.mainCuisine=mainCuisine;
-        }).catch((error)=>{
+            that.mainCuisine=mainCuisine;
         })
     },
     getDiningType(){//餐饮类型
-        this.$http.get('/service/api/taxonomies/485',{
+        let that=this;
+        that.$http.get('/service/api/taxonomies/485',{
         }).then((res)=>{
             let diningType=res.data.allNodes;
             diningType.forEach(function(v){
                 v.flag=false;
+                that.lookType.push(v)
             })
-            this.diningType=diningType;
-        }).catch((error)=>{
+            that.diningType=diningType;
         })
     },
     clickCustom(){//点击自定义
@@ -448,7 +456,12 @@ export default {
             if(res.data.code=='202'){//成功
                 that.centerDialogVisible=true;
             }
-        }).catch((error)=>{
+            if(res.data.code=='201'){//企业信息已存在
+                this.$message({
+                    message: '企业信息已存在!',
+                    center: true
+                });
+            }
         })
 
     },
@@ -559,12 +572,120 @@ export default {
 
          
     },
+    getCompanyData(){
+        let that=this;
+        that.$http.post('/api/selectByUserIdAndUnitsId?requestId='+that.requestId
+        ).then((res)=>{
+            if(res.data.code=='202'){//成功
+                // abstract_: "很关键"
+                // address: "很过分"
+                // area: 120102
+                // city: 120100
+                // cookingStyles: "云贵菜"
+                // cookingtType: "小吃快餐"
+                // employeNum: 4367
+                // id: 38
+                // label: "设备齐全"
+                // name: "zjz"
+                // province: 120000
+                // unitsId: 1
+                // userDefined: null
+                // userId: 220
+                // workMent: "http://zhongao-web.oss-cn-hangzhou.aliyuncs.com/94ad39e803594aadb"
+                // message: "操作成功"
+                let data=res.data.data;
+                that.name=data.name;
+                that.province=data.province;
+                that.city=data.city;
+                that.area=data.area;
+                that.number=data.employeNum;
+                that.textarea=data.abstract_;
+                that.detailArea=data.address;
+                let label=data.label.split(',');
+                let cookingStyles=data.cookingStyles.split(',');
+                let cookingtType=data.cookingtType.split(',');   
+
+                let workMent=data.workMent.split(','); 
+                workMent.forEach(function(v){
+                    that.workMent.push({
+                        url:v
+                    })
+                })
+                if(label.length>0){
+                    label.forEach(function(item){
+                        if(that.lookLabel.indexOf(item)==-1){//不存在                       
+                            if(item){
+                                that.enterprise.unshift({
+                                    flag:true,
+                                    name:item
+                                }) 
+                            }                           
+                        }else{
+                            that.enterprise.forEach(function(v){
+                                if(item==v.name){
+                                    v.flag=true;
+                                }               
+                            })
+
+                        }                      
+                    })
+                }   
+                if(cookingStyles.length>0){
+                    cookingStyles.forEach(function(item){
+                        if(that.lookStyles.indexOf(item)==-1){//不存在
+                            if(item){
+                                that.mainCuisine.unshift({
+                                    flag:true,
+                                    name:item
+                                }) 
+                            }                         
+                        }else{
+                            that.mainCuisine.forEach(function(v){
+                                if(item==v.name){
+                                    v.flag=true;
+                                }               
+                            })
+
+                        }                      
+                    })
+
+                }
+                if(cookingtType.length>0){
+                    cookingtType.forEach(function(item){
+                        if(that.lookType.indexOf(item)==-1){//不存在
+                            if(item){
+                                that.diningType.unshift({
+                                    flag:true,
+                                    name:item
+                                }) 
+                            }                         
+                        }else{
+                            that.diningType.forEach(function(v){
+                                if(item==v.name){
+                                    v.flag=true;
+                                }               
+                            })
+
+                        }                      
+                    })
+
+                }
+                                
+            }
+            if(res.data.code=='203'){
+                console.log(res)
+            }
+    
+            
+        })
+
+    }
 
   },
   created(){
     let userInfo=localStorage.getItem('userInfo');
     this.userInfo=JSON.parse(userInfo);
-    console.log(this.userInfo)
+    
     this.getProvince();
     this.getEnterprise();
     this.getMainCuisine();
@@ -572,6 +693,10 @@ export default {
 
   },
   mounted(){
+      let that=this;
+      setTimeout(function(){
+        that.getCompanyData();
+      },500)
    
   }
 }
@@ -655,6 +780,7 @@ export default {
               border: 30px solid ;
               border-color:  transparent transparent transparent #f9fcfe;
             }
+           
         }
         .bg{
             color:#142D46;
@@ -685,7 +811,7 @@ export default {
                 position: relative;
                 span{
                     font-size: 12px;
-                    color: red;
+                    color: #ff5571;
                     position: absolute;
                     left: -12px;
                     top: 0;
@@ -828,7 +954,7 @@ export default {
                     color: #fff;
                 }
                 .employees{
-                    color: red;
+                    color: #ff5571;
                     margin-top: 5px;
                     display: none;
                 }
@@ -856,7 +982,7 @@ export default {
                 float: left;
                 span{
                     font-size: 16px;
-                    color: red;
+                    color: #ff5571;
                 }
             }
             >.right{
