@@ -294,24 +294,13 @@
                 </div>
             </div>
         </div>
-        <el-dialog
-            title="恭喜你，职位发布成功！"
-            :visible.sync="centerDialogVisible"
-            width="30%"
-            center>
-            <img src="../../../static/img/icon.png" class='icon-img'>
-            <span>职位每天可刷新1次，有求职者投递请到“简历管理”中查看。</span>
-            <span slot="footer" class="dialog-footer">
-                <el-button type="primary" @click='i_know()'>我知道了</el-button>
-            </span>
-        </el-dialog> 
-        <div class="model" v-show="leaveModel">
+        <div class="model" v-show="centerDialogVisible">
             <div class="model-box">
-                <p class="title">内容没有保存，确定要离开吗？</p>
-                <p class="confirm-cancel">
-                    <span>取消</span>
-                    <span>确定</span>
-                </p>
+                <span class="iconfont iconshanchu" @click='deleteIKnow()'></span>
+                <img src="../../../static/img/icon.png" class='icon-img'>
+                <p class="title">恭喜你，职位发布成功！</p>
+                <p class="title-text">职位每天可刷新1次，有求职者投递请到“简历管理”中查看。</p>
+                <p class="i_know" @click='i_know()'>我知道了</p>          
             </div>
         </div>  
     </div>
@@ -324,7 +313,6 @@ import CKEDITOR from 'CKEDITOR';
 export default {
   data () {
     return {
-        leaveModel:false,
         lookSample:false,
         editorId:'',//编辑id
         name:'',//职位名称
@@ -588,16 +576,17 @@ export default {
                 // 当前职位已经存在
                 this.$message({
                     message: '当前职位已经存在',
-                    center: true
+                    center: true,
+                    duration:1000
                 });
                 this.sensitive=false;
-                this.$router.push({path:'/allPosition'})
             }else if(res.data.message=='带有敏感词'){
                this.sensitive=true;
             }else if(res.data.message=='操作失败'){
                 this.$message({
                     message: '发布失败',
-                    center: true
+                    center: true,
+                    duration:1000
                 });
                 this.sensitive=false;
             }
@@ -673,9 +662,9 @@ export default {
             }else{
                 this.moneyTipShow=false;
             }
-            if(!this.salaryTwo){
+            if(this.salaryOne>this.salaryTwo){
                 this.moneyTipShow=true;
-                this.moneyTip='请填写薪资范围';
+                this.moneyTip='最低薪资不能高于最高薪资';
                 $('#scrollBox').scrollTop(0);
                 return;
             }else{
@@ -743,9 +732,10 @@ export default {
             if(res.data.code=='202'){
                 this.sensitive=false;
                 this.$message({
-                    type: 'success',
                     message: '职位修改成功!',
-                    center: true,                  
+                    center: true,
+                    duration:1000  
+                                    
                 })
                 setTimeout(function(){
                     that.$router.push('/allPosition');
@@ -754,7 +744,8 @@ export default {
             }else if(res.data.message=='操作失败'){
                 this.$message({
                     message: '修改失败',
-                    center: true
+                    center: true,
+                    duration:1000
                 });
                 this.sensitive=false;
             }else if(res.data.message=='带有敏感词'){
@@ -909,14 +900,14 @@ export default {
         let salaryOne=parseInt( this.salaryOne );
         if( salaryOne > salaryTwo){//1>2
             this.moneyTipShow=true;
-            this.moneyTip='第二薪资不能小于第一薪资';
+            this.moneyTip='最高薪资不能小于最低薪资';
         }
     },
     integerTwo(){//输入整数
         this.salaryTwo=this.salaryTwo.replace(/^(0+)|[^\d]+/g,'');
         if(!this.salaryOne){
             this.moneyTipShow=true;
-            this.moneyTip='请先写入第一个薪资';
+            this.moneyTip='请先写入最低个薪资';
             this.salaryTwo='';
             return;
         }
@@ -1156,8 +1147,7 @@ export default {
     let that=this;
     setTimeout(function(){
         that.getEditorData();
-    },1000)
-    
+    },800)
     CKEDITOR.replace('editor', {height: '200px', width: '100%', toolbar: 'toolbar_Full'});
     that.editor = CKEDITOR.instances.editor;  
     that.editor.on('change',function(){
@@ -1205,50 +1195,58 @@ export default {
     z-index: 999;
     background: rgba(0,0,0,.5);
     .model-box{
-        width: 360px;
-        min-height: 200px;
+        width: 460px;
+        height: 320px;
         position: absolute;
         top:50%;
         left: 50%;
-        margin-left: -150px;
-        margin-top: -150px;
+        margin-left: -230px;
+        margin-top: -160px;
         background: #fff;
         border-radius: 5px;
-        .title{
-            margin-top: 60px;
-            text-align: center;
+        .iconshanchu{
+            position: absolute;
+            top:16px;
+            right: 16px;
+            color: #142D46;
+            cursor: pointer;
             font-size: 18px;
-            margin-bottom: 50px;
-            color: #666;
-            font-size: 18px;
-            font-weight: 700;
-
         }
-        .confirm-cancel{
-            padding: 0 85px;
-            span{
-                display: inline-block;             
-                cursor: pointer;
-                background: #fff;
-                border: 1px solid #dcdfe6;
-                color: #606266;
-                -webkit-appearance: none;
-                text-align: center;
-                box-sizing: border-box;
-                outline: 0;
-                margin: 0;
-                transition: .1s;
-                font-weight: 500;
-                padding: 12px 20px;
-                font-size: 14px;
-                border-radius: 4px;
-            }
-            span:nth-of-type(2){
-                background: #ff5570;
-                border: 1px solid #ff5570;
-                color: #fff;
-                margin-left: 40px;
-            }
+        .iconshanchu:hover{
+            color: #ff5570;
+        }
+        img{
+           margin: 30px auto 0;
+           display: block;
+        }
+        .title{
+            text-align: center;
+            font-size: 20px;
+            color: #142D46;
+            font-weight: 700;
+            text-align: center;
+        }
+        .title-text{
+            margin-top: 10px;
+            color: #999;
+            text-align: center;
+            font-size: 13px;
+        }
+        .i_know{            
+            cursor: pointer;
+            background: #ff5570;
+            border: 1px solid #ff5570;
+            color: #fff;
+            -webkit-appearance: none;
+            text-align: center;
+            font-size: 15px;
+            border-radius: 4px;
+            width: 160px;
+            height: 34px;
+            line-height: 34px;
+            margin: 50px auto 0;
+            letter-spacing: 2px;
+            
         }
     }
 
@@ -1409,7 +1407,7 @@ export default {
                         height: 40px;
                         border: 1px solid #DCDFE6;
                         border-radius: 3px;
-                        padding-left: 10px;
+                        padding: 0 10px;
                     }
                 }              
                 .money{
@@ -1605,8 +1603,11 @@ export default {
                 }
                 .sensitive{
                     padding-bottom: 20px;
+                    text-align: center;
+                    margin-top: 10px;
                     >span{
                         color: #FF5571;
+
                         span{
                             color: #FF5571;
                             position: relative;
@@ -1637,8 +1638,9 @@ export default {
                         cursor: pointer;
                     }
                     span:nth-of-type(1){
-                    background: #aaa;
-                    color: #fff;
+                        background: #FF5571;
+                        border: 1px solid #FF5571;
+                        color: #fff;
                     }                
                 
                 }
@@ -1717,75 +1719,6 @@ export default {
 #releasePositions .el-input__inner::-webkit-input-placeholder{
     color: #999;
     font-size: 13px;
-}
-#releasePositions .el-dialog--center {
-    width: 580px!important;
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%,-50%);
-    margin-top: 0!important;
-    border-radius: 4px;
-}
-#releasePositions .el-dialog__header {
-    padding: 160px 20px 10px; 
-}
-#releasePositions .el-dialog__headerbtn .el-dialog__close{
-    font-size: 26px;
-    color: #142D46;
-}
-#releasePositions .el-dialog__headerbtn .el-dialog__close:hover{
-   color: #ff5571;
-}
-#releasePositions .el-dialog__title{
-    font-weight: 700;
-    font-size: 22px;
-    color: #142D46;
-}
-#releasePositions .el-dialog__body {
-    padding: 0 25px 30px;
-    color: #666;
-    font-size: 15px;
-}
-
-#releasePositions .el-dialog__footer{
-    padding: 30px 20px 40px;
-}
-#releasePositions .el-dialog--center .el-dialog__body {
-    text-align: center;
-}
-#releasePositions .el-button--primary {
-    color: #fff;
-    background-color: #ff5571;
-    border-color: #ff5571;
-    width: 180px;
-    border-radius: 4px;
-    font-size: 18px;
-    letter-spacing: 3px;
-}
-#releasePositions .el-message-box__message p {
-    font-size: 18px;
-}
-.el-message-box__message p{
-    font-size: 18px;
-    margin-bottom: 20px;
-}
-.el-button--small {
-    padding: 10px 24px!important;
-    font-size: 16px;
-}
-.el-message-box__btns button:nth-child(2) {
-    margin-left: 36px!important;
-    font-size: 16px;
-}
-.el-message-box__headerbtn .el-message-box__close{
-    font-size: 24px;
-}
-.icon-img{
-    position: absolute;
-    top: 35px;
-    left: 50%;
-    transform: translateX(-50%);
 }
 input::-webkit-input-placeholder, textarea::-webkit-input-placeholder {
     color: #999;

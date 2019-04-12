@@ -257,7 +257,9 @@ export default {
             this.$message({
                 message: '请输入自定义内容',
                 type: 'warning',
-                center: true
+                center: true,
+                duration:1000,
+                duration:1000
             })
             return;
         }
@@ -459,7 +461,8 @@ export default {
             if(res.data.code=='201'){//企业信息已存在
                 this.$message({
                     message: '企业信息已存在!',
-                    center: true
+                    center: true,
+                    duration:1000
                 });
             }
         })
@@ -920,8 +923,9 @@ export default {
                         cursor: pointer;
                     }
                     span:nth-of-type(1){
-                    background: #aaa;
-                    color: #fff;
+                        background: #FF5571;
+                        border: 1px solid #FF5571;
+                        color: #fff;
                     }                
                 
                 }
