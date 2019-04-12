@@ -102,10 +102,8 @@ export default {
         }
         that.$http.post('/api/job/selectJobOfPageList?pushStatus='+that.template+'&requestId='+that.requestId,params
         ).then((res)=>{
-            // console.log(res)
              if(res.data.code=='202'){
                 this.list=res.data.data.jobs;
-                // console.log(this.list)
                 this.allTotal=res.data.data.totalRecord;  
                 if(this.allTotal>this.pageSize){
                     this.page=true;
@@ -153,9 +151,9 @@ export default {
             if(index==1){
                 if(res.data.code=='202'){
                     this.$message({
-                        type: 'success',
                         message: '发布成功!',
-                        center: true
+                        center: true,
+                        duration:1000
                     });
                     this.pageNum=1;
                     this.getAll();
@@ -165,18 +163,18 @@ export default {
                 }
                 if(res.data.code=='203'){
                     this.$message({
-                        type: 'success',
                         message: '发布失败!',
-                        center: true
+                        center: true,
+                        duration:1000
                     });
                 }
             }
             if(index==2){
                 if(res.data.code=='202'){
                     this.$message({
-                        type: 'success',
                         message: '关闭成功!',
-                        center: true
+                        center: true,
+                        duration:0
                     });
                     this.pageNum=1;
                     this.getAll();
@@ -186,9 +184,9 @@ export default {
                 }
                 if(res.data.code=='203'){
                     this.$message({
-                        type: 'success',
                         message: '关闭失败!',
-                        center: true
+                        center: true,
+                        duration:1000
                     });
                 }
             }
@@ -207,9 +205,9 @@ export default {
             console.log(res)
             if(res.data.code=='202'){
                 this.$message({
-                    type: 'success',
                     message: '删除成功!',
-                    center: true
+                    center: true,
+                    duration:1000
                 });
                 this.getAll();
                 this.getRelease();
@@ -228,21 +226,18 @@ export default {
         ).then((res)=>{         
             if(res.data.code=='202'){
                 this.$message({
-                    type: 'success',
                     message: '刷新成功!',
                     center: true,
+                    duration:1000
                 });
                 $(event.target).text('已刷新')
                 $(event.target).css('color','#999');
-                // this.pageNum=1;
-                // this.getList(); 
-                // $('#scrollBox').scrollTop(0)
             }
             if(res.data.code=='203'){
                 this.$message({
-                    // type: 'fail',
                     message: '刷新失败!',
                     center: true,
+                    duration:1000
                 });
                
             }
@@ -388,7 +383,7 @@ export default {
                     color: #666;
                     >span:nth-of-type(1){
                         color: red;
-                        font-size: 15px;
+                        font-size: 17px;
                     }
                     span:nth-of-type(2){
                         margin-left: 15px;

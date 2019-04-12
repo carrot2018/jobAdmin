@@ -32,12 +32,12 @@
 export default {
   data () {
     return {
-        phone:'',
         // phone:'15019230830',//本地
+        // password:'123456789',//本地
+        phone:'',
         phoneShow:false,
         phoneText:'',
         password:'',
-        // password:'123456789',//本地
         passwordShow:false,
         passwordText:'',
         requestId:localStorage.getItem('requestId'),

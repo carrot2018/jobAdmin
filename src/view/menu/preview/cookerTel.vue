@@ -509,18 +509,15 @@ h3{
     }
   }
 .content-box{
-  // min-height: 700px;
   min-height: 970px;
   margin: 0 auto;
    width: 800px;
    background: #fff;
-  // padding-bottom: 30px;
   padding: 0 40px;
   box-shadow: 0 2px 12px #dedede;
   .message{
     width: 100%;
     height: 190px;
-    // line-height: 60px;
     margin-top: 30px;
     display: flex;
     justify-content: space-between;
